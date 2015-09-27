@@ -1,0 +1,304 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '-save',
+1 verbose cli   'passport-oauth2-client-password' ]
+2 info using npm@2.9.1
+3 info using node@v0.12.3
+4 verbose install initial load of /Users/mjchaudhari/Documents/projects/easyCollab/api/package.json
+5 warn package.json chat-example@0.0.0 No repository field.
+6 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular/package.json
+7 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap/package.json
+8 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/async/package.json
+9 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/body-parser/package.json
+10 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap/package.json
+11 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/cookie-parser/package.json
+12 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/express/package.json
+13 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/express-session/package.json
+14 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/mongoose/package.json
+15 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/mongoose-auto-increment/package.json
+16 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/multer/package.json
+17 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/node-uuid/package.json
+18 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/oauth2orize/package.json
+19 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport/package.json
+20 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-http/package.json
+21 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-http-bearer/package.json
+22 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/serve-favicon/package.json
+23 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/underscore-node/package.json
+24 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/winston/package.json
+25 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/package.json
+26 silly cache add args [ 'passport-oauth2-client-password', null ]
+27 verbose cache add spec passport-oauth2-client-password
+28 silly cache add parsed spec { raw: 'passport-oauth2-client-password',
+28 silly cache add   scope: null,
+28 silly cache add   name: 'passport-oauth2-client-password',
+28 silly cache add   rawSpec: '',
+28 silly cache add   spec: '*',
+28 silly cache add   type: 'range' }
+29 silly addNamed passport-oauth2-client-password@*
+30 verbose addNamed "*" is a valid semver range for passport-oauth2-client-password
+31 silly addNameRange { name: 'passport-oauth2-client-password',
+31 silly addNameRange   range: '*',
+31 silly addNameRange   hasData: false }
+32 silly mapToRegistry name passport-oauth2-client-password
+33 silly mapToRegistry using default registry
+34 silly mapToRegistry registry https://registry.npmjs.org/
+35 silly mapToRegistry uri https://registry.npmjs.org/passport-oauth2-client-password
+36 verbose addNameRange registry:https://registry.npmjs.org/passport-oauth2-client-password not in flight; fetching
+37 verbose request uri https://registry.npmjs.org/passport-oauth2-client-password
+38 verbose request no auth needed
+39 info attempt registry request try #1 at 11:41:58 PM
+40 verbose request id 6f93eba20353f4cb
+41 http request GET https://registry.npmjs.org/passport-oauth2-client-password
+42 http 200 https://registry.npmjs.org/passport-oauth2-client-password
+43 silly get cb [ 200,
+43 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+43 silly get     etag: '"5JCYPIH6BHYPMP43TZFLHLXJO"',
+43 silly get     'content-type': 'application/json',
+43 silly get     'cache-control': 'max-age=60',
+43 silly get     'content-length': '7697',
+43 silly get     'accept-ranges': 'bytes',
+43 silly get     date: 'Sat, 05 Sep 2015 18:11:59 GMT',
+43 silly get     via: '1.1 varnish',
+43 silly get     age: '0',
+43 silly get     connection: 'keep-alive',
+43 silly get     'x-served-by': 'cache-sin6927-SIN',
+43 silly get     'x-cache': 'MISS',
+43 silly get     'x-cache-hits': '0',
+43 silly get     'x-timer': 'S1441476719.294817,VS0,VE257',
+43 silly get     vary: 'Accept' } ]
+44 verbose get saving passport-oauth2-client-password to /Users/mjchaudhari/.npm/registry.npmjs.org/passport-oauth2-client-password/.cache.json
+45 silly addNameRange number 2 { name: 'passport-oauth2-client-password',
+45 silly addNameRange   range: '*',
+45 silly addNameRange   hasData: true }
+46 silly addNameRange versions [ 'passport-oauth2-client-password',
+46 silly addNameRange   [ '0.1.0', '0.1.1', '0.1.2' ] ]
+47 silly addNamed passport-oauth2-client-password@0.1.2
+48 verbose addNamed "0.1.2" is a plain semver version for passport-oauth2-client-password
+49 silly mapToRegistry name passport-oauth2-client-password
+50 silly mapToRegistry using default registry
+51 silly mapToRegistry registry https://registry.npmjs.org/
+52 silly mapToRegistry uri https://registry.npmjs.org/passport-oauth2-client-password
+53 verbose addRemoteTarball https://registry.npmjs.org/passport-oauth2-client-password/-/passport-oauth2-client-password-0.1.2.tgz not in flight; adding
+54 verbose addRemoteTarball [ 'https://registry.npmjs.org/passport-oauth2-client-password/-/passport-oauth2-client-password-0.1.2.tgz',
+54 verbose addRemoteTarball   '4f378b678b92d16dbbd233a6c706520093e561ba' ]
+55 info retry fetch attempt 1 at 11:41:59 PM
+56 info attempt registry request try #1 at 11:41:59 PM
+57 http fetch GET https://registry.npmjs.org/passport-oauth2-client-password/-/passport-oauth2-client-password-0.1.2.tgz
+58 http fetch 200 https://registry.npmjs.org/passport-oauth2-client-password/-/passport-oauth2-client-password-0.1.2.tgz
+59 silly fetchAndShaCheck shasum 4f378b678b92d16dbbd233a6c706520093e561ba
+60 verbose addTmpTarball /var/folders/yk/ypnhy0wj0ln6gzsy2lrsn9x80000gn/T/npm-18414-b4e02c5f/registry.npmjs.org/passport-oauth2-client-password/-/passport-oauth2-client-password-0.1.2.tgz not in flight; adding
+61 verbose addTmpTarball already have metadata; skipping unpack for passport-oauth2-client-password@0.1.2
+62 silly cache afterAdd passport-oauth2-client-password@0.1.2
+63 verbose afterAdd /Users/mjchaudhari/.npm/passport-oauth2-client-password/0.1.2/package/package.json not in flight; writing
+64 verbose afterAdd /Users/mjchaudhari/.npm/passport-oauth2-client-password/0.1.2/package/package.json written
+65 silly install resolved [ { name: 'passport-oauth2-client-password',
+65 silly install resolved     version: '0.1.2',
+65 silly install resolved     description: 'OAuth 2.0 client password authentication strategy for Passport.',
+65 silly install resolved     keywords:
+65 silly install resolved      [ 'passport',
+65 silly install resolved        'oauth',
+65 silly install resolved        'oauth2',
+65 silly install resolved        'authn',
+65 silly install resolved        'authentication',
+65 silly install resolved        'authz',
+65 silly install resolved        'authorization',
+65 silly install resolved        'api' ],
+65 silly install resolved     repository:
+65 silly install resolved      { type: 'git',
+65 silly install resolved        url: 'git://github.com/jaredhanson/passport-oauth2-client-password.git' },
+65 silly install resolved     bugs: { url: 'http://github.com/jaredhanson/passport-oauth2-client-password/issues' },
+65 silly install resolved     author:
+65 silly install resolved      { name: 'Jared Hanson',
+65 silly install resolved        email: 'jaredhanson@gmail.com',
+65 silly install resolved        url: 'http://www.jaredhanson.net/' },
+65 silly install resolved     licenses: [ [Object] ],
+65 silly install resolved     main: './lib',
+65 silly install resolved     dependencies: { 'passport-strategy': '1.x.x' },
+65 silly install resolved     devDependencies: { vows: '0.7.x' },
+65 silly install resolved     scripts: { test: 'NODE_PATH=lib node_modules/.bin/vows test/*-test.js' },
+65 silly install resolved     engines: { node: '>= 0.4.0' },
+65 silly install resolved     homepage: 'https://github.com/jaredhanson/passport-oauth2-client-password',
+65 silly install resolved     _id: 'passport-oauth2-client-password@0.1.2',
+65 silly install resolved     dist:
+65 silly install resolved      { shasum: '4f378b678b92d16dbbd233a6c706520093e561ba',
+65 silly install resolved        tarball: 'http://registry.npmjs.org/passport-oauth2-client-password/-/passport-oauth2-client-password-0.1.2.tgz' },
+65 silly install resolved     _from: 'passport-oauth2-client-password@*',
+65 silly install resolved     _npmVersion: '1.3.24',
+65 silly install resolved     _npmUser: { name: 'jaredhanson', email: 'jaredhanson@gmail.com' },
+65 silly install resolved     maintainers: [ [Object] ],
+65 silly install resolved     directories: {},
+65 silly install resolved     _shasum: '4f378b678b92d16dbbd233a6c706520093e561ba',
+65 silly install resolved     _resolved: 'https://registry.npmjs.org/passport-oauth2-client-password/-/passport-oauth2-client-password-0.1.2.tgz' } ]
+66 info install passport-oauth2-client-password@0.1.2 into /Users/mjchaudhari/Documents/projects/easyCollab/api
+67 info installOne passport-oauth2-client-password@0.1.2
+68 verbose installOne of passport-oauth2-client-password to /Users/mjchaudhari/Documents/projects/easyCollab/api not in flight; installing
+69 verbose lock using /Users/mjchaudhari/.npm/_locks/passport-oauth2-client-p-7d3ce8f8ceec090b.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password
+70 silly install write writing passport-oauth2-client-password 0.1.2 to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password
+71 verbose unbuild node_modules/passport-oauth2-client-password
+72 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password is being purged from base /Users/mjchaudhari/Documents/projects/easyCollab/api
+73 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password
+74 verbose tar unpack /Users/mjchaudhari/.npm/passport-oauth2-client-password/0.1.2/package.tgz
+75 verbose tar unpacking to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password
+76 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password is being purged
+77 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password
+78 silly gunzTarPerm modes [ '755', '644' ]
+79 silly gunzTarPerm extractEntry package.json
+80 silly gunzTarPerm extractEntry README.md
+81 silly gunzTarPerm extractEntry LICENSE
+82 silly gunzTarPerm extractEntry .travis.yml
+83 silly gunzTarPerm extractEntry lib/index.js
+84 silly gunzTarPerm extractEntry lib/strategy.js
+85 verbose write writing to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/package.json
+86 info preinstall passport-oauth2-client-password@0.1.2
+87 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/package.json
+88 silly prepareForInstallMany adding passport-strategy@1.x.x from passport-oauth2-client-password dependencies
+89 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/package.json
+90 silly cache add args [ 'passport-strategy@1.x.x', null ]
+91 verbose cache add spec passport-strategy@1.x.x
+92 silly cache add parsed spec { raw: 'passport-strategy@1.x.x',
+92 silly cache add   scope: null,
+92 silly cache add   name: 'passport-strategy',
+92 silly cache add   rawSpec: '1.x.x',
+92 silly cache add   spec: '>=1.0.0 <2.0.0',
+92 silly cache add   type: 'range' }
+93 silly addNamed passport-strategy@>=1.0.0 <2.0.0
+94 verbose addNamed ">=1.0.0 <2.0.0" is a valid semver range for passport-strategy
+95 silly addNameRange { name: 'passport-strategy',
+95 silly addNameRange   range: '>=1.0.0 <2.0.0',
+95 silly addNameRange   hasData: false }
+96 silly mapToRegistry name passport-strategy
+97 silly mapToRegistry using default registry
+98 silly mapToRegistry registry https://registry.npmjs.org/
+99 silly mapToRegistry uri https://registry.npmjs.org/passport-strategy
+100 verbose addNameRange registry:https://registry.npmjs.org/passport-strategy not in flight; fetching
+101 verbose request uri https://registry.npmjs.org/passport-strategy
+102 verbose request no auth needed
+103 info attempt registry request try #1 at 11:42:01 PM
+104 verbose etag "CUC5B53DTH7Q3IFJAK7U55MMR"
+105 http request GET https://registry.npmjs.org/passport-strategy
+106 http 304 https://registry.npmjs.org/passport-strategy
+107 silly get cb [ 304,
+107 silly get   { date: 'Sat, 05 Sep 2015 18:12:01 GMT',
+107 silly get     via: '1.1 varnish',
+107 silly get     'cache-control': 'max-age=60',
+107 silly get     etag: '"CUC5B53DTH7Q3IFJAK7U55MMR"',
+107 silly get     age: '0',
+107 silly get     connection: 'keep-alive',
+107 silly get     'x-served-by': 'cache-sin6927-SIN',
+107 silly get     'x-cache': 'HIT',
+107 silly get     'x-cache-hits': '1',
+107 silly get     'x-timer': 'S1441476721.755851,VS0,VE973',
+107 silly get     vary: 'Accept' } ]
+108 verbose etag https://registry.npmjs.org/passport-strategy from cache
+109 verbose get saving passport-strategy to /Users/mjchaudhari/.npm/registry.npmjs.org/passport-strategy/.cache.json
+110 silly addNameRange number 2 { name: 'passport-strategy',
+110 silly addNameRange   range: '>=1.0.0 <2.0.0',
+110 silly addNameRange   hasData: true }
+111 silly addNameRange versions [ 'passport-strategy', [ '1.0.0' ] ]
+112 silly addNamed passport-strategy@1.0.0
+113 verbose addNamed "1.0.0" is a plain semver version for passport-strategy
+114 silly cache afterAdd passport-strategy@1.0.0
+115 verbose afterAdd /Users/mjchaudhari/.npm/passport-strategy/1.0.0/package/package.json not in flight; writing
+116 verbose afterAdd /Users/mjchaudhari/.npm/passport-strategy/1.0.0/package/package.json written
+117 silly install resolved [ { name: 'passport-strategy',
+117 silly install resolved     version: '1.0.0',
+117 silly install resolved     description: 'An abstract class implementing Passport\'s strategy API.',
+117 silly install resolved     keywords: [ 'passport', 'strategy' ],
+117 silly install resolved     repository:
+117 silly install resolved      { type: 'git',
+117 silly install resolved        url: 'git://github.com/jaredhanson/passport-strategy.git' },
+117 silly install resolved     bugs: { url: 'http://github.com/jaredhanson/passport-strategy/issues' },
+117 silly install resolved     author:
+117 silly install resolved      { name: 'Jared Hanson',
+117 silly install resolved        email: 'jaredhanson@gmail.com',
+117 silly install resolved        url: 'http://www.jaredhanson.net/' },
+117 silly install resolved     licenses: [ [Object] ],
+117 silly install resolved     main: './lib',
+117 silly install resolved     dependencies: {},
+117 silly install resolved     devDependencies: { mocha: '1.x.x', chai: '1.x.x' },
+117 silly install resolved     engines: { node: '>= 0.4.0' },
+117 silly install resolved     scripts: { test: 'mocha --reporter spec --require test/bootstrap/node test/*.test.js' },
+117 silly install resolved     testling: { browsers: [Object], harness: 'mocha', files: [Object] },
+117 silly install resolved     readme: '# passport-strategy\n\n[![Build](https://travis-ci.org/jaredhanson/passport-strategy.png)](http://travis-ci.org/jaredhanson/passport-strategy)\n[![Coverage](https://coveralls.io/repos/jaredhanson/passport-strategy/badge.png)](https://coveralls.io/r/jaredhanson/passport-strategy)\n[![Dependencies](https://david-dm.org/jaredhanson/passport-strategy.png)](http://david-dm.org/jaredhanson/passport-strategy)\n\n\nAn abstract class implementing [Passport](http://passportjs.org/)\'s strategy\nAPI.\n\n## Install\n\n    $ npm install passport-strategy\n\n## Usage\n\nThis module exports an abstract `Strategy` class that is intended to be\nsubclassed when implementing concrete authentication strategies.  Once\nimplemented, such strategies can be used by applications that utilize Passport\nmiddleware for authentication.\n\n#### Subclass Strategy\n\nCreate a new `CustomStrategy` constructor which inherits from `Strategy`:\n\n```javascript\nvar util = require(\'util\')\n  , Strategy = require(\'passport-strategy\');\n\nfunction CustomStrategy(...) {\n  Strategy.call(this);\n}\n\nutil.inherits(CustomStrategy, Strategy);\n```\n\n#### Implement Authentication\n\nImplement `autheticate()`, performing the necessary operations required by the\nauthentication scheme or protocol being implemented.\n\n```javascript\nCustomStrategy.prototype.authenticate = function(req, options) {\n  // TODO: authenticate request\n}\n```\n\n## Tests\n\n    $ npm install\n    $ npm test\n\n## Credits\n\n  - [Jared Hanson](http://github.com/jaredhanson)\n\n## License\n\n[The MIT License](http://opensource.org/licenses/MIT)\n\nCopyright (c) 2011-2013 Jared Hanson <[http://jaredhanson.net/](http://jaredhanson.net/)>\n',
+117 silly install resolved     readmeFilename: 'README.md',
+117 silly install resolved     _id: 'passport-strategy@1.0.0',
+117 silly install resolved     dist:
+117 silly install resolved      { shasum: 'b5539aa8fc225a3d1ad179476ddf236b440f52e4',
+117 silly install resolved        tarball: 'http://registry.npmjs.org/passport-strategy/-/passport-strategy-1.0.0.tgz' },
+117 silly install resolved     _from: 'passport-strategy@>=1.0.0 <2.0.0',
+117 silly install resolved     _npmVersion: '1.2.25',
+117 silly install resolved     _npmUser: { name: 'jaredhanson', email: 'jaredhanson@gmail.com' },
+117 silly install resolved     maintainers: [ [Object] ],
+117 silly install resolved     directories: {},
+117 silly install resolved     _shasum: 'b5539aa8fc225a3d1ad179476ddf236b440f52e4',
+117 silly install resolved     _resolved: 'https://registry.npmjs.org/passport-strategy/-/passport-strategy-1.0.0.tgz',
+117 silly install resolved     homepage: 'https://github.com/jaredhanson/passport-strategy#readme' } ]
+118 info install passport-strategy@1.0.0 into /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password
+119 info installOne passport-strategy@1.0.0
+120 verbose installOne of passport-strategy to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password not in flight; installing
+121 verbose lock using /Users/mjchaudhari/.npm/_locks/passport-strategy-97a949e10e5392d1.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy
+122 silly install write writing passport-strategy 1.0.0 to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy
+123 verbose unbuild node_modules/passport-oauth2-client-password/node_modules/passport-strategy
+124 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy is being purged from base /Users/mjchaudhari/Documents/projects/easyCollab/api
+125 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy
+126 verbose tar unpack /Users/mjchaudhari/.npm/passport-strategy/1.0.0/package.tgz
+127 verbose tar unpacking to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy
+128 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy is being purged
+129 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy
+130 silly gunzTarPerm modes [ '755', '644' ]
+131 silly gunzTarPerm extractEntry package.json
+132 silly gunzTarPerm extractEntry README.md
+133 silly gunzTarPerm extractEntry LICENSE
+134 silly gunzTarPerm extractEntry .jshintrc
+135 silly gunzTarPerm extractEntry .travis.yml
+136 silly gunzTarPerm extractEntry lib/index.js
+137 silly gunzTarPerm extractEntry lib/strategy.js
+138 verbose write writing to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy/package.json
+139 info preinstall passport-strategy@1.0.0
+140 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy/package.json
+141 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy/package.json
+142 silly install resolved []
+143 verbose about to build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy
+144 info build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy
+145 info linkStuff passport-strategy@1.0.0
+146 silly linkStuff passport-strategy@1.0.0 has /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules as its parent node_modules
+147 verbose linkBins passport-strategy@1.0.0
+148 verbose linkMans passport-strategy@1.0.0
+149 verbose rebuildBundles passport-strategy@1.0.0
+150 info install passport-strategy@1.0.0
+151 info postinstall passport-strategy@1.0.0
+152 verbose unlock done using /Users/mjchaudhari/.npm/_locks/passport-strategy-97a949e10e5392d1.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password/node_modules/passport-strategy
+153 verbose about to build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password
+154 info build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password
+155 info linkStuff passport-oauth2-client-password@0.1.2
+156 silly linkStuff passport-oauth2-client-password@0.1.2 has /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules as its parent node_modules
+157 verbose linkBins passport-oauth2-client-password@0.1.2
+158 verbose linkMans passport-oauth2-client-password@0.1.2
+159 verbose rebuildBundles passport-oauth2-client-password@0.1.2
+160 verbose rebuildBundles [ 'passport-strategy' ]
+161 info install passport-oauth2-client-password@0.1.2
+162 info postinstall passport-oauth2-client-password@0.1.2
+163 verbose unlock done using /Users/mjchaudhari/.npm/_locks/passport-oauth2-client-p-7d3ce8f8ceec090b.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-oauth2-client-password
+164 verbose validateInstall loading /Users/mjchaudhari/Documents/projects/easyCollab/api/package.json for validation
+165 verbose stack Error: The package mongoose does not satisfy its siblings' peerDependencies requirements!
+165 verbose stack     at /usr/local/lib/node_modules/npm/lib/install.js:125:32
+165 verbose stack     at /usr/local/lib/node_modules/npm/lib/install.js:267:7
+165 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:138:5
+165 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+165 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+165 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+165 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+165 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+165 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+165 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+166 verbose cwd /Users/mjchaudhari/Documents/projects/easyCollab/api
+167 error Darwin 14.5.0
+168 error argv "node" "/usr/local/bin/npm" "install" "-save" "passport-oauth2-client-password"
+169 error node v0.12.3
+170 error npm  v2.9.1
+171 error code EPEERINVALID
+172 error peerinvalid The package mongoose does not satisfy its siblings' peerDependencies requirements!
+172 error peerinvalid Peer mongoose-auto-increment@4.0.0 wants mongoose@~4.0.0
+173 verbose exit [ 1, true ]

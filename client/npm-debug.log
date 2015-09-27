@@ -1,0 +1,810 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'angular-ui-bootstrap',
+1 verbose cli   '--save' ]
+2 info using npm@2.9.1
+3 info using node@v0.12.3
+4 verbose install initial load of /Users/mjchaudhari/Documents/projects/easyCollab/api/package.json
+5 warn package.json chat-example@0.0.0 No repository field.
+6 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/async/package.json
+7 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/body-parser/package.json
+8 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/cookie-parser/package.json
+9 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/express/package.json
+10 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/express-session/package.json
+11 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/mongoose/package.json
+12 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/mongoose-auto-increment/package.json
+13 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/node-uuid/package.json
+14 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/oauth2orize/package.json
+15 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport/package.json
+16 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-http/package.json
+17 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-http-bearer/package.json
+18 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/serve-favicon/package.json
+19 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/underscore-node/package.json
+20 verbose installManyTop reading scoped package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/winston/package.json
+21 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/package.json
+22 silly cache add args [ 'angular-ui-bootstrap', null ]
+23 verbose cache add spec angular-ui-bootstrap
+24 silly cache add parsed spec { raw: 'angular-ui-bootstrap',
+24 silly cache add   scope: null,
+24 silly cache add   name: 'angular-ui-bootstrap',
+24 silly cache add   rawSpec: '',
+24 silly cache add   spec: '*',
+24 silly cache add   type: 'range' }
+25 silly addNamed angular-ui-bootstrap@*
+26 verbose addNamed "*" is a valid semver range for angular-ui-bootstrap
+27 silly addNameRange { name: 'angular-ui-bootstrap', range: '*', hasData: false }
+28 silly mapToRegistry name angular-ui-bootstrap
+29 silly mapToRegistry using default registry
+30 silly mapToRegistry registry https://registry.npmjs.org/
+31 silly mapToRegistry uri https://registry.npmjs.org/angular-ui-bootstrap
+32 verbose addNameRange registry:https://registry.npmjs.org/angular-ui-bootstrap not in flight; fetching
+33 verbose request uri https://registry.npmjs.org/angular-ui-bootstrap
+34 verbose request no auth needed
+35 info attempt registry request try #1 at 5:57:13 PM
+36 verbose request id e182309f9816451f
+37 http request GET https://registry.npmjs.org/angular-ui-bootstrap
+38 http 200 https://registry.npmjs.org/angular-ui-bootstrap
+39 silly get cb [ 200,
+39 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+39 silly get     etag: '"F01DKJ43E0L3BP5S87OCKF7ZQ"',
+39 silly get     'content-type': 'application/json',
+39 silly get     'cache-control': 'max-age=60',
+39 silly get     'content-length': '11959',
+39 silly get     'accept-ranges': 'bytes',
+39 silly get     date: 'Sun, 23 Aug 2015 12:27:15 GMT',
+39 silly get     via: '1.1 varnish',
+39 silly get     age: '0',
+39 silly get     connection: 'keep-alive',
+39 silly get     'x-served-by': 'cache-sin6926-SIN',
+39 silly get     'x-cache': 'MISS',
+39 silly get     'x-cache-hits': '0',
+39 silly get     'x-timer': 'S1440332835.009978,VS0,VE232',
+39 silly get     vary: 'Accept' } ]
+40 verbose get saving angular-ui-bootstrap to /Users/mjchaudhari/.npm/registry.npmjs.org/angular-ui-bootstrap/.cache.json
+41 silly addNameRange number 2 { name: 'angular-ui-bootstrap', range: '*', hasData: true }
+42 silly addNameRange versions [ 'angular-ui-bootstrap',
+42 silly addNameRange   [ '0.12.1', '0.13.0', '0.13.1', '0.13.2', '0.13.3' ] ]
+43 silly addNamed angular-ui-bootstrap@0.13.3
+44 verbose addNamed "0.13.3" is a plain semver version for angular-ui-bootstrap
+45 silly mapToRegistry name angular-ui-bootstrap
+46 silly mapToRegistry using default registry
+47 silly mapToRegistry registry https://registry.npmjs.org/
+48 silly mapToRegistry uri https://registry.npmjs.org/angular-ui-bootstrap
+49 verbose addRemoteTarball https://registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-0.13.3.tgz not in flight; adding
+50 verbose addRemoteTarball [ 'https://registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-0.13.3.tgz',
+50 verbose addRemoteTarball   'd7620803c8744f38f95fd3e930777b2feff31505' ]
+51 info retry fetch attempt 1 at 5:57:15 PM
+52 info attempt registry request try #1 at 5:57:15 PM
+53 http fetch GET https://registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-0.13.3.tgz
+54 http fetch 200 https://registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-0.13.3.tgz
+55 silly fetchAndShaCheck shasum d7620803c8744f38f95fd3e930777b2feff31505
+56 verbose addTmpTarball /var/folders/yk/ypnhy0wj0ln6gzsy2lrsn9x80000gn/T/npm-983-0e5f9abf/registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-0.13.3.tgz not in flight; adding
+57 verbose addTmpTarball already have metadata; skipping unpack for angular-ui-bootstrap@0.13.3
+58 silly cache afterAdd angular-ui-bootstrap@0.13.3
+59 verbose afterAdd /Users/mjchaudhari/.npm/angular-ui-bootstrap/0.13.3/package/package.json not in flight; writing
+60 verbose afterAdd /Users/mjchaudhari/.npm/angular-ui-bootstrap/0.13.3/package/package.json written
+61 silly install resolved [ { name: 'angular-ui-bootstrap',
+61 silly install resolved     version: '0.13.3',
+61 silly install resolved     description: 'Bootstrap widgets for Angular',
+61 silly install resolved     main: 'index.js',
+61 silly install resolved     homepage: 'http://angular-ui.github.io/bootstrap/',
+61 silly install resolved     repository:
+61 silly install resolved      { type: 'git',
+61 silly install resolved        url: 'https://github.com/angular-ui/bootstrap.git' },
+61 silly install resolved     keywords:
+61 silly install resolved      [ 'angular',
+61 silly install resolved        'bootstrap',
+61 silly install resolved        'angular-ui',
+61 silly install resolved        'components',
+61 silly install resolved        'client-side' ],
+61 silly install resolved     author: { name: 'https://github.com/angular-ui/bootstrap/graphs/contributors' },
+61 silly install resolved     peerDependencies:
+61 silly install resolved      { angular: '^1.3.x || >= 1.4.0-beta.0 || >= 1.5.0-beta.0',
+61 silly install resolved        bootstrap: '^3.x' },
+61 silly install resolved     license: 'MIT',
+61 silly install resolved     gitHead: '0b83ef6828649d2a806985667f612eb0e6727184',
+61 silly install resolved     bugs: { url: 'https://github.com/angular-ui/bootstrap/issues' },
+61 silly install resolved     _id: 'angular-ui-bootstrap@0.13.3',
+61 silly install resolved     scripts: {},
+61 silly install resolved     _shasum: 'd7620803c8744f38f95fd3e930777b2feff31505',
+61 silly install resolved     _from: 'angular-ui-bootstrap@*',
+61 silly install resolved     _npmVersion: '2.7.5',
+61 silly install resolved     _nodeVersion: '0.12.2',
+61 silly install resolved     _npmUser: { name: 'wesleycho', email: 'wesley.cho@gmail.com' },
+61 silly install resolved     dist:
+61 silly install resolved      { shasum: 'd7620803c8744f38f95fd3e930777b2feff31505',
+61 silly install resolved        tarball: 'http://registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-0.13.3.tgz' },
+61 silly install resolved     maintainers: [ [Object], [Object], [Object] ],
+61 silly install resolved     directories: {},
+61 silly install resolved     _resolved: 'https://registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-0.13.3.tgz' } ]
+62 info install angular-ui-bootstrap@0.13.3 into /Users/mjchaudhari/Documents/projects/easyCollab/api
+63 info installOne angular-ui-bootstrap@0.13.3
+64 verbose installOne of angular-ui-bootstrap to /Users/mjchaudhari/Documents/projects/easyCollab/api not in flight; installing
+65 verbose lock using /Users/mjchaudhari/.npm/_locks/angular-ui-bootstrap-988e1d254b7585b1.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap
+66 silly install write writing angular-ui-bootstrap 0.13.3 to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap
+67 verbose unbuild node_modules/angular-ui-bootstrap
+68 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap is being purged from base /Users/mjchaudhari/Documents/projects/easyCollab/api
+69 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap
+70 verbose tar unpack /Users/mjchaudhari/.npm/angular-ui-bootstrap/0.13.3/package.tgz
+71 verbose tar unpacking to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap
+72 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap is being purged
+73 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap
+74 silly gunzTarPerm modes [ '755', '644' ]
+75 silly gunzTarPerm extractEntry package.json
+76 silly gunzTarPerm extractEntry .npmignore
+77 silly gunzTarPerm extractEntry README.md
+78 silly gunzTarPerm extractEntry index.js
+79 silly gunzTarPerm extractEntry ui-bootstrap-tpls.js
+80 silly gunzTarPerm extractEntry ui-bootstrap-tpls.min.js
+81 silly gunzTarPerm extractEntry ui-bootstrap.js
+82 silly gunzTarPerm extractEntry ui-bootstrap.min.js
+83 silly gunzTarPerm extractEntry ui-bootstrap-csp.css
+84 verbose write writing to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap/package.json
+85 info preinstall angular-ui-bootstrap@0.13.3
+86 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap/package.json
+87 silly prepareForInstallMany adding angular@^1.3.x || >= 1.4.0-beta.0 || >= 1.5.0-beta.0 from angular-ui-bootstrap peerDependencies
+88 silly prepareForInstallMany adding bootstrap@^3.x from angular-ui-bootstrap peerDependencies
+89 warn peerDependencies The peer dependency angular@^1.3.x || >= 1.4.0-beta.0 || >= 1.5.0-beta.0 included from angular-ui-bootstrap will no
+90 warn peerDependencies longer be automatically installed to fulfill the peerDependency
+91 warn peerDependencies in npm 3+. Your application will need to depend on it explicitly.
+92 warn peerDependencies The peer dependency bootstrap@^3.x included from angular-ui-bootstrap will no
+93 warn peerDependencies longer be automatically installed to fulfill the peerDependency
+94 warn peerDependencies in npm 3+. Your application will need to depend on it explicitly.
+95 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap/package.json
+96 silly install resolved []
+97 verbose about to build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap
+98 info build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap
+99 info linkStuff angular-ui-bootstrap@0.13.3
+100 silly linkStuff angular-ui-bootstrap@0.13.3 has /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules as its parent node_modules
+101 verbose linkBins angular-ui-bootstrap@0.13.3
+102 verbose linkMans angular-ui-bootstrap@0.13.3
+103 verbose rebuildBundles angular-ui-bootstrap@0.13.3
+104 info install angular-ui-bootstrap@0.13.3
+105 info postinstall angular-ui-bootstrap@0.13.3
+106 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/package.json
+107 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap/package.json
+108 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/async/package.json
+109 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/body-parser/package.json
+110 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/cookie-parser/package.json
+111 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/express/package.json
+112 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/express-session/package.json
+113 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/mongoose/package.json
+114 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/mongoose-auto-increment/package.json
+115 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/node-uuid/package.json
+116 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/oauth2orize/package.json
+117 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport/package.json
+118 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-http/package.json
+119 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/passport-http-bearer/package.json
+120 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/serve-favicon/package.json
+121 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/underscore-node/package.json
+122 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/winston/package.json
+123 verbose targetResolver reading package data from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/.bin/uuid/package.json
+124 silly cache add args [ 'angular@^1.3.x || >= 1.4.0-beta.0 || >= 1.5.0-beta.0', null ]
+125 verbose cache add spec angular@^1.3.x || >= 1.4.0-beta.0 || >= 1.5.0-beta.0
+126 silly cache add parsed spec { raw: 'angular@^1.3.x || >= 1.4.0-beta.0 || >= 1.5.0-beta.0',
+126 silly cache add   scope: null,
+126 silly cache add   name: 'angular',
+126 silly cache add   rawSpec: '^1.3.x || >= 1.4.0-beta.0 || >= 1.5.0-beta.0',
+126 silly cache add   spec: '>=1.3.0 <2.0.0||>=1.4.0-beta.0||>=1.5.0-beta.0',
+126 silly cache add   type: 'range' }
+127 silly addNamed angular@>=1.3.0 <2.0.0||>=1.4.0-beta.0||>=1.5.0-beta.0
+128 verbose addNamed ">=1.3.0 <2.0.0||>=1.4.0-beta.0||>=1.5.0-beta.0" is a valid semver range for angular
+129 silly addNameRange { name: 'angular',
+129 silly addNameRange   range: '>=1.3.0 <2.0.0||>=1.4.0-beta.0||>=1.5.0-beta.0',
+129 silly addNameRange   hasData: false }
+130 silly mapToRegistry name angular
+131 silly mapToRegistry using default registry
+132 silly mapToRegistry registry https://registry.npmjs.org/
+133 silly mapToRegistry uri https://registry.npmjs.org/angular
+134 verbose addNameRange registry:https://registry.npmjs.org/angular not in flight; fetching
+135 silly cache add args [ 'bootstrap@^3.x', null ]
+136 verbose cache add spec bootstrap@^3.x
+137 silly cache add parsed spec { raw: 'bootstrap@^3.x',
+137 silly cache add   scope: null,
+137 silly cache add   name: 'bootstrap',
+137 silly cache add   rawSpec: '^3.x',
+137 silly cache add   spec: '>=3.0.0 <4.0.0',
+137 silly cache add   type: 'range' }
+138 silly addNamed bootstrap@>=3.0.0 <4.0.0
+139 verbose addNamed ">=3.0.0 <4.0.0" is a valid semver range for bootstrap
+140 silly addNameRange { name: 'bootstrap', range: '>=3.0.0 <4.0.0', hasData: false }
+141 silly mapToRegistry name bootstrap
+142 silly mapToRegistry using default registry
+143 silly mapToRegistry registry https://registry.npmjs.org/
+144 silly mapToRegistry uri https://registry.npmjs.org/bootstrap
+145 verbose addNameRange registry:https://registry.npmjs.org/bootstrap not in flight; fetching
+146 verbose request uri https://registry.npmjs.org/angular
+147 verbose request no auth needed
+148 info attempt registry request try #1 at 5:57:18 PM
+149 http request GET https://registry.npmjs.org/angular
+150 verbose request uri https://registry.npmjs.org/bootstrap
+151 verbose request no auth needed
+152 info attempt registry request try #1 at 5:57:18 PM
+153 http request GET https://registry.npmjs.org/bootstrap
+154 http 200 https://registry.npmjs.org/bootstrap
+155 silly get cb [ 200,
+155 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+155 silly get     etag: '"4FQXPTW1NY0O2SQMPN6ND9ULE"',
+155 silly get     'content-type': 'application/json',
+155 silly get     'cache-control': 'max-age=60',
+155 silly get     'content-length': '25904',
+155 silly get     'accept-ranges': 'bytes',
+155 silly get     date: 'Sun, 23 Aug 2015 12:27:19 GMT',
+155 silly get     via: '1.1 varnish',
+155 silly get     age: '0',
+155 silly get     connection: 'keep-alive',
+155 silly get     'x-served-by': 'cache-sin6920-SIN',
+155 silly get     'x-cache': 'MISS',
+155 silly get     'x-cache-hits': '0',
+155 silly get     'x-timer': 'S1440332839.301074,VS0,VE216',
+155 silly get     vary: 'Accept' } ]
+156 verbose get saving bootstrap to /Users/mjchaudhari/.npm/registry.npmjs.org/bootstrap/.cache.json
+157 silly addNameRange number 2 { name: 'bootstrap', range: '>=3.0.0 <4.0.0', hasData: true }
+158 silly addNameRange versions [ 'bootstrap',
+158 silly addNameRange   [ '0.0.1',
+158 silly addNameRange     '0.0.2',
+158 silly addNameRange     '3.1.1',
+158 silly addNameRange     '3.2.0',
+158 silly addNameRange     '3.3.0',
+158 silly addNameRange     '3.3.1',
+158 silly addNameRange     '3.3.2',
+158 silly addNameRange     '3.3.4',
+158 silly addNameRange     '3.3.5' ] ]
+159 silly addNamed bootstrap@3.3.5
+160 verbose addNamed "3.3.5" is a plain semver version for bootstrap
+161 silly mapToRegistry name bootstrap
+162 silly mapToRegistry using default registry
+163 silly mapToRegistry registry https://registry.npmjs.org/
+164 silly mapToRegistry uri https://registry.npmjs.org/bootstrap
+165 verbose addRemoteTarball https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz not in flight; adding
+166 verbose addRemoteTarball [ 'https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz',
+166 verbose addRemoteTarball   '1777ab79299b128d87dce7cbd86fdc46ac69c0b1' ]
+167 info retry fetch attempt 1 at 5:57:20 PM
+168 info attempt registry request try #1 at 5:57:20 PM
+169 http fetch GET https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz
+170 http 200 https://registry.npmjs.org/angular
+171 silly get cb [ 200,
+171 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+171 silly get     etag: '"B018ZOP22QJPYQNUZGKP9HSA7"',
+171 silly get     'content-type': 'application/json',
+171 silly get     'cache-control': 'max-age=60',
+171 silly get     'content-length': '100452',
+171 silly get     'accept-ranges': 'bytes',
+171 silly get     date: 'Sun, 23 Aug 2015 12:27:19 GMT',
+171 silly get     via: '1.1 varnish',
+171 silly get     age: '0',
+171 silly get     connection: 'keep-alive',
+171 silly get     'x-served-by': 'cache-sin6923-SIN',
+171 silly get     'x-cache': 'HIT',
+171 silly get     'x-cache-hits': '1',
+171 silly get     'x-timer': 'S1440332839.288160,VS0,VE261',
+171 silly get     vary: 'Accept' } ]
+172 verbose get saving angular to /Users/mjchaudhari/.npm/registry.npmjs.org/angular/.cache.json
+173 silly addNameRange number 2 { name: 'angular',
+173 silly addNameRange   range: '>=1.3.0 <2.0.0||>=1.4.0-beta.0||>=1.5.0-beta.0',
+173 silly addNameRange   hasData: true }
+174 silly addNameRange versions [ 'angular',
+174 silly addNameRange   [ '0.0.1',
+174 silly addNameRange     '0.0.1-1',
+174 silly addNameRange     '0.0.1-2',
+174 silly addNameRange     '0.0.2',
+174 silly addNameRange     '0.0.3',
+174 silly addNameRange     '0.0.4',
+174 silly addNameRange     '1.0.0',
+174 silly addNameRange     '1.0.1',
+174 silly addNameRange     '1.0.2',
+174 silly addNameRange     '1.0.3',
+174 silly addNameRange     '1.0.4',
+174 silly addNameRange     '1.0.5',
+174 silly addNameRange     '1.0.6',
+174 silly addNameRange     '1.0.7',
+174 silly addNameRange     '1.0.8',
+174 silly addNameRange     '1.1.0',
+174 silly addNameRange     '1.1.1',
+174 silly addNameRange     '1.1.2',
+174 silly addNameRange     '1.1.3',
+174 silly addNameRange     '1.1.4',
+174 silly addNameRange     '1.1.5',
+174 silly addNameRange     '1.2.0',
+174 silly addNameRange     '1.2.1',
+174 silly addNameRange     '1.2.2',
+174 silly addNameRange     '1.2.3',
+174 silly addNameRange     '1.2.4',
+174 silly addNameRange     '1.2.5',
+174 silly addNameRange     '1.2.6',
+174 silly addNameRange     '1.2.7',
+174 silly addNameRange     '1.2.8',
+174 silly addNameRange     '1.2.9',
+174 silly addNameRange     '1.2.10',
+174 silly addNameRange     '1.2.11',
+174 silly addNameRange     '1.2.12',
+174 silly addNameRange     '1.2.13',
+174 silly addNameRange     '1.2.14',
+174 silly addNameRange     '1.2.15',
+174 silly addNameRange     '1.2.16',
+174 silly addNameRange     '1.2.17',
+174 silly addNameRange     '1.2.18',
+174 silly addNameRange     '1.2.19',
+174 silly addNameRange     '1.2.20',
+174 silly addNameRange     '1.2.21',
+174 silly addNameRange     '1.2.22',
+174 silly addNameRange     '1.2.23',
+174 silly addNameRange     '1.3.0-rc.5',
+174 silly addNameRange     '1.3.0',
+174 silly addNameRange     '1.3.1',
+174 silly addNameRange     '1.3.2',
+174 silly addNameRange     '1.3.3',
+174 silly addNameRange     '1.3.4-build.3588',
+174 silly addNameRange     '1.2.27',
+174 silly addNameRange     '1.3.4',
+174 silly addNameRange     '1.3.5',
+174 silly addNameRange     '1.3.6',
+174 silly addNameRange     '1.3.7',
+174 silly addNameRange     '1.2.28',
+174 silly addNameRange     '1.3.8',
+174 silly addNameRange     '1.4.0-beta.0',
+174 silly addNameRange     '1.3.9',
+174 silly addNameRange     '1.3.10',
+174 silly addNameRange     '1.4.0-beta.1',
+174 silly addNameRange     '1.4.0-beta.2',
+174 silly addNameRange     '1.3.11',
+174 silly addNameRange     '1.4.0-beta.3',
+174 silly addNameRange     '1.3.12',
+174 silly addNameRange     '1.3.13',
+174 silly addNameRange     '1.4.0-beta.4',
+174 silly addNameRange     '1.3.14',
+174 silly addNameRange     '1.4.0-beta.5',
+174 silly addNameRange     '1.4.0-beta.6',
+174 silly addNameRange     '1.3.15',
+174 silly addNameRange     '1.4.0-rc.0',
+174 silly addNameRange     '1.4.0-rc.1',
+174 silly addNameRange     '1.4.0-rc.2',
+174 silly addNameRange     '1.4.0',
+174 silly addNameRange     '1.3.16',
+174 silly addNameRange     '1.4.1',
+174 silly addNameRange     '1.4.2',
+174 silly addNameRange     '1.3.17',
+174 silly addNameRange     '1.4.3',
+174 silly addNameRange     '1.4.4',
+174 silly addNameRange     '1.3.18' ] ]
+175 silly addNamed angular@1.4.4
+176 verbose addNamed "1.4.4" is a plain semver version for angular
+177 silly mapToRegistry name angular
+178 silly mapToRegistry using default registry
+179 silly mapToRegistry registry https://registry.npmjs.org/
+180 silly mapToRegistry uri https://registry.npmjs.org/angular
+181 verbose addRemoteTarball https://registry.npmjs.org/angular/-/angular-1.4.4.tgz not in flight; adding
+182 verbose addRemoteTarball [ 'https://registry.npmjs.org/angular/-/angular-1.4.4.tgz',
+182 verbose addRemoteTarball   '9ac24aa5d38802339af99fe63c64a7e9784958b8' ]
+183 info retry fetch attempt 1 at 5:57:20 PM
+184 info attempt registry request try #1 at 5:57:20 PM
+185 http fetch GET https://registry.npmjs.org/angular/-/angular-1.4.4.tgz
+186 http fetch 200 https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz
+187 http fetch 200 https://registry.npmjs.org/angular/-/angular-1.4.4.tgz
+188 silly fetchAndShaCheck shasum 1777ab79299b128d87dce7cbd86fdc46ac69c0b1
+189 verbose addTmpTarball /var/folders/yk/ypnhy0wj0ln6gzsy2lrsn9x80000gn/T/npm-983-0e5f9abf/registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz not in flight; adding
+190 verbose addTmpTarball already have metadata; skipping unpack for bootstrap@3.3.5
+191 silly cache afterAdd bootstrap@3.3.5
+192 verbose afterAdd /Users/mjchaudhari/.npm/bootstrap/3.3.5/package/package.json not in flight; writing
+193 verbose afterAdd /Users/mjchaudhari/.npm/bootstrap/3.3.5/package/package.json written
+194 silly fetchAndShaCheck shasum 9ac24aa5d38802339af99fe63c64a7e9784958b8
+195 verbose addTmpTarball /var/folders/yk/ypnhy0wj0ln6gzsy2lrsn9x80000gn/T/npm-983-0e5f9abf/registry.npmjs.org/angular/-/angular-1.4.4.tgz not in flight; adding
+196 verbose addTmpTarball already have metadata; skipping unpack for angular@1.4.4
+197 silly cache afterAdd angular@1.4.4
+198 verbose afterAdd /Users/mjchaudhari/.npm/angular/1.4.4/package/package.json not in flight; writing
+199 verbose afterAdd /Users/mjchaudhari/.npm/angular/1.4.4/package/package.json written
+200 silly install resolved [ { name: 'bootstrap',
+200 silly install resolved     description: 'The most popular front-end framework for developing responsive, mobile first projects on the web.',
+200 silly install resolved     version: '3.3.5',
+200 silly install resolved     keywords:
+200 silly install resolved      [ 'css',
+200 silly install resolved        'less',
+200 silly install resolved        'mobile-first',
+200 silly install resolved        'responsive',
+200 silly install resolved        'front-end',
+200 silly install resolved        'framework',
+200 silly install resolved        'web' ],
+200 silly install resolved     homepage: 'http://getbootstrap.com',
+200 silly install resolved     author: { name: 'Twitter, Inc.' },
+200 silly install resolved     scripts: { test: 'grunt test' },
+200 silly install resolved     style: 'dist/css/bootstrap.css',
+200 silly install resolved     less: 'less/bootstrap.less',
+200 silly install resolved     main: './dist/js/npm',
+200 silly install resolved     repository: { type: 'git', url: 'https://github.com/twbs/bootstrap.git' },
+200 silly install resolved     bugs: { url: 'https://github.com/twbs/bootstrap/issues' },
+200 silly install resolved     license: 'MIT',
+200 silly install resolved     devDependencies:
+200 silly install resolved      { btoa: '~1.1.2',
+200 silly install resolved        glob: '~5.0.5',
+200 silly install resolved        grunt: '~0.4.5',
+200 silly install resolved        'grunt-autoprefixer': '~3.0.0',
+200 silly install resolved        'grunt-contrib-clean': '~0.6.0',
+200 silly install resolved        'grunt-contrib-compress': '~0.13.0',
+200 silly install resolved        'grunt-contrib-concat': '~0.5.1',
+200 silly install resolved        'grunt-contrib-connect': '~0.10.1',
+200 silly install resolved        'grunt-contrib-copy': '~0.8.0',
+200 silly install resolved        'grunt-contrib-csslint': '~0.4.0',
+200 silly install resolved        'grunt-contrib-cssmin': '~0.12.3',
+200 silly install resolved        'grunt-contrib-htmlmin': '~0.4.0',
+200 silly install resolved        'grunt-contrib-jade': '~0.14.1',
+200 silly install resolved        'grunt-contrib-jshint': '~0.11.2',
+200 silly install resolved        'grunt-contrib-less': '~1.0.1',
+200 silly install resolved        'grunt-contrib-qunit': '~0.7.0',
+200 silly install resolved        'grunt-contrib-uglify': '~0.9.1',
+200 silly install resolved        'grunt-contrib-watch': '~0.6.1',
+200 silly install resolved        'grunt-csscomb': '~3.0.0',
+200 silly install resolved        'grunt-exec': '~0.4.6',
+200 silly install resolved        'grunt-html': '~4.0.3',
+200 silly install resolved        'grunt-jekyll': '~0.4.2',
+200 silly install resolved        'grunt-jscs': '~1.8.0',
+200 silly install resolved        'grunt-saucelabs': '~8.6.1',
+200 silly install resolved        'grunt-sed': 'twbs/grunt-sed#v0.2.0',
+200 silly install resolved        'load-grunt-tasks': '~3.2.0',
+200 silly install resolved        'markdown-it': '^4.2.1',
+200 silly install resolved        'npm-shrinkwrap': '^200.4.0',
+200 silly install resolved        'time-grunt': '^1.2.0' },
+200 silly install resolved     engines: { node: '>=0.10.1' },
+200 silly install resolved     files:
+200 silly install resolved      [ 'dist',
+200 silly install resolved        'fonts',
+200 silly install resolved        'grunt',
+200 silly install resolved        'js/*.js',
+200 silly install resolved        'less/**/*.less',
+200 silly install resolved        'Gruntfile.js',
+200 silly install resolved        'LICENSE' ],
+200 silly install resolved     jspm: { main: 'js/bootstrap', shim: [Object], files: [Object] },
+200 silly install resolved     gitHead: '16b48259a62f576e52c903c476bd42b90ab22482',
+200 silly install resolved     _id: 'bootstrap@3.3.5',
+200 silly install resolved     _shasum: '1777ab79299b128d87dce7cbd86fdc46ac69c0b1',
+200 silly install resolved     _from: 'bootstrap@>=3.0.0 <4.0.0',
+200 silly install resolved     _npmVersion: '1.4.28',
+200 silly install resolved     _npmUser: { name: 'twbs', email: 'getbootstrap@gmail.com' },
+200 silly install resolved     maintainers: [ [Object] ],
+200 silly install resolved     dist:
+200 silly install resolved      { shasum: '1777ab79299b128d87dce7cbd86fdc46ac69c0b1',
+200 silly install resolved        tarball: 'http://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz' },
+200 silly install resolved     directories: {},
+200 silly install resolved     _resolved: 'https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz' },
+200 silly install resolved   { name: 'angular',
+200 silly install resolved     version: '1.4.4',
+200 silly install resolved     description: 'HTML enhanced for web apps',
+200 silly install resolved     main: 'index.js',
+200 silly install resolved     scripts: { test: 'echo "Error: no test specified" && exit 1' },
+200 silly install resolved     repository:
+200 silly install resolved      { type: 'git',
+200 silly install resolved        url: 'https://github.com/angular/angular.js.git' },
+200 silly install resolved     keywords: [ 'angular', 'framework', 'browser', 'client-side' ],
+200 silly install resolved     author:
+200 silly install resolved      { name: 'Angular Core Team',
+200 silly install resolved        email: 'angular-core+npm@google.com' },
+200 silly install resolved     license: 'MIT',
+200 silly install resolved     bugs: { url: 'https://github.com/angular/angular.js/issues' },
+200 silly install resolved     homepage: 'http://angularjs.org',
+200 silly install resolved     gitHead: 'f00cff5525db7c853f42854079a31936d400f99b',
+200 silly install resolved     _id: 'angular@1.4.4',
+200 silly install resolved     _shasum: '9ac24aa5d38802339af99fe63c64a7e9784958b8',
+200 silly install resolved     _from: 'angular@>=1.3.0 <2.0.0||>=1.4.0-beta.0||>=1.5.0-beta.0',
+200 silly install resolved     _npmVersion: '2.0.2',
+200 silly install resolved     _nodeVersion: '0.10.26',
+200 silly install resolved     _npmUser: { name: 'angularcore', email: 'angular-core+npm@google.com' },
+200 silly install resolved     maintainers: [ [Object], [Object], [Object] ],
+200 silly install resolved     dist:
+200 silly install resolved      { shasum: '9ac24aa5d38802339af99fe63c64a7e9784958b8',
+200 silly install resolved        tarball: 'http://registry.npmjs.org/angular/-/angular-1.4.4.tgz' },
+200 silly install resolved     directories: {},
+200 silly install resolved     _resolved: 'https://registry.npmjs.org/angular/-/angular-1.4.4.tgz' } ]
+201 info install bootstrap@3.3.5 into /Users/mjchaudhari/Documents/projects/easyCollab/api
+202 info install angular@1.4.4 into /Users/mjchaudhari/Documents/projects/easyCollab/api
+203 info installOne bootstrap@3.3.5
+204 verbose installOne of bootstrap to /Users/mjchaudhari/Documents/projects/easyCollab/api not in flight; installing
+205 info installOne angular@1.4.4
+206 verbose installOne of angular to /Users/mjchaudhari/Documents/projects/easyCollab/api not in flight; installing
+207 verbose lock using /Users/mjchaudhari/.npm/_locks/bootstrap-cdcb6358ac905316.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap
+208 verbose lock using /Users/mjchaudhari/.npm/_locks/angular-b0525630fefb30b4.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular
+209 silly install write writing bootstrap 3.3.5 to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap
+210 silly install write writing angular 1.4.4 to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular
+211 verbose unbuild node_modules/bootstrap
+212 verbose unbuild node_modules/angular
+213 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap is being purged from base /Users/mjchaudhari/Documents/projects/easyCollab/api
+214 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap
+215 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular is being purged from base /Users/mjchaudhari/Documents/projects/easyCollab/api
+216 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular
+217 verbose tar unpack /Users/mjchaudhari/.npm/bootstrap/3.3.5/package.tgz
+218 verbose tar unpacking to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap
+219 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap is being purged
+220 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap
+221 verbose tar unpack /Users/mjchaudhari/.npm/angular/1.4.4/package.tgz
+222 verbose tar unpacking to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular
+223 silly gentlyRm /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular is being purged
+224 verbose gentlyRm don't care about contents; nuking /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular
+225 silly gunzTarPerm modes [ '755', '644' ]
+226 silly gunzTarPerm modes [ '755', '644' ]
+227 silly gunzTarPerm extractEntry package.json
+228 silly gunzTarPerm modified mode [ 'package.json', 438, 420 ]
+229 silly gunzTarPerm extractEntry package.json
+230 silly gunzTarPerm extractEntry README.md
+231 silly gunzTarPerm modified mode [ 'README.md', 438, 420 ]
+232 silly gunzTarPerm extractEntry LICENSE
+233 silly gunzTarPerm modified mode [ 'LICENSE', 438, 420 ]
+234 silly gunzTarPerm extractEntry README.md
+235 silly gunzTarPerm extractEntry angular.js
+236 silly gunzTarPerm extractEntry Gruntfile.js
+237 silly gunzTarPerm modified mode [ 'Gruntfile.js', 438, 420 ]
+238 silly gunzTarPerm extractEntry dist/css/bootstrap-theme.css
+239 silly gunzTarPerm modified mode [ 'dist/css/bootstrap-theme.css', 438, 420 ]
+240 silly gunzTarPerm extractEntry dist/css/bootstrap-theme.css.map
+241 silly gunzTarPerm modified mode [ 'dist/css/bootstrap-theme.css.map', 438, 420 ]
+242 silly gunzTarPerm extractEntry dist/css/bootstrap-theme.min.css
+243 silly gunzTarPerm modified mode [ 'dist/css/bootstrap-theme.min.css', 438, 420 ]
+244 silly gunzTarPerm extractEntry dist/css/bootstrap.css
+245 silly gunzTarPerm modified mode [ 'dist/css/bootstrap.css', 438, 420 ]
+246 silly gunzTarPerm extractEntry dist/css/bootstrap.css.map
+247 silly gunzTarPerm modified mode [ 'dist/css/bootstrap.css.map', 438, 420 ]
+248 silly gunzTarPerm extractEntry dist/css/bootstrap.min.css
+249 silly gunzTarPerm modified mode [ 'dist/css/bootstrap.min.css', 438, 420 ]
+250 silly gunzTarPerm extractEntry angular.min.js
+251 silly gunzTarPerm extractEntry dist/fonts/glyphicons-halflings-regular.eot
+252 silly gunzTarPerm modified mode [ 'dist/fonts/glyphicons-halflings-regular.eot', 438, 420 ]
+253 silly gunzTarPerm extractEntry index.js
+254 silly gunzTarPerm extractEntry dist/fonts/glyphicons-halflings-regular.svg
+255 silly gunzTarPerm modified mode [ 'dist/fonts/glyphicons-halflings-regular.svg', 438, 420 ]
+256 silly gunzTarPerm extractEntry dist/fonts/glyphicons-halflings-regular.ttf
+257 silly gunzTarPerm modified mode [ 'dist/fonts/glyphicons-halflings-regular.ttf', 438, 420 ]
+258 silly gunzTarPerm extractEntry angular-csp.css
+259 silly gunzTarPerm extractEntry dist/fonts/glyphicons-halflings-regular.woff
+260 silly gunzTarPerm modified mode [ 'dist/fonts/glyphicons-halflings-regular.woff', 438, 420 ]
+261 silly gunzTarPerm extractEntry angular.min.js.gzip
+262 silly gunzTarPerm extractEntry dist/fonts/glyphicons-halflings-regular.woff2
+263 silly gunzTarPerm modified mode [ 'dist/fonts/glyphicons-halflings-regular.woff2', 438, 420 ]
+264 silly gunzTarPerm extractEntry dist/js/bootstrap.js
+265 silly gunzTarPerm modified mode [ 'dist/js/bootstrap.js', 438, 420 ]
+266 silly gunzTarPerm extractEntry dist/js/bootstrap.min.js
+267 silly gunzTarPerm modified mode [ 'dist/js/bootstrap.min.js', 438, 420 ]
+268 silly gunzTarPerm extractEntry angular.min.js.map
+269 silly gunzTarPerm extractEntry dist/js/npm.js
+270 silly gunzTarPerm modified mode [ 'dist/js/npm.js', 438, 420 ]
+271 silly gunzTarPerm extractEntry fonts/glyphicons-halflings-regular.eot
+272 silly gunzTarPerm modified mode [ 'fonts/glyphicons-halflings-regular.eot', 438, 420 ]
+273 silly gunzTarPerm extractEntry fonts/glyphicons-halflings-regular.svg
+274 silly gunzTarPerm modified mode [ 'fonts/glyphicons-halflings-regular.svg', 438, 420 ]
+275 silly gunzTarPerm extractEntry bower.json
+276 silly gunzTarPerm extractEntry fonts/glyphicons-halflings-regular.ttf
+277 silly gunzTarPerm modified mode [ 'fonts/glyphicons-halflings-regular.ttf', 438, 420 ]
+278 silly gunzTarPerm extractEntry fonts/glyphicons-halflings-regular.woff
+279 silly gunzTarPerm modified mode [ 'fonts/glyphicons-halflings-regular.woff', 438, 420 ]
+280 silly gunzTarPerm extractEntry fonts/glyphicons-halflings-regular.woff2
+281 silly gunzTarPerm modified mode [ 'fonts/glyphicons-halflings-regular.woff2', 438, 420 ]
+282 silly gunzTarPerm extractEntry grunt/bs-commonjs-generator.js
+283 silly gunzTarPerm modified mode [ 'grunt/bs-commonjs-generator.js', 438, 420 ]
+284 silly gunzTarPerm extractEntry grunt/bs-glyphicons-data-generator.js
+285 silly gunzTarPerm modified mode [ 'grunt/bs-glyphicons-data-generator.js', 438, 420 ]
+286 silly gunzTarPerm extractEntry grunt/bs-lessdoc-parser.js
+287 silly gunzTarPerm modified mode [ 'grunt/bs-lessdoc-parser.js', 438, 420 ]
+288 silly gunzTarPerm extractEntry grunt/bs-raw-files-generator.js
+289 silly gunzTarPerm modified mode [ 'grunt/bs-raw-files-generator.js', 438, 420 ]
+290 silly gunzTarPerm extractEntry grunt/.jshintrc
+291 silly gunzTarPerm modified mode [ 'grunt/.jshintrc', 438, 420 ]
+292 silly gunzTarPerm extractEntry grunt/configBridge.json
+293 silly gunzTarPerm modified mode [ 'grunt/configBridge.json', 438, 420 ]
+294 silly gunzTarPerm extractEntry grunt/sauce_browsers.yml
+295 silly gunzTarPerm modified mode [ 'grunt/sauce_browsers.yml', 438, 420 ]
+296 silly gunzTarPerm extractEntry js/affix.js
+297 silly gunzTarPerm modified mode [ 'js/affix.js', 438, 420 ]
+298 silly gunzTarPerm extractEntry js/button.js
+299 silly gunzTarPerm modified mode [ 'js/button.js', 438, 420 ]
+300 silly gunzTarPerm extractEntry js/carousel.js
+301 silly gunzTarPerm modified mode [ 'js/carousel.js', 438, 420 ]
+302 silly gunzTarPerm extractEntry js/collapse.js
+303 silly gunzTarPerm modified mode [ 'js/collapse.js', 438, 420 ]
+304 silly gunzTarPerm extractEntry js/dropdown.js
+305 silly gunzTarPerm modified mode [ 'js/dropdown.js', 438, 420 ]
+306 silly gunzTarPerm extractEntry js/alert.js
+307 silly gunzTarPerm modified mode [ 'js/alert.js', 438, 420 ]
+308 silly gunzTarPerm extractEntry js/popover.js
+309 silly gunzTarPerm modified mode [ 'js/popover.js', 438, 420 ]
+310 silly gunzTarPerm extractEntry js/scrollspy.js
+311 silly gunzTarPerm modified mode [ 'js/scrollspy.js', 438, 420 ]
+312 silly gunzTarPerm extractEntry js/tab.js
+313 silly gunzTarPerm modified mode [ 'js/tab.js', 438, 420 ]
+314 silly gunzTarPerm extractEntry js/tooltip.js
+315 silly gunzTarPerm modified mode [ 'js/tooltip.js', 438, 420 ]
+316 silly gunzTarPerm extractEntry js/transition.js
+317 silly gunzTarPerm modified mode [ 'js/transition.js', 438, 420 ]
+318 silly gunzTarPerm extractEntry js/modal.js
+319 silly gunzTarPerm modified mode [ 'js/modal.js', 438, 420 ]
+320 silly gunzTarPerm extractEntry less/mixins.less
+321 silly gunzTarPerm modified mode [ 'less/mixins.less', 438, 420 ]
+322 silly gunzTarPerm extractEntry less/alerts.less
+323 silly gunzTarPerm modified mode [ 'less/alerts.less', 438, 420 ]
+324 silly gunzTarPerm extractEntry less/badges.less
+325 silly gunzTarPerm modified mode [ 'less/badges.less', 438, 420 ]
+326 silly gunzTarPerm extractEntry less/bootstrap.less
+327 silly gunzTarPerm modified mode [ 'less/bootstrap.less', 438, 420 ]
+328 silly gunzTarPerm extractEntry less/breadcrumbs.less
+329 silly gunzTarPerm modified mode [ 'less/breadcrumbs.less', 438, 420 ]
+330 silly gunzTarPerm extractEntry less/button-groups.less
+331 silly gunzTarPerm modified mode [ 'less/button-groups.less', 438, 420 ]
+332 silly gunzTarPerm extractEntry less/buttons.less
+333 silly gunzTarPerm modified mode [ 'less/buttons.less', 438, 420 ]
+334 silly gunzTarPerm extractEntry less/carousel.less
+335 silly gunzTarPerm modified mode [ 'less/carousel.less', 438, 420 ]
+336 silly gunzTarPerm extractEntry less/close.less
+337 silly gunzTarPerm modified mode [ 'less/close.less', 438, 420 ]
+338 silly gunzTarPerm extractEntry less/code.less
+339 silly gunzTarPerm modified mode [ 'less/code.less', 438, 420 ]
+340 silly gunzTarPerm extractEntry less/component-animations.less
+341 silly gunzTarPerm modified mode [ 'less/component-animations.less', 438, 420 ]
+342 silly gunzTarPerm extractEntry less/dropdowns.less
+343 silly gunzTarPerm modified mode [ 'less/dropdowns.less', 438, 420 ]
+344 silly gunzTarPerm extractEntry less/forms.less
+345 silly gunzTarPerm modified mode [ 'less/forms.less', 438, 420 ]
+346 silly gunzTarPerm extractEntry less/glyphicons.less
+347 silly gunzTarPerm modified mode [ 'less/glyphicons.less', 438, 420 ]
+348 silly gunzTarPerm extractEntry less/grid.less
+349 silly gunzTarPerm modified mode [ 'less/grid.less', 438, 420 ]
+350 silly gunzTarPerm extractEntry less/input-groups.less
+351 silly gunzTarPerm modified mode [ 'less/input-groups.less', 438, 420 ]
+352 silly gunzTarPerm extractEntry less/jumbotron.less
+353 silly gunzTarPerm modified mode [ 'less/jumbotron.less', 438, 420 ]
+354 silly gunzTarPerm extractEntry less/labels.less
+355 silly gunzTarPerm modified mode [ 'less/labels.less', 438, 420 ]
+356 silly gunzTarPerm extractEntry less/list-group.less
+357 silly gunzTarPerm modified mode [ 'less/list-group.less', 438, 420 ]
+358 silly gunzTarPerm extractEntry less/media.less
+359 silly gunzTarPerm modified mode [ 'less/media.less', 438, 420 ]
+360 silly gunzTarPerm extractEntry less/mixins/nav-vertical-align.less
+361 silly gunzTarPerm modified mode [ 'less/mixins/nav-vertical-align.less', 438, 420 ]
+362 silly gunzTarPerm extractEntry less/mixins/alerts.less
+363 silly gunzTarPerm modified mode [ 'less/mixins/alerts.less', 438, 420 ]
+364 silly gunzTarPerm extractEntry less/mixins/border-radius.less
+365 silly gunzTarPerm modified mode [ 'less/mixins/border-radius.less', 438, 420 ]
+366 silly gunzTarPerm extractEntry less/mixins/buttons.less
+367 silly gunzTarPerm modified mode [ 'less/mixins/buttons.less', 438, 420 ]
+368 silly gunzTarPerm extractEntry less/mixins/center-block.less
+369 silly gunzTarPerm modified mode [ 'less/mixins/center-block.less', 438, 420 ]
+370 silly gunzTarPerm extractEntry less/mixins/clearfix.less
+371 silly gunzTarPerm modified mode [ 'less/mixins/clearfix.less', 438, 420 ]
+372 silly gunzTarPerm extractEntry less/mixins/forms.less
+373 silly gunzTarPerm modified mode [ 'less/mixins/forms.less', 438, 420 ]
+374 silly gunzTarPerm extractEntry less/mixins/gradients.less
+375 silly gunzTarPerm modified mode [ 'less/mixins/gradients.less', 438, 420 ]
+376 silly gunzTarPerm extractEntry less/mixins/grid-framework.less
+377 silly gunzTarPerm modified mode [ 'less/mixins/grid-framework.less', 438, 420 ]
+378 silly gunzTarPerm extractEntry less/mixins/grid.less
+379 silly gunzTarPerm modified mode [ 'less/mixins/grid.less', 438, 420 ]
+380 silly gunzTarPerm extractEntry less/mixins/hide-text.less
+381 silly gunzTarPerm modified mode [ 'less/mixins/hide-text.less', 438, 420 ]
+382 silly gunzTarPerm extractEntry less/mixins/image.less
+383 silly gunzTarPerm modified mode [ 'less/mixins/image.less', 438, 420 ]
+384 silly gunzTarPerm extractEntry less/mixins/labels.less
+385 silly gunzTarPerm modified mode [ 'less/mixins/labels.less', 438, 420 ]
+386 silly gunzTarPerm extractEntry less/mixins/list-group.less
+387 silly gunzTarPerm modified mode [ 'less/mixins/list-group.less', 438, 420 ]
+388 silly gunzTarPerm extractEntry less/mixins/nav-divider.less
+389 silly gunzTarPerm modified mode [ 'less/mixins/nav-divider.less', 438, 420 ]
+390 silly gunzTarPerm extractEntry less/mixins/background-variant.less
+391 silly gunzTarPerm modified mode [ 'less/mixins/background-variant.less', 438, 420 ]
+392 silly gunzTarPerm extractEntry less/mixins/opacity.less
+393 silly gunzTarPerm modified mode [ 'less/mixins/opacity.less', 438, 420 ]
+394 silly gunzTarPerm extractEntry less/mixins/pagination.less
+395 silly gunzTarPerm modified mode [ 'less/mixins/pagination.less', 438, 420 ]
+396 silly gunzTarPerm extractEntry less/mixins/panels.less
+397 silly gunzTarPerm modified mode [ 'less/mixins/panels.less', 438, 420 ]
+398 silly gunzTarPerm extractEntry less/mixins/progress-bar.less
+399 silly gunzTarPerm modified mode [ 'less/mixins/progress-bar.less', 438, 420 ]
+400 silly gunzTarPerm extractEntry less/mixins/reset-filter.less
+401 silly gunzTarPerm modified mode [ 'less/mixins/reset-filter.less', 438, 420 ]
+402 silly gunzTarPerm extractEntry less/mixins/reset-text.less
+403 silly gunzTarPerm modified mode [ 'less/mixins/reset-text.less', 438, 420 ]
+404 silly gunzTarPerm extractEntry less/mixins/resize.less
+405 silly gunzTarPerm modified mode [ 'less/mixins/resize.less', 438, 420 ]
+406 silly gunzTarPerm extractEntry less/mixins/responsive-visibility.less
+407 silly gunzTarPerm modified mode [ 'less/mixins/responsive-visibility.less', 438, 420 ]
+408 silly gunzTarPerm extractEntry less/mixins/size.less
+409 silly gunzTarPerm modified mode [ 'less/mixins/size.less', 438, 420 ]
+410 silly gunzTarPerm extractEntry less/mixins/tab-focus.less
+411 silly gunzTarPerm modified mode [ 'less/mixins/tab-focus.less', 438, 420 ]
+412 silly gunzTarPerm extractEntry less/mixins/table-row.less
+413 silly gunzTarPerm modified mode [ 'less/mixins/table-row.less', 438, 420 ]
+414 silly gunzTarPerm extractEntry less/mixins/text-emphasis.less
+415 silly gunzTarPerm modified mode [ 'less/mixins/text-emphasis.less', 438, 420 ]
+416 silly gunzTarPerm extractEntry less/mixins/text-overflow.less
+417 silly gunzTarPerm modified mode [ 'less/mixins/text-overflow.less', 438, 420 ]
+418 silly gunzTarPerm extractEntry less/mixins/vendor-prefixes.less
+419 silly gunzTarPerm modified mode [ 'less/mixins/vendor-prefixes.less', 438, 420 ]
+420 silly gunzTarPerm extractEntry less/modals.less
+421 silly gunzTarPerm modified mode [ 'less/modals.less', 438, 420 ]
+422 silly gunzTarPerm extractEntry less/navbar.less
+423 silly gunzTarPerm modified mode [ 'less/navbar.less', 438, 420 ]
+424 silly gunzTarPerm extractEntry less/navs.less
+425 silly gunzTarPerm modified mode [ 'less/navs.less', 438, 420 ]
+426 silly gunzTarPerm extractEntry less/normalize.less
+427 silly gunzTarPerm modified mode [ 'less/normalize.less', 438, 420 ]
+428 silly gunzTarPerm extractEntry less/pager.less
+429 silly gunzTarPerm modified mode [ 'less/pager.less', 438, 420 ]
+430 silly gunzTarPerm extractEntry less/pagination.less
+431 silly gunzTarPerm modified mode [ 'less/pagination.less', 438, 420 ]
+432 silly gunzTarPerm extractEntry less/panels.less
+433 silly gunzTarPerm modified mode [ 'less/panels.less', 438, 420 ]
+434 silly gunzTarPerm extractEntry less/popovers.less
+435 silly gunzTarPerm modified mode [ 'less/popovers.less', 438, 420 ]
+436 silly gunzTarPerm extractEntry less/print.less
+437 silly gunzTarPerm modified mode [ 'less/print.less', 438, 420 ]
+438 silly gunzTarPerm extractEntry less/progress-bars.less
+439 silly gunzTarPerm modified mode [ 'less/progress-bars.less', 438, 420 ]
+440 silly gunzTarPerm extractEntry less/responsive-embed.less
+441 silly gunzTarPerm modified mode [ 'less/responsive-embed.less', 438, 420 ]
+442 silly gunzTarPerm extractEntry less/responsive-utilities.less
+443 silly gunzTarPerm modified mode [ 'less/responsive-utilities.less', 438, 420 ]
+444 silly gunzTarPerm extractEntry less/scaffolding.less
+445 silly gunzTarPerm modified mode [ 'less/scaffolding.less', 438, 420 ]
+446 silly gunzTarPerm extractEntry less/tables.less
+447 silly gunzTarPerm modified mode [ 'less/tables.less', 438, 420 ]
+448 silly gunzTarPerm extractEntry less/theme.less
+449 silly gunzTarPerm modified mode [ 'less/theme.less', 438, 420 ]
+450 silly gunzTarPerm extractEntry less/thumbnails.less
+451 silly gunzTarPerm modified mode [ 'less/thumbnails.less', 438, 420 ]
+452 silly gunzTarPerm extractEntry less/tooltip.less
+453 silly gunzTarPerm modified mode [ 'less/tooltip.less', 438, 420 ]
+454 silly gunzTarPerm extractEntry less/type.less
+455 silly gunzTarPerm modified mode [ 'less/type.less', 438, 420 ]
+456 silly gunzTarPerm extractEntry less/utilities.less
+457 silly gunzTarPerm modified mode [ 'less/utilities.less', 438, 420 ]
+458 silly gunzTarPerm extractEntry less/variables.less
+459 silly gunzTarPerm modified mode [ 'less/variables.less', 438, 420 ]
+460 silly gunzTarPerm extractEntry less/wells.less
+461 silly gunzTarPerm modified mode [ 'less/wells.less', 438, 420 ]
+462 verbose write writing to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular/package.json
+463 info preinstall angular@1.4.4
+464 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular/package.json
+465 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular/package.json
+466 silly install resolved []
+467 verbose about to build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular
+468 info build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular
+469 info linkStuff angular@1.4.4
+470 silly linkStuff angular@1.4.4 has /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules as its parent node_modules
+471 verbose linkBins angular@1.4.4
+472 verbose linkMans angular@1.4.4
+473 verbose rebuildBundles angular@1.4.4
+474 info install angular@1.4.4
+475 info postinstall angular@1.4.4
+476 verbose unlock done using /Users/mjchaudhari/.npm/_locks/angular-b0525630fefb30b4.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular
+477 verbose write writing to /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap/package.json
+478 info preinstall bootstrap@3.3.5
+479 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap/package.json
+480 verbose readDependencies loading dependencies from /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap/package.json
+481 silly install resolved []
+482 verbose about to build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap
+483 info build /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap
+484 info linkStuff bootstrap@3.3.5
+485 silly linkStuff bootstrap@3.3.5 has /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules as its parent node_modules
+486 verbose linkBins bootstrap@3.3.5
+487 verbose linkMans bootstrap@3.3.5
+488 verbose rebuildBundles bootstrap@3.3.5
+489 info install bootstrap@3.3.5
+490 info postinstall bootstrap@3.3.5
+491 verbose unlock done using /Users/mjchaudhari/.npm/_locks/bootstrap-cdcb6358ac905316.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/bootstrap
+492 verbose unlock done using /Users/mjchaudhari/.npm/_locks/angular-ui-bootstrap-988e1d254b7585b1.lock for /Users/mjchaudhari/Documents/projects/easyCollab/api/node_modules/angular-ui-bootstrap
+493 verbose validateInstall loading /Users/mjchaudhari/Documents/projects/easyCollab/api/package.json for validation
+494 verbose stack Error: The package mongoose does not satisfy its siblings' peerDependencies requirements!
+494 verbose stack     at /usr/local/lib/node_modules/npm/lib/install.js:125:32
+494 verbose stack     at /usr/local/lib/node_modules/npm/lib/install.js:267:7
+494 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:138:5
+494 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+494 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+494 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+494 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+494 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+494 verbose stack     at cb (/usr/local/lib/node_modules/npm/node_modules/slide/lib/async-map.js:47:24)
+494 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-installed/read-installed.js:251:14
+495 verbose cwd /Users/mjchaudhari/Documents/projects/easyCollab/api/client
+496 error Darwin 14.5.0
+497 error argv "node" "/usr/local/bin/npm" "install" "angular-ui-bootstrap" "--save"
+498 error node v0.12.3
+499 error npm  v2.9.1
+500 error code EPEERINVALID
+501 error peerinvalid The package mongoose does not satisfy its siblings' peerDependencies requirements!
+501 error peerinvalid Peer mongoose-auto-increment@4.0.0 wants mongoose@~4.0.0
+502 verbose exit [ 1, true ]

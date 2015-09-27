@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" ng-app>
+  <head>
+    <title>eCo-test</title>
+    <link rel="shortcut icon" href="/img/favicon.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+    <style>
+      body {
+        padding-top: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" >
+      <img style="height:50px;width:auto;" src="img/favicon.jpg"></img>
+      <h1> Collaborate test</h1>
+      
+  	  <div ng-controller="">
+        {{title}}
+  		  <table>
+  			  <tr><td><Assets/td></tr>
+  			  <th>Asset</th>
+  			  <tr ng-repeat="a in assets"><td>
+  				  <span ng-bind="a.Name">{{$index}} {{a.Name}}</span>
+  			  </td></tr>
+  		  </table>
+  	  </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/angular.min.js"></script>
+	 <script src="/app/mainApp.js"></script>
+   <script src="/app/assetCtrl.js"></script>
+  </body>
+</html>
