@@ -1,7 +1,7 @@
     <!doctype html>
     <html lang="en" >
       <head>
-        <title>eCo</title>
+        <title>-split-api</title>
         <link rel="shortcut icon" href="/img/favicon.jpg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -15,18 +15,7 @@
       <body>
         <div class="container" ng-app="app" >
           <img style="height:50px;width:auto;" src="img/favicon.jpg"></img>
-          <h1>Easy Collaboration Platform API</h1>
-          <div ng-controller="assetCtrl">
-              {{title}}
-    		  <table>
-    			  <th>Asset</th>
-                  {{assets|json}}
-    			  <tr ng-repeat="a in assets">
-                    <td>
-    				  <span ng-bind="a.Name">{{$index}} {{a.Name}}</span>
-    			     </td>
-                  </tr>
-    		  </table>
+          <h1>Split group expenses for easy sharing</h1>
     	  </div>
         </div>
         
