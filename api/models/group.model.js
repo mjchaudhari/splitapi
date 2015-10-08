@@ -3,28 +3,22 @@ var autoIncrement = require('mongoose-auto-increment');
 
 var Schema = mongoose.Schema;
 
-var artifactSchema = new Schema({
+var groupSchema = new Schema({
     ExternalId:{type:Number, unique:true, required:true,},//This id will be used as public facing Id
     Name:{type:String, required:true},
-    Account:{
-        type:mongoose.Schema.Types.ObjectId, 
-        ref:'Account'
-    },
     Description:{type:String},
     Locale : {
         type:String,
         default:"en-us"
     }, 
-    IsCollection:{type:Boolean},
-    Version : {type:Number},
     Status : {type:String},
     Thumbnail:{type:String},
     Url:{type:String},
-    allowDownload:{type:Boolean, default:true},
-    ArtifactType:{type:String},
-    ParentIds:{type:[Number]},
-    Path:{type:[String]},
-    
+    GroupType:{type:String},
+    Members : [{
+        type:mongoose.Schema.Types.ObjectId, 
+        ref:'Profiles'
+    }],
     CreatedBy:
     {
         type:mongoose.Schema.Types.ObjectId, 
@@ -48,11 +42,11 @@ var artifactSchema = new Schema({
 
 module.exports = function(dbConfig){
         var init = function (){
-            artifactSchema.plugin(  autoIncrement.plugin, { model: 'Artifacts', "field":"ExternalId", startAt: 1, incrementBy: 1 });
+            groupSchema.plugin(  autoIncrement.plugin, { model: 'Groups', "field":"ExternalId", startAt: 1, incrementBy: 1 });
         };
        
         init();
     return { 
-        artifactModel: dbConfig.conn.model("Artifacts", artifactSchema)
+        groupModel: dbConfig.conn.model("Groups", groupSchema)
     };
 }

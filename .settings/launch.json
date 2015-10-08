@@ -11,7 +11,7 @@
 			// Workspace relative or absolute path to the program.
 			"program": "./server.js",
 			// Automatically stop program after launch.
-			"stopOnEntry": true,
+			"stopOnEntry": false,
 			// Workspace relative or absolute path to the working directory of the program being debugged. Default is the current workspace.
 			"cwd": ".",
 			// Workspace relative or absolute path to the runtime executable to be used. Default is the runtime executable on the PATH.
@@ -23,7 +23,7 @@
             "name": "Launch splitapi",
             "type": "node",
 			// Automatically stop program after launch.
-			"stopOnEntry": true,
+			"stopOnEntry": false,
             "program": "./server.js",
             "args": ["--port=8085"]
         },

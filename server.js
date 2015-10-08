@@ -42,7 +42,7 @@ app.get('/', function (req, res, next) {
 //require('./api/routes/auth.routes.js')(dbConfig, app, authController); // load our routes and pass in our app and fully configured passport
 //require('./api/routes/oauth.routes.js')(dbConfig, app); // load our routes and pass in our app and fully configured passport
 require('./api/routes/user.routes.js')(dbConfig,auth, app); // load our routes and pass in our app and fully configured passport
-//require('./api/routes/artifact.routes.js')(dbConfig, app); // load our routes and pass in our app and fully configured passport
+require('./api/routes/group.routes.js')(dbConfig, auth, app); // load our routes and pass in our app and fully configured passport
 
 
 // launch =====ss=================================================================

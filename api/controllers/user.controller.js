@@ -41,7 +41,7 @@ exports.v1 = function(dbConfig){
     {
         var r = req.body;
     
-        var options = {"UserName":r.UserName, "Secret":r.password};
+        var options = {"UserName":r.UserName, "Secret":r.Secret};
         
         userModel.findOne(options, function   (e, data)
         {
@@ -49,12 +49,17 @@ exports.v1 = function(dbConfig){
             {
                 return cb(new models.error(e));
             }
+            if(data == null)
+            {
+                return cb(new models.error("Invalid credentials"));
+            }
+            
             var u = {
                 "Id":data.Id,
                 "AccessToken":12345,
             };
             
-            userModel.findOneAndUpdate({"Id":req.Id}, { $set: u } ,{new:true}, function (e, u) {
+            userModel.findOneAndUpdate({"Id":data.Id}, { $set: u } ,{new:true}, function (e, u) {
                 if(e != null)
                     {
                         var e = new models.error(e, "Error while setting new secret");
@@ -203,7 +208,7 @@ exports.v1 = function(dbConfig){
                 "Secret":pin,
             };
             
-            userModel.findOneAndUpdate({"Id":req.Id}, { $set: u } ,{new:true}, function (e, d ) {
+            userModel.findOneAndUpdate({"Id":data.Id}, { $set: u } ,{new:false}, function (e, d ) {
                 if(e != null)
                     {
                         var e = new models.error(e, "Error while setting new secret");

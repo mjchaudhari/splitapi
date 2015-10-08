@@ -29,23 +29,25 @@ var userModel =  m.userModel;
 	            if (err) { 
 	            	return done(err); 
 	            }
-	
+	           
 	            if (!token) { 
 	            	return done(null, false); 
 	            }
-	
-	            userModel.findById(token.userId, function(err, user) {
-	                if (err) { 
-	                	return done(err); 
-	                }
-	
-	                if (!user) { 
-	                	return done(null, false, { message: 'Unknown user' }); 
-	                }
-	
-	                var info = { scope: '*' };
-	                done(null, user, info);
-	            });
+	           var info = { scope: '*' };
+	                return done(null, token, info);
+
+//	            userModel.findById(token.userId, function(err, user) {
+//	                if (err) { 
+//	                	return done(err); 
+//	                }
+//	
+//	                if (!user) { 
+//	                	return done(null, false, { message: 'Unknown user' }); 
+//	                }
+//	
+//	                var info = { scope: '*' };
+//	                done(null, user, info);
+//	            });
 	        });
 	    }
     ));
