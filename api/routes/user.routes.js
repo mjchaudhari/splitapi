@@ -1,6 +1,6 @@
 
 //User routes
-var userCtrl = require("./../controllers/user.controller.js");
+var userCtrl = require("./../controllers/account.controller.js");
 var _dir = process.cwd();
 
 module.exports = function(dbConfig, auth, app) {

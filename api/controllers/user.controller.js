@@ -4,7 +4,7 @@ Manage user account
 var _dir = process.cwd();
 
 var models = require("./../response.models.js").models;
-var userModels = require("./../models/user.model.js");
+var userModels = require("./../models/account.model.js");
 var uuid = require("node-uuid");
 exports.v1 = function(dbConfig){
     var m =  userModels(dbConfig);
