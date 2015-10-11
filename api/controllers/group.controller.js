@@ -1,9 +1,10 @@
     var models = require("./../response.models.js").models;
 var uuid = require("node-uuid");
 var groupCollection =  require("./../models/group.model.js");
-
+var userModels = require("./../models/user.model.js");
 var _hlp =  require("../utils.js");
 var _ = require("underscore-node");
+var async = require ("async");
 
 /*
 group module
@@ -12,7 +13,8 @@ exports.v1 = function(dbConfig){
     
     var g =  groupCollection(dbConfig);
     var groupModel = g.groupModel;
-    
+    var m =  userModels(dbConfig);
+    var userModel = m.userModel;
     
     //get single user based on username     
     this.getGroups =function(req, cb)
@@ -34,10 +36,6 @@ exports.v1 = function(dbConfig){
         if(options.id > 0)
         {
             search = {"ExternalId":options.id};
-        }
-        if(options.name && options.name.length > 0)
-        {
-            search = {"Name":options.name};
         }
         if(options.name && options.name.length > 0)
         {
@@ -78,11 +76,10 @@ exports.v1 = function(dbConfig){
             data.Url= param.Url;
         if(param.GroupType)
             data.GroupType= param.GroupType;
-        if(param.CreatedBy)
-            data.CreatedBy = param.CreatedBy;
-        if(param.UpdatedBy)
-            data.UpdatedBy = param.UpdatedBy;
-            data.UpdatedOn  = new Date();
+        
+        
+        data.UpdatedBy = req.user
+        data.UpdatedOn  = new Date();
         if(param.ClientId)
             data.ClientId = param.ClientId;
         
@@ -90,32 +87,137 @@ exports.v1 = function(dbConfig){
         if(param.ExternalId && param.ExternalId > 0)
         {
             console.log(grp.ExternalId);
-            groupModel.update({"ExternalId":data.ExternalId},data,{}, function(err,g){
+            groupModel.findOneAndUpdate({"ExternalId":data.ExternalId},{$set: data},{new:false}, function(err,g){
                 if(err){
                     console.error(err);
                     return cb(new models.error(err));
                 }   
-                log.debug(g);
+                //console.log(g);
                 return cb(setReturnGroup(g));
             });
             
         }
         else{
-            
+            grp.CreatedBy = req.user;
             grp.save( function(err){
                 if(err){
                     console.error(err);
                     
                     return cb(new models.error(err));
                 }   
-                console.log(grp);
+                //console.log(grp);
                 return cb(setReturnGroup(g));
                 
             });
         };
         
     };
+    /***
+     * Add emeber if not already exist
+     */
+    this.addMembers = function (req, cb) {
+        console.log("controller : add members");
+        var param = req.body;
     
+        var data = {};
+        if(!param.groupId)
+            return cb(new models.error("GroupId is not provided" ));
+        
+        if(!param.members)
+            return cb(new models.error("Member ids (single or csv ) is not provided" ));
+        
+        var usersArray = param.members.split(',');
+        
+        userModel.find({ "Id" : {$in: usersArray} } )
+        .exec(function(e, lst){
+                if(e){
+                    return cb(new models.error(e));
+                }
+                
+                groupModel.find({ExternalId:param.groupId} )
+                .populate("Members")
+                .exec(function(e,g){
+                    if(e){
+                        return cb(new models.error(e));
+                    }
+                    if(g == null){
+                        return cb(new models.error("Group not found"))
+                    }
+                    var membersToAdd=[];
+                    for (var index = 0; index < lst.length; index++) {
+                         var element = lst[index];
+                         if(element == null)
+                         {
+                             continue;
+                         }
+                         var m = _.find(g.Members, function(item) {
+                             return item._id == element._id;
+                         }); 
+                         if(!m){
+                             membersToAdd.push(element);
+                         }
+                     }
+                     for (var index = 0; index < membersToAdd.length; index++) {
+                         g.Members.push(membersToAdd[index]._id);
+                     }
+                    
+                    //Update now
+                    groupModel.findOneAndUpdate({"ExternalId":g.ExternalId},{$set: g},{new:false}, function(err,grp){
+                        if(err){
+                            console.error(err);
+                            return cb(new models.error(err));
+                        }   
+                        return cb(setReturnGroup(grp));
+                    });
+                });
+        });
+        
+            
+    };
+    this.removeMembers = function (req, cb) {
+        
+        console.log("controller : add members");
+        var param = req.body;
+    
+        var data = {};
+        if(!param.groupId)
+            return cb(new models.error("GroupId is not provided" ));
+        
+        if(!param.members)
+            return cb(new models.error("Member ids (single or csv ) is not provided" ));
+        
+        var usersArray = param.members.split(',');
+        var callbackParam={};
+        async.parallel([
+            function(callbackParam){
+                //get all users
+                userModel.find(
+                { "Id" : {$in: usersArray} }, 
+                function(e, lst){
+                    if(e){
+                        return cb(new models.error(e));
+                    }
+                   callbackParam.users = lst; 
+                });                           
+            },
+            function(callbackParam){
+                //get group
+                groupModel.findOne({ExternalId:param.groupId}, function(e,g){
+                    if(e){
+                        return cb(new models.error(e))
+                    }
+                    if(g == null){
+                        return cb(new models.error("Group not found"))
+                    }
+                    callbackParam.group = g;
+                });
+             
+            }
+        ],function(callbackParam){
+            
+        });
+        
+    }
     var setReturnGroup = function(g){
         var retVal = {
                 ExternalId : g.ExternalId,

@@ -61,8 +61,8 @@ module.exports = function(dbConfig, auth,app) {
      *
      * @apiSuccess {artifacts} artifact.
     */
-	app.get('/v1/artifact', function(req, res) {
-		v1.getTree(req, function (d){
+	app.post('/v1/group/members', function(req, res) {
+		v1.addMembers(req, function (d){
 			if(d.isError){
 				res.status(400).send(d);
 				return;
