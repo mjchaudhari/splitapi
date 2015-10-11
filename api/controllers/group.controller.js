@@ -134,14 +134,14 @@ exports.v1 = function(dbConfig){
                     return cb(new models.error(e));
                 }
                 
-                groupModel.find({ExternalId:param.groupId} )
+                groupModel.findOne({ExternalId:param.groupId} )
                 .populate("Members")
                 .exec(function(e,g){
                     if(e){
                         return cb(new models.error(e));
                     }
                     if(g == null){
-                        return cb(new models.error("Group not found"))
+                        return cb(new models.error("Group not found"));
                     }
                     var membersToAdd=[];
                     for (var index = 0; index < lst.length; index++) {
@@ -151,7 +151,7 @@ exports.v1 = function(dbConfig){
                              continue;
                          }
                          var m = _.find(g.Members, function(item) {
-                             return item._id == element._id;
+                             return item._id.equals(element._id);
                          }); 
                          if(!m){
                              membersToAdd.push(element);
@@ -204,10 +204,10 @@ exports.v1 = function(dbConfig){
                 //get group
                 groupModel.findOne({ExternalId:param.groupId}, function(e,g){
                     if(e){
-                        return cb(new models.error(e))
+                        return cb(new models.error(e));
                     }
                     if(g == null){
-                        return cb(new models.error("Group not found"))
+                        return cb(new models.error("Group not found"));
                     }
                     callbackParam.group = g;
                 });
