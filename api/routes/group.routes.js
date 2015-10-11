@@ -72,6 +72,26 @@ module.exports = function(dbConfig, auth,app) {
 	});
 	
 	/**
+     * @api {get} /v1/users Request Artifact information
+     * @apiName Get Artifact
+     * @apiGroup User
+     * @param {number} id [optional] [default = 0] of the asset
+     * @param {number} depth [optional] [default = 0] of the children if any
+	 * @param {number} structureonly [optional] [default = false] or not to fetch the collection structure and exclude  
+     *
+     * @apiSuccess {artifacts} artifact.
+    */
+	app.delete('/v1/group/members', function(req, res) {
+		v1.removeMembers(req, function (d){
+			if(d.isError){
+				res.status(400).send(d);
+				return;
+			}
+			res.json(d);
+		});
+	});
+	
+	/**
      * @api {post} /v1/artifact/tree/parentExternalId Request Artifact information
      * @apiName Get tree
      * @apiGroup User

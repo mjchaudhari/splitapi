@@ -106,7 +106,12 @@ exports.v1 = function(dbConfig){
                     return cb(new models.error(err));
                 }   
                 //console.log(grp);
-                return cb(setReturnGroup(g));
+                groupModel.findOne({ExternalId:param.groupId})
+                .populate("Members")
+                .exec(function(e,g){
+                    return cb(setReturnGroup(g))
+                });
+                
                 
             });
         };
@@ -130,46 +135,51 @@ exports.v1 = function(dbConfig){
         
         userModel.find({ "Id" : {$in: usersArray} } )
         .exec(function(e, lst){
+            if(e){
+                return cb(new models.error(e));
+            }
+            
+            groupModel.findOne({ExternalId:param.groupId} )
+            .populate("Members")
+            .exec(function(e,g){
                 if(e){
                     return cb(new models.error(e));
                 }
+                if(g == null){
+                    return cb(new models.error("Group not found"));
+                }
+                var membersToAdd=[];
+                for (var index = 0; index < lst.length; index++) {
+                        var element = lst[index];
+                        if(element == null)
+                        {
+                            continue;
+                        }
+                        var m = _.find(g.Members, function(item) {
+                            return item._id.equals(element._id);
+                        }); 
+                        if(!m){
+                            membersToAdd.push(element);
+                        }
+                    }
+                    for (var index = 0; index < membersToAdd.length; index++) {
+                        g.Members.push(membersToAdd[index]._id);
+                    }
                 
-                groupModel.findOne({ExternalId:param.groupId} )
-                .populate("Members")
-                .exec(function(e,g){
-                    if(e){
-                        return cb(new models.error(e));
-                    }
-                    if(g == null){
-                        return cb(new models.error("Group not found"));
-                    }
-                    var membersToAdd=[];
-                    for (var index = 0; index < lst.length; index++) {
-                         var element = lst[index];
-                         if(element == null)
-                         {
-                             continue;
-                         }
-                         var m = _.find(g.Members, function(item) {
-                             return item._id.equals(element._id);
-                         }); 
-                         if(!m){
-                             membersToAdd.push(element);
-                         }
-                     }
-                     for (var index = 0; index < membersToAdd.length; index++) {
-                         g.Members.push(membersToAdd[index]._id);
-                     }
-                    
-                    //Update now
-                    groupModel.findOneAndUpdate({"ExternalId":g.ExternalId},{$set: g},{new:false}, function(err,grp){
-                        if(err){
-                            console.error(err);
-                            return cb(new models.error(err));
-                        }   
-                        return cb(setReturnGroup(grp));
+                //Update now
+                groupModel.findOneAndUpdate({"ExternalId":g.ExternalId},{$set: g},{new:false}, function(err,grp){
+                    if(err){
+                        console.error(err);
+                        return cb(new models.error(err));
+                    }   
+                    groupModel.findOne({ExternalId:param.groupId})
+                    .populate("Members")
+                    .exec(function(e,g){
+                        return cb(setReturnGroup(g))
                     });
+                    
                 });
+            });
         });
         
             
@@ -188,33 +198,72 @@ exports.v1 = function(dbConfig){
         
         var usersArray = param.members.split(',');
         var callbackParam={};
-        async.parallel([
-            function(callbackParam){
-                //get all users
-                userModel.find(
+        //Parallel stack to fetch the users to be removed and the group in context
+        var parallelStack = {}
+        parallelStack.usersToRemove = function(cb){
+            //get all users
+            userModel.find(
                 { "Id" : {$in: usersArray} }, 
                 function(e, lst){
                     if(e){
-                        return cb(new models.error(e));
+                         cb(e);
                     }
-                   callbackParam.users = lst; 
+                   //callbackParam.users = lst; 
+                    cb(null,lst);
                 });                           
-            },
-            function(callbackParam){
-                //get group
-                groupModel.findOne({ExternalId:param.groupId}, function(e,g){
-                    if(e){
-                        return cb(new models.error(e));
-                    }
-                    if(g == null){
-                        return cb(new models.error("Group not found"));
-                    }
-                    callbackParam.group = g;
-                });
-             
             }
-        ],function(callbackParam){
+        parallelStack.theGroup =   function(cb){
+            //get group
+            groupModel
+            .findOne({ExternalId:param.groupId})
+            .populate("Members")
+            .exec(function(e,g){
+                if(e){
+                    cb(e);
+                }
+                if(g == null){
+                    
+                    cb(null, "Group not found");
+                }
+                //callbackParam.group = g;
+                cb(null, g);
+            });
             
+        }
+        
+        async.parallel(parallelStack,function(err, result){
+            //here we have group and the users object
+            if(err){
+                return cb(new models.error(err));
+            }
+            
+            //Check if the users 
+            result.usersToRemove.forEach(function(u){
+                var idx = -1;
+                for (var i = 0;i < result.theGroup.Members.length; i++){
+                    if(result.theGroup.Members[i]._id.equals(u._id)){
+                        idx = i;
+                    }
+                    
+                }; 
+                if(idx >= 0)
+                {
+                     result.theGroup.Members.splice(idx,1)
+                }
+            });
+            //Update the group now
+            groupModel.findOneAndUpdate({"ExternalId":result.theGroup.ExternalId},{$set: result.theGroup},{new:false}, function(err,grp){
+                if(err){
+                    console.error(err);
+                    return cb(new models.error(err));
+                }   
+                
+                groupModel.findOne({ExternalId:param.groupId})
+                .populate("Members")
+                .exec(function(e,g){
+                    return cb(setReturnGroup(g))
+                });
+            });
         });
         
     }
