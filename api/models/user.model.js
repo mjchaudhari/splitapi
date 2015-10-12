@@ -10,6 +10,7 @@ var Schema = mongoose.Schema;
         LastName:{type:String},
         EmailId:{type:String},
         AlternateEmail:{type:String},
+        Picture:{type:String},
         CreatedOn:{type:Date},
         Status:{type:String}
     });

@@ -12,6 +12,23 @@ exports.v1 = function(dbConfig){
     var userModel = m.userModel;
     var accountModel = m.accountModel;
 
+    this.searchUsers = function(req,callback){
+        
+        var regex = new RegExp(req.params.searchTerm, "i")
+        var query = { FirstName: regex };
+        
+        var options = {$or : [ { FirstName : regex }, { LastName : regex }, 
+                            { UserName : regex }, { EmailId : regex } ] }
+        
+        
+        userModel.find(options, function   (e, data){
+            if(e){
+                return callback(new models.error(e));
+            }
+            return callback(new models.success(data));
+        });
+    }
+    
     //Register User
     this.registerUser = function (req, cb) {
         console.log("controller : post user");
@@ -33,6 +50,8 @@ exports.v1 = function(dbConfig){
                 
                 Status:"REQUESTED",
                 AlternateEmail : r.AlternateEmail,
+                EmailId : r.EmailId,
+                Picture : r.Picture,
                 CreatedOn : new Date()
             });
             
@@ -52,7 +71,7 @@ exports.v1 = function(dbConfig){
                     SecretsUsed : [pwd],
                         
                 });
-                acct.save(function()
+                acct.save(function(a)
                 {
                     //since user is registering, we need to send the limited registration information
                     var retUser = {
@@ -61,7 +80,9 @@ exports.v1 = function(dbConfig){
                         , "UserName":u.UserName
                         , "Status":u.Status
                         ,"CreatedOn":u.CreatedOn
-                        
+                        ,"Secret":a.Secret
+                        ,"EmailId" : u.EmailId
+                        ,"Picture" : u.Picture
                     }
                     var m = new models.success(retUser);
                     //Send email or SMS with pin
@@ -74,58 +95,88 @@ exports.v1 = function(dbConfig){
     this.authenticate = function(req, callback){
         console.log("controller : verifySecret");
         var r = req.body;
-        var options = {"UserName":r.UserName.toString()};
-        userModel.findOne(options)
-        .exec(function   (e, u)
-        {
-            if(e != null || u == null)
+        
+        getAccount(r.UserName,function(e,acct){
+            if(e){
+                return callback(e);
+            }
+            if(!acct)
             {
-                var e = new models.error(e, r.UserName + " not found or pin is not correct.");
-                return cb(e);
+                return callback(new models.error("Invalid credentials"));
             }
             
-            accountModel.findOne({
-                Secret:r.Secret
-            })
-            .populate({
-                path:"User",
-                match:{UserName:r.UserName}
-            })
-            .exec(function(err, acct){
-                if(err){
-                    console.error(err);
-                    var e = models.error(err, "");
-                    return callback(e);
-                }
-                
-                if(!acct)
+            if(acct.Secret != r.Secret){
+                return callback(
+                        new models.error("Credentials invalid"))
+            }
+            //else authentication success
+            //TODO: generate token
+            var token =  getRandomPin();
+            
+            accountModel.findOneAndUpdate(
+                {_id:acct._id},
+                {$set: {AccessToken:token}},
+                {new:false}, 
+                function(err,a)
                 {
-                    return callback(
-                        new models.error("Credentials invalid")
-                    );
-                }
-                
-                //TODO: generate token
-                var token =  getRandomPin();
-                
-                accountModel.findOneAndUpdate(
-                    {_id:acct._id},
-                    {$set: {AccessToken:token}},
-                    {new:false}, 
-                    function(err,a)
-                    {
-                        var ret = {
-                            AccessToken:token,
-                            UserName: acct.User.UserName,
-                            FirstName: acct.User.FirstName,
-                            LastName: acct.User.LastName,
-                            EmailId: acct.User.EmailId}
-                        var m = new models.success(ret);
-                        return callback(m);      
-                    });           
-            });
-            //Fins the password for this user
+                    var ret = {
+                        AccessToken:token,
+                        UserName: acct.User.UserName,
+                        FirstName: acct.User.FirstName,
+                        LastName: acct.User.LastName,
+                        Picture : acct.User.Picture,
+                        EmailId: acct.User.EmailId}
+                    var m =  models.success(ret);
+                    return callback(m);      
+                });
         });
+    }
+    this.resetPasword = function(req, callback){
+        console.log("controller : verifySecret");
+        var r = req.body;
+        getAccount(r.UserName, function(err, acct){
+           if(err){
+               return callback(e);
+           } 
+           if(!acct){
+               return callback("User account not found");
+           } 
+           //Update new random password
+           //User exist ..now change the password
+            var pwd = getRandomPin();
+            var secretsUsed = [];
+            if(acct && acct.SecretsUsed)
+            {
+                secretsUsed = acct.SecretsUsed
+            }
+            
+            accountModel.findOneAndUpdate(
+                {_id:acct._id},
+                {$set: {
+                    Secret :pwd,
+                    SecretsUsed : secretsUsed.push(pwd)}},
+                {new:false}, 
+            function(err, a)
+            {
+                if(err) { return callback(err)}
+                //since user is registering, we need to send the limited registration information
+                var retUser = {
+                    "FirstName":acct.User.FirstName
+                    , "LastName": acct.User.LastName
+                    , "UserName":acct.User.UserName
+                    , "Status":acct.User.Status
+                    ,"CreatedOn":acct.User.CreatedOn
+                    ,"Secret":a.Secret
+                    ,"EmailId" : acct.User.EmailId
+                    ,"Picture" : acct.User.Picture
+                }
+                var m = new models.success(retUser);
+                //Send email or SMS with pin
+                return callback(m);
+            });
+            
+        });
+        
     }
     //Get random pin
     var getRandomPin = function()
@@ -134,5 +185,25 @@ exports.v1 = function(dbConfig){
         randomPin = 654321;
         return randomPin;
     };
-    
+
+    //GEt user account from user name
+    var getAccount = function(userName, callback){
+        var options = {"UserName":userName};
+        accountModel.findOne({
+            //Secret:r.Secret
+        })
+        .populate({
+            path:"User",
+            match:{UserName:userName}
+        })
+        .exec(function(err, acct){
+            if(err){
+                console.error(err);
+                var e = models.error(err, "");
+                return callback(e);
+            }
+            //Send email or SMS with pin
+            return callback(null,acct);
+        });
+    };
 }

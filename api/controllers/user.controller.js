@@ -71,10 +71,11 @@ exports.v1 = function(dbConfig){
                             "FirstName":u.FirstName
                             , "LastName": u.LastName
                             , "UserName":u.UserName
+                            ,"EmailId" : u.EmailId
+                            ,"Picture" : u.Picture
                             , "Status":u.Status
                             ,"CreatedOn":u.CreatedOn
-                            ,"ClientKey" : u.ClientKey,
-                            'AccessToken':'123456'
+                            ,'AccessToken':'123456'
                     }
                      var m = new models.success(retUser);
                      return cb(m);
@@ -123,7 +124,8 @@ exports.v1 = function(dbConfig){
                     , "UserName":u.UserName
                     , "Status":u.Status
                     ,"CreatedOn":u.CreatedOn
-                    ,"ClientKey" : u.ClientKey
+                    ,"EmailId" : u.EmailId
+                    ,"Picture" : u.Picture
                 }
                 var m = new models.success(retUser);
                 //Send email or SMS with pin
@@ -169,7 +171,9 @@ exports.v1 = function(dbConfig){
             if(req.AccessToken){
                 u.AccessToken = req.AccessToken;
             }
-    
+            if(req.Picture){
+                u.Picture = req.Picture
+            }
             if(req.ClientSubscriptions){
                 u.ClientSubscriptions = req.ClientSubscriptions;
             }
