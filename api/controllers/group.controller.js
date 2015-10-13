@@ -45,6 +45,7 @@ exports.v1 = function(dbConfig){
         //search.Members = [{"_id" : u._id}];
         groupModel.find(search)
         .populate("CreatedBy")
+        .populate("Members")
         .exec(function(e,g){
             if(e)
             {
