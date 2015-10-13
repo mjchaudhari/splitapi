@@ -62,8 +62,8 @@ exports.v1 = function(dbConfig){
             userModel.findOneAndUpdate({"Id":data.Id}, { $set: u } ,{new:true}, function (e, u) {
                 if(e != null)
                     {
-                        var e = new models.error(e, "Error while setting new secret");
-                        return cb(e);
+                        var err = new models.error(e, "Error while setting new secret");
+                        return cb(err);
                     }
                     
                     //REturn the auth token

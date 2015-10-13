@@ -27,7 +27,21 @@ exports.v1 = function(dbConfig){
                 if(e){
                     return callback(new models.error(e));
                 }
-                return callback(new models.success(data));
+                var ret = [];
+                data.forEach(function(u){
+                    var udata = {
+                        "FirstName":u.FirstName
+                        , "LastName": u.LastName
+                        , "UserName":u.UserName
+                        , "Status":u.Status
+                        ,"CreatedOn":u.CreatedOn
+                        ,"Secret":a.Secret
+                        ,"EmailId" : u.EmailId
+                        ,"Picture" : u.Picture
+                    }
+                    ret.push(udata);
+                });
+                return callback(new models.success(ret));
             });
     };
     
@@ -125,13 +139,13 @@ exports.v1 = function(dbConfig){
                         return callback(new models.error(err));
                     }
                     var ret = {
-                        AccessToken:token,
+                        AccessToken:a.AccessToken,
                         UserName: acct.User.UserName,
                         FirstName: acct.User.FirstName,
                         LastName: acct.User.LastName,
                         Picture : acct.User.Picture,
                         EmailId: acct.User.EmailId}
-                    var m =  models.success(ret);
+                    var m =  new models.success(ret);
                     return callback(m);      
                 });
         });

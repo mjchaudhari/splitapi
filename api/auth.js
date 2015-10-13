@@ -8,6 +8,7 @@ var userModels = require("./models/user.model.js");
 var dbConfig = require("./db.connection.js")
 var m =  userModels(dbConfig);
 var userModel =  m.userModel;
+var accountModel = m.accountModel;
     
     passport.use(new BasicStrategy(
       function(username, password, callback) {
@@ -24,18 +25,24 @@ var userModel =  m.userModel;
     
     passport.use(new BearerStrategy(
 	    function(accessToken, done) {
-	        userModel.findOne({ AccessToken: accessToken }, function(err, token) {
-	
-	            if (err) { 
+            
+            accountModel.findOne({
+                 AccessToken: accessToken
+            })
+            .populate({
+                path:"User",
+            })
+            .exec(function(err, acct){
+                if (err) { 
 	            	return done(err); 
 	            }
 	           
-	            if (!token) { 
+	            if (!acct) { 
 	            	return done(null, false); 
 	            }
 	           var info = { scope: '*' };
-	                return done(null, token, info);
-
+	                return done(null, acct, info);
+                    
 //	            userModel.findById(token.userId, function(err, user) {
 //	                if (err) { 
 //	                	return done(err); 
@@ -48,7 +55,8 @@ var userModel =  m.userModel;
 //	                var info = { scope: '*' };
 //	                done(null, user, info);
 //	            });
-	        });
+
+            });
 	    }
     ));
         

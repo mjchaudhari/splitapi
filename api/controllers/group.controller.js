@@ -35,15 +35,17 @@ exports.v1 = function(dbConfig){
 
         if(options.id > 0)
         {
-            search = {"ExternalId":options.id};
+            search.ExternalId = options.id;
         }
         if(options.name && options.name.length > 0)
         {
-            search = {"Name":options.name};
+            search.Name = options.name;
         }
         //TODO
         //search.Members = [{"_id" : u._id}];
-        groupModel.find(search, function(e,g){
+        groupModel.find(search)
+        .populate("CreatedBy")
+        .exec(function(e,g){
             if(e)
             {
                 return cb(new models.error(e));
