@@ -2,7 +2,6 @@
 Manage user account
 */
 var _dir = process.cwd();
-
 var models = require("./../response.models.js").models;
 var userModels = require("./../models/user.model.js");
 
@@ -13,21 +12,24 @@ exports.v1 = function(dbConfig){
     var accountModel = m.accountModel;
 
     this.searchUsers = function(req,callback){
+        var param = req.params.term;
+        if(!param){
+            param = req.query.term;
+        }
         
-        var regex = new RegExp(req.params.searchTerm, "i")
-        var query = { FirstName: regex };
-        
-        var options = {$or : [ { FirstName : regex }, { LastName : regex }, 
-                            { UserName : regex }, { EmailId : regex } ] }
-        
-        
-        userModel.find(options, function   (e, data){
-            if(e){
-                return callback(new models.error(e));
-            }
-            return callback(new models.success(data));
-        });
-    }
+        var re = new RegExp(param, 'i');
+        userModel.find()
+        .or([{ 'FirstName': { $regex: re }}, 
+            { 'LastName': { $regex: re }},
+            { 'UserName': { $regex: re }}])
+        .exec(
+            function (e, data){
+                if(e){
+                    return callback(new models.error(e));
+                }
+                return callback(new models.success(data));
+            });
+    };
     
     //Register User
     this.registerUser = function (req, cb) {
@@ -58,7 +60,7 @@ exports.v1 = function(dbConfig){
             u.save(function(err, u){
                 if(err){
                     console.error(err);
-                    return cb(err);
+                    return cb(new models.error(err));
                 }   
                 console.log(u);
                 
@@ -71,7 +73,7 @@ exports.v1 = function(dbConfig){
                     SecretsUsed : [pwd],
                         
                 });
-                acct.save(function(a)
+                acct.save(function(e,a)
                 {
                     //since user is registering, we need to send the limited registration information
                     var retUser = {
@@ -98,7 +100,7 @@ exports.v1 = function(dbConfig){
         
         getAccount(r.UserName,function(e,acct){
             if(e){
-                return callback(e);
+                return callback(new models.error(e));
             }
             if(!acct)
             {
@@ -119,6 +121,9 @@ exports.v1 = function(dbConfig){
                 {new:false}, 
                 function(err,a)
                 {
+                    if(err){
+                        return callback(new models.error(err));
+                    }
                     var ret = {
                         AccessToken:token,
                         UserName: acct.User.UserName,
@@ -136,7 +141,7 @@ exports.v1 = function(dbConfig){
         var r = req.body;
         getAccount(r.UserName, function(err, acct){
            if(err){
-               return callback(e);
+               return callback(new models.error(err));
            } 
            if(!acct){
                return callback("User account not found");
@@ -158,7 +163,7 @@ exports.v1 = function(dbConfig){
                 {new:false}, 
             function(err, a)
             {
-                if(err) { return callback(err)}
+                if(err) { return callback(new models.error(err));}
                 //since user is registering, we need to send the limited registration information
                 var retUser = {
                     "FirstName":acct.User.FirstName

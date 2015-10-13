@@ -7,7 +7,7 @@ var _dir = process.cwd();
 module.exports = function(dbConfig, auth, app) {
 	var v1=new userCtrl.v1(dbConfig);
 	
-	app.get("/v1/user/search/:searchTerm", function(req, res){
+	app.get("/v1/user/search/:term?", function(req, res){
 		v1.searchUsers(req, function(data){
 			res.json(data);
 		});
