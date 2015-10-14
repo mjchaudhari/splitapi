@@ -1,0 +1,1 @@
+define({  "name": "chat-example",  "version": "0.0.0",  "description": "Communication and Sharing Platform",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2015-10-14T01:18:29.903Z",    "url": "http://apidocjs.com",    "version": "0.13.1"  }});
