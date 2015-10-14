@@ -35,7 +35,6 @@ exports.v1 = function(dbConfig){
                         , "UserName":u.UserName
                         , "Status":u.Status
                         ,"CreatedOn":u.CreatedOn
-                        ,"Secret":a.Secret
                         ,"EmailId" : u.EmailId
                         ,"Picture" : u.Picture
                     }
