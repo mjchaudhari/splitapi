@@ -6,14 +6,16 @@ var groupCtrl = require("./../controllers/group.controller.js");
 module.exports = function(dbConfig, auth,app) {
 	var v1=new groupCtrl.v1(dbConfig);
 	/**
-     * @api {get} /v1/users Request Artifact information
-     * @apiName Get Artifact
-     * @apiGroup User
+     * @api {get} /v1/groups Get the groups of the logged in user has created and the groups he is member of
+     * @apiName Get group(s)
+     * @apiGroup Group
      *
-     * 
+     * @param {number} id [optional] of the group
+	 * @param {string} name [optional] of the group
+	 * @param {string} status [options] of the group
      *
-     * @apiSuccess {String} firstname Firstname of the User.
-     * @apiSuccess {String} lastname  Lastname of the User.
+     *
+     * @apiSuccess {String} user object {Firstname:"", LastName : "", UserName:"", "Status":"", CreatedOn : "", EmailId:"",Picture:""}
     */
 	app.get('/v1/groups', auth.isBearerAuth,function(req, res) {
 	  	v1.getGroups(req, function(d){
@@ -29,14 +31,13 @@ module.exports = function(dbConfig, auth,app) {
 
 	
 	/**
-     * @api {post} /v1/artifact Request Artifact information
-     * @apiName Save Artifact
-     * @apiGroup User
+     * @api {post} /v1/group Create the posted group 
+     * @apiName Save Group 
+     * @apiGroup Group
      *
      * 
-     *
-     * @apiSuccess {String} firstname Firstname of the User.
-     * @apiSuccess {String} lastname  Lastname of the User.
+     * 
+     * @apiSuccess {object} .
     */
 	app.post('/v1/group', auth.isBearerAuth,function(req, res) {
 		console.log(req.body);
@@ -52,16 +53,15 @@ module.exports = function(dbConfig, auth,app) {
 	
 	// show the home page (will also have our login links)
 	/**
-     * @api {get} /v1/users Request Artifact information
-     * @apiName Get Artifact
-     * @apiGroup User
-     * @param {number} id [optional] [default = 0] of the asset
-     * @param {number} depth [optional] [default = 0] of the children if any
-	 * @param {number} structureonly [optional] [default = false] or not to fetch the collection structure and exclude  
+     * @api {post} /v1/group/members Add memember in group
+     * @apiName Add member 
+     * @apiGroup Group
+     * @param {number} groupId 
+     * @param {number} members comma separated string of user Ids e.g. "5" OR "5,6,7,8"  
      *
-     * @apiSuccess {artifacts} artifact.
+     * @apiSuccess {group} group object.
     */
-	app.post('/v1/group/members', function(req, res) {
+	app.post('/v1/group/members', auth.isBearerAuth,function(req, res) {
 		v1.addMembers(req, function (d){
 			if(d.isError){
 				res.status(400).send(d);
@@ -72,16 +72,15 @@ module.exports = function(dbConfig, auth,app) {
 	});
 	
 	/**
-     * @api {get} /v1/users Request Artifact information
-     * @apiName Get Artifact
-     * @apiGroup User
-     * @param {number} id [optional] [default = 0] of the asset
-     * @param {number} depth [optional] [default = 0] of the children if any
-	 * @param {number} structureonly [optional] [default = false] or not to fetch the collection structure and exclude  
+     * @api {delete} /v1/group/members remove memember in group
+     * @apiName remove members
+     * @apiGroup Group
+     * @param {number} groupId 
+     * @param {number} members comma separate list of user Ids e.g. "5" OR "5,6,7,8"  
      *
-     * @apiSuccess {artifacts} artifact.
+     * @apiSuccess {group} group object.
     */
-	app.delete('/v1/group/members', function(req, res) {
+	app.delete('/v1/group/members', auth.isBearerAuth, function(req, res) {
 		v1.removeMembers(req, function (d){
 			if(d.isError){
 				res.status(400).send(d);
@@ -91,25 +90,5 @@ module.exports = function(dbConfig, auth,app) {
 		});
 	});
 	
-	/**
-     * @api {post} /v1/artifact/tree/parentExternalId Request Artifact information
-     * @apiName Get tree
-     * @apiGroup User
-     *
-     * @param parentExternalId
-     *
-     * @apiSuccess {String} firstname Firstname of the User.
-     * @apiSuccess {String} lastname  Lastname of the User.
-    */
-	// app.post('/v1/artifact/tree/:parentId', function(req, res) {
-	// 	console.log(req.body);
-	// 	v1.getTree(req, function (d){
-	// 		if(d.isError){
-	// 			res.status(400).send(d);
-	// 			return;
-	// 		}
-	// 		res.json(d);
-	// 	});
-	// });
 	
 }
