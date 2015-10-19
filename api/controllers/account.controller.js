@@ -110,7 +110,7 @@ exports.v1 = function(dbConfig){
     this.authenticate = function(req, callback){
         console.log("controller : verifySecret");
         var r = req.body;
-        
+        var secret = r.Secret;
         getAccount(r.UserName,function(e,acct){
             if(e){
                 return callback(new models.error(e));
@@ -120,7 +120,7 @@ exports.v1 = function(dbConfig){
                 return callback(new models.error("Invalid credentials"));
             }
             
-            if(acct.Secret != r.Secret){
+            if(acct.Secret != secret){
                 return callback(
                         new models.error("Credentials invalid"))
             }
@@ -208,12 +208,13 @@ exports.v1 = function(dbConfig){
     var getAccount = function(userName, callback){
         var options = {"UserName":userName};
         accountModel.findOne({
-            //Secret:r.Secret
+            
         })
         .populate({
             path:"User",
             match:{UserName:userName}
         })
+        .populate("User")
         .exec(function(err, acct){
             if(err){
                 console.error(err);

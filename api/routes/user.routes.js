@@ -7,6 +7,31 @@ var _dir = process.cwd();
 module.exports = function(dbConfig, auth, app) {
 	var v1=new userCtrl.v1(dbConfig);
 	
+	/**
+	 * @apiName /v1/user/search/:term? get users
+	 * @apiDescription Get the groups of the logged in user has created and the groups he is member of.
+     * @apiGroup Group
+     *
+     * @param {number} id [optional] of the group
+	 * @apiExample {curl} Example usage:
+ 	 *     curl -i http://localhost//v1/user/search/?term=mahesh
+     
+     *
+     * @apiSuccess {String} array of groups matching to the criteria .
+	 *
+	 * @apiSuccessExample {JSON} {
+				"isError": false,
+				"data": [
+					{
+					"FirstName": string,
+					"LastName": string,
+					"UserName":string,
+					"Status": string",
+					"CreatedOn": date string,
+					"EmailId": string
+					}]
+				}
+	 */
 	app.get("/v1/user/search/:term?", function(req, res){
 		v1.searchUsers(req, function(data){
 			res.json(data);
@@ -20,8 +45,7 @@ module.exports = function(dbConfig, auth, app) {
      *
      * 
      *
-     * @apiSuccess {String} firstname Firstname of the User.
-     * @apiSuccess {String} lastname  Lastname of the User.
+	 * * @apiSuccess {String} groups object [{Firstname:"", LastName : "", UserName:"", "Status":"", CreatedOn : "", EmailId:"",Picture:""}]
     */
 	app.post('/v1/user', function(req, res) {
 		console.log(req.body);
@@ -31,12 +55,12 @@ module.exports = function(dbConfig, auth, app) {
 				return;
 			}
 			
-			if(!d.secret)
+			if(!d.data.Secret)
 			{
-				log.debug("Secret not generated");
+				console.log("Secret not generated");
 				res.status(400).send("Error while creating user");
 			}
-			d.Secret = undefined;
+			d.data.Secret = undefined;
 			res.json(d);
 		});
 	});
