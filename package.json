@@ -1,7 +1,7 @@
 {
-  "name": "chat-example",
+  "name": "Easy Split API",
   "version": "0.0.0",
-  "description": "Communication and Sharing Platform",
+  "description": "SPlit group expenses",
   "main": "server.js",
   "repository": "",
   "author": "Mahesh Chaudhari",
