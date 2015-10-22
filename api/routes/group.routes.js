@@ -9,11 +9,18 @@ module.exports = function(dbConfig, auth,app) {
      * @api {get} /v1/groups get groups
      * @apiDescription Get the groups of the logged in user has created and the groups he is member of.
      * @apiGroup Group
-     * @param {number} id [optional] of the group
-	 * @param {string} name [optional] of the group
-	 * @param {string} status [options] of the group
+     * @apiParam {number} id [optional] of the group
+	 * @apiParam {string} name [optional] of the group
+	 * @apiParam {string} status [options] of the group
      * @apiExample {curl} Example usage:
  	 *     curl -i http://localhost/v1/groups?id=123&name=abcd&status=active
+
+	 * @apiHeader {String} Authorization the security token
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     }      
+     *
 	 * @apiSuccess {String} array of groups matching to the criteria .
 	 * @successExample {
 			"isError": false,
@@ -57,8 +64,12 @@ module.exports = function(dbConfig, auth,app) {
      * @apiName Save Group 
      * @apiGroup Group
      *
-     * 
-     * 
+	 * @apiHeader {String} Authorization the security token
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     }      
+     *
      * @apiSuccess {object} group object      *
  
     */
@@ -79,8 +90,14 @@ module.exports = function(dbConfig, auth,app) {
      * @api {post} /v1/group/members Add memember in group
      * @apiName Add member 
      * @apiGroup Group
-     * @param {number} groupId 
-     * @param {number} members comma separated string of user Ids e.g. "5" OR "5,6,7,8"  
+     * @apiParam {number} groupId 
+     * @apiParam {number} members comma separated string of user Ids e.g. "5" OR "5,6,7,8"  
+     *
+	 * @apiHeader {String} Authorization the security token
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     }      
      *
      * @apiSuccess {group} group object.
     */
@@ -98,8 +115,14 @@ module.exports = function(dbConfig, auth,app) {
      * @api {delete} /v1/group/members remove memember in group
      * @apiName remove members
      * @apiGroup Group
-     * @param {number} groupId 
-     * @param {number} members comma separate list of user Ids e.g. "5" OR "5,6,7,8"  
+     * @apiParam {number} groupId 
+     * @apiParam {number} members comma separate list of user Ids e.g. "5" OR "5,6,7,8"  
+     *
+	 * @apiHeader {String} Authorization the security token
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     }      
      *
      * @apiSuccess {group} group object.
     */

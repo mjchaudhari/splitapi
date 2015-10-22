@@ -8,14 +8,18 @@ module.exports = function(dbConfig, auth, app) {
 	var v1=new userCtrl.v1(dbConfig);
 	
 	/**
-	 * @apiName /v1/user/search/:term? get users
+	 * @apiName /v1/user/search/:term? Get users
 	 * @apiDescription Get the groups of the logged in user has created and the groups he is member of.
      * @apiGroup Group
      *
-     * @param {number} id [optional] of the group
+     * @apiParam {number} id [optional] of the group
 	 * @apiExample {curl} Example usage:
  	 *     curl -i http://localhost//v1/user/search/?term=mahesh
-     
+	 * @apiHeader {String} Authorization the security token
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     }      
      *
      * @apiSuccess {String} array of groups matching to the criteria .
 	 *
@@ -32,14 +36,14 @@ module.exports = function(dbConfig, auth, app) {
 					}]
 				}
 	 */
-	app.get("/v1/user/search/:term?", function(req, res){
+	app.get("/v1/user/search/:term?", auth.isBearerAuth, function(req, res){
 		v1.searchUsers(req, function(data){
 			res.json(data);
 		});
 	})
 	
 	/**
-     * @api {post} /v1/users Create new user
+     * @api {post} /v1/users Create user
      * @apiName Create or register user
      * @apiGroup User		
      *
@@ -51,14 +55,15 @@ module.exports = function(dbConfig, auth, app) {
 		console.log(req.body);
 		v1.registerUser(req, function (d){
 			if(d.isError){
-				res.status(400).send(d);
+				//res.status(400).send(d);
+				res.json(d);
 				return;
 			}
 			
 			if(!d.data.Secret)
 			{
 				console.log("Secret not generated");
-				res.status(400).send("Error while creating user");
+				res.status(500).send("Error while creating user");
 			}
 			d.data.Secret = undefined;
 			res.json(d);
@@ -66,13 +71,13 @@ module.exports = function(dbConfig, auth, app) {
 	});
 	
 	/**
-     * @api {get} /v1/authenticate 
+     * @api {get} /v1/authenticate Authenticate the user and get access token
      * @apiName Authenticate user secret
      * @apiGroup User
-     * @param {number} userName 
-     * @param {number} secret
+     * @apiParam {number} userName 
+     * @apiParam {number} secret
 	 *
-     * @apiSuccess on success returns the authentication token
+     * @apiSuccess on success returns the authentication token which should be validated with each subsequent request
     */
 	app.post('/v1/authenticate', function(req, res) {
 		console.log("authenticate");
@@ -86,7 +91,14 @@ module.exports = function(dbConfig, auth, app) {
 			res.json(d);
 		});
 	});
-	
+	/**
+     * @api {get} /v1/resend 
+     * @apiName Resend the pin
+     * @apiGroup User
+     * @apiParam {number} userName 
+	 *
+     * @apiSuccess on success returns the authentication token
+    */
 	app.post('/v1/pin/resend', function(req, res) {
 		console.log("resend pin");
 		console.log(req.body);
@@ -107,6 +119,26 @@ module.exports = function(dbConfig, auth, app) {
 		});
 	});
 	
+	/**
+     * @api {get} /v1/isauthenticated 
+     * @apiName Check if user is authenticated
+     * @apiGroup User
+     * @apiParam {number} userName 
+	 *
+	 * @apiHeader {String} Authorization the security token
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     } 
+     * @apiSuccess on success returns the authentication token
+    */
+	app.post('/v1/isauthenticated', auth.isBearerAuth,function(req, res) {
+		console.log('isAuthenticated');
+		if (req.isAuthenticated())
+			res.json(new model.success('Authenticated'));
+		else	
+			res.json(new model.error("Unauthenticated user."));
+	});
 	
 	// route middleware to ensure user is logged in
 	function isLoggedIn(req, res, next) {
@@ -114,4 +146,5 @@ module.exports = function(dbConfig, auth, app) {
 			return next();
 		res.redirect('/');
 	};
+	
 }

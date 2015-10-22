@@ -1,5 +1,6 @@
     var models = require("./../response.models.js").models;
 var uuid = require("node-uuid");
+var mongoose = require('mongoose');
 var groupCollection =  require("./../models/group.model.js");
 var userModels = require("./../models/user.model.js");
 var _hlp =  require("../utils.js");
@@ -45,7 +46,13 @@ exports.v1 = function(dbConfig){
         //search.Members = [{"_id" : u._id}];
         groupModel.find(search)
         .populate("CreatedBy")
+        // .populate(
+        //     {
+        //         Path:"Members",
+        //         //match:{"Members" : {$in:[u._id]}}
+        //     })
         .populate("Members")
+        
         .exec(function(e,g){
             if(e)
             {

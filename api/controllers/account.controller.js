@@ -127,7 +127,7 @@ exports.v1 = function(dbConfig){
             //else authentication success
             //TODO: generate token
             var token =  getRandomPin();
-            
+             token = r.UserName;
             accountModel.findOneAndUpdate(
                 {_id:acct._id},
                 {$set: {AccessToken:token}},
@@ -206,23 +206,30 @@ exports.v1 = function(dbConfig){
 
     //GEt user account from user name
     var getAccount = function(userName, callback){
+        
+        
         var options = {"UserName":userName};
-        accountModel.findOne({
-            
-        })
-        .populate({
-            path:"User",
-            match:{UserName:userName}
-        })
-        .populate("User")
-        .exec(function(err, acct){
+        
+        //get the user id first and then find the account
+        userModel.findOne(options, function   (err, data)
+        {
             if(err){
-                console.error(err);
                 var e = models.error(err, "");
                 return callback(e);
-            }
-            //Send email or SMS with pin
-            return callback(null,acct);
+            }       
+            //Find the matching account
+            accountModel.findOne({User:data._id})
+            .populate("User")
+            .exec(function(err,acct){
+                if(err){
+                    var e = models.error(err, "");
+                    return callback(e);
+                }   
+                 //Send email or SMS with pin
+                return callback(null,acct);        
+            });     
         });
+        
+        
     };
 }

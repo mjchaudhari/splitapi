@@ -1,1 +1,1 @@
-{  "name": "chat-example",  "version": "0.0.0",  "description": "Communication and Sharing Platform",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2015-10-17T13:30:00.982Z",    "url": "http://apidocjs.com",    "version": "0.13.1"  }}
+{  "name": "Easy Split API",  "version": "0.0.0",  "description": "SPlit group expenses",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2015-10-22T04:06:04.933Z",    "url": "http://apidocjs.com",    "version": "0.13.1"  }}
