@@ -1,5 +1,5 @@
 {
-  "name": "Easy Split API",
+  "name": "easyAPI",
   "version": "0.0.0",
   "description": "SPlit group expenses",
   "main": "server.js",

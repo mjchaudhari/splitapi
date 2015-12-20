@@ -39,7 +39,7 @@ exports.v1 = function(dbConfig){
             search.ExternalId = options.id;
         }
         if(options.name && options.name.length > 0)
-        {
+                   {
             search.Name = options.name;
         }
         //TODO
@@ -109,14 +109,14 @@ exports.v1 = function(dbConfig){
         }
         else{
             grp.CreatedBy = req.user;
-            grp.save( function(err){
+            grp.save( function(err, data){
                 if(err){
                     console.error(err);
                     
                     return cb(new models.error(err));
                 }   
                 //console.log(grp);
-                groupModel.findOne({ExternalId:param.groupId})
+                groupModel.findOne({ExternalId:data.ExternalId})
                 .populate("Members")
                 .exec(function(e,g){
                     return cb(setReturnGroup(g))

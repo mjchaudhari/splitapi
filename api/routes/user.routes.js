@@ -36,7 +36,7 @@ module.exports = function(dbConfig, auth, app) {
 					}]
 				}
 	 */
-	app.get("/v1/user/search/:term?", auth.isBearerAuth, function(req, res){
+	app.get("/v1/user/search/:term?", function(req, res){
 		v1.searchUsers(req, function(data){
 			res.json(data);
 		});
