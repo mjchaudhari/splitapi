@@ -26,7 +26,7 @@ module.exports = function(dbConfig, auth,app) {
 			"isError": false,
 			"data": [
 				{
-				"ExternalId": 1,
+				
 				"Name": "Group1",
 				"Description": "Group 1 Description2",
 				"Status": "Active",

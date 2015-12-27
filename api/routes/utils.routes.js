@@ -4,7 +4,8 @@ var models = require("./../response.models.js").models;
 var path = require("path");
 var fs = require('fs-extra'); 
 var _dir = process.cwd();
-
+var _split_api_google_drive_client_id = "910570287598-t7pb82kckr6foid1511cutnuqaboakn6.apps.googleusercontent.com";
+var _split_api_google_drive_client_secret = "kU8i82FnA0BgWHnyTcZh6kjx";
 module.exports = function(dbConfig, auth, app) {
 	
 	var tmpUploadFolder = path.normalize(__dirname + "/../../tmpStore");
@@ -49,7 +50,7 @@ module.exports = function(dbConfig, auth, app) {
 				var m = new models.success("File upload.");
 				m.data = {
 					FileName :filename,
-					url:'/files/' + filename 
+					url: "http://" + res.req.headers.host + '/file/' + filename 
 				}
 				res.json( m);     
                 
@@ -57,7 +58,7 @@ module.exports = function(dbConfig, auth, app) {
         });
 	})
 	
-	app.get('/files/*', function(req, res){
+	app.get('/file/*', function(req, res){
 		var path = tmpUploadFolder + '/' + req.params[0] ;
 		res.sendfile(path);
 	});

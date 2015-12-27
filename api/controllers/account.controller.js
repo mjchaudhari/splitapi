@@ -17,11 +17,12 @@ exports.v1 = function(dbConfig){
             param = req.query.term;
         }
         
-        var re = new RegExp(param, 'i');
+        var re = new RegExp( param , 'gi');
         userModel.find()
         .or([{ 'FirstName': { $regex: re }}, 
             { 'LastName': { $regex: re }},
-            { 'UserName': { $regex: re }}])
+            { 'UserName': { $regex: re }},
+            { 'EmailId': { $regex: re }}])
         .exec(
             function (e, data){
                 if(e){
@@ -30,13 +31,17 @@ exports.v1 = function(dbConfig){
                 var ret = [];
                 data.forEach(function(u){
                     var udata = {
-                        "FirstName":u.FirstName
+                        "_id": u._id
+                        , "FirstName":u.FirstName
                         , "LastName": u.LastName
                         , "UserName":u.UserName
                         , "Status":u.Status
                         ,"CreatedOn":u.CreatedOn
                         ,"EmailId" : u.EmailId
                         ,"Picture" : u.Picture
+                        ,"City" : u.City
+                        ,"Country" : u.Country
+                        ,"ZipCode" : u.ZipCode
                     }
                     ret.push(udata);
                 });
@@ -59,6 +64,7 @@ exports.v1 = function(dbConfig){
             }
             var randomPin = getRandomPin();
             var u = userModel    ({
+                
                 UserName: r.UserName,
                 FirstName: r.FirstName,
                 LastName: r.LastName,
@@ -67,7 +73,13 @@ exports.v1 = function(dbConfig){
                 AlternateEmail : r.AlternateEmail,
                 EmailId : r.EmailId,
                 Picture : r.Picture,
-                CreatedOn : new Date()
+                CreatedOn : new Date(),
+                Address : r.Address,
+                City : r.City,
+                Country : r.Country,
+                ZipCode : r.ZipCode
+                
+                
             });
             
             u.save(function(err, u){
@@ -90,14 +102,19 @@ exports.v1 = function(dbConfig){
                 {
                     //since user is registering, we need to send the limited registration information
                     var retUser = {
-                        "FirstName":u.FirstName
+                        "_id": u._id
+                        ,"FirstName":u.FirstName
                         , "LastName": u.LastName
                         , "UserName":u.UserName
                         , "Status":u.Status
-                        ,"CreatedOn":u.CreatedOn
-                        ,"Secret":a.Secret
-                        ,"EmailId" : u.EmailId
-                        ,"Picture" : u.Picture
+                        , "CreatedOn":u.CreatedOn
+                        , "Secret":a.Secret
+                        , "EmailId" : u.EmailId
+                        , "Picture" : u.Picture
+                        , "Address" : r.Address
+                        , "City" : r.City
+                        , "Country" : r.Country
+                        , "ZipCode" : r.ZipCode
                     }
                     var m = new models.success(retUser);
                     //Send email or SMS with pin
@@ -138,12 +155,17 @@ exports.v1 = function(dbConfig){
                         return callback(new models.error(err));
                     }
                     var ret = {
+                        _id : acct.User._id,
                         AccessToken:a.AccessToken,
                         UserName: acct.User.UserName,
                         FirstName: acct.User.FirstName,
                         LastName: acct.User.LastName,
                         Picture : acct.User.Picture,
-                        EmailId: acct.User.EmailId}
+                        EmailId: acct.User.EmailId,
+                        Address : acct.User.Address,
+                        City : acct.User.City,
+                        Country : acct.User.Country,
+                        ZipCode : acct.User.ZipCode}
                     var m =  new models.success(ret);
                     return callback(m);      
                 });
@@ -179,7 +201,8 @@ exports.v1 = function(dbConfig){
                 if(err) { return callback(new models.error(err));}
                 //since user is registering, we need to send the limited registration information
                 var retUser = {
-                    "FirstName":acct.User.FirstName
+                    "_id" : acct.User._id
+                    ,"FirstName":acct.User.FirstName
                     , "LastName": acct.User.LastName
                     , "UserName":acct.User.UserName
                     , "Status":acct.User.Status
@@ -187,6 +210,10 @@ exports.v1 = function(dbConfig){
                     ,"Secret":a.Secret
                     ,"EmailId" : acct.User.EmailId
                     ,"Picture" : acct.User.Picture
+                    , "Address" : r.Address
+                    , "City" : r.City
+                    , "Country" : r.Country
+                    , "ZipCode" : r.ZipCode
                 }
                 var m = new models.success(retUser);
                 //Send email or SMS with pin

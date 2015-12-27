@@ -14,7 +14,7 @@ module.exports = function(dbConfig, auth, app) {
      *
      * @apiParam {number} id [optional] of the group
 	 * @apiExample {curl} Example usage:
- 	 *     curl -i http://localhost//v1/user/search/?term=mahesh
+ 	 *     curl -i http://localhost/v1/user/search?term=mahesh
 	 * @apiHeader {String} Authorization the security token
 	 * @apiHeaderExample {json} Header-Example:
 	 *     {
@@ -36,7 +36,7 @@ module.exports = function(dbConfig, auth, app) {
 					}]
 				}
 	 */
-	app.get("/v1/user/search/:term?", function(req, res){
+	app.get("/v1/user/search:term?", function(req, res){
 		v1.searchUsers(req, function(data){
 			res.json(data);
 		});

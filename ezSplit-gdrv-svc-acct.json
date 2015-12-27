@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ezsplit-1168",
+  "private_key_id": "d1201f836b342a60f5fc4230ac1cfe51fde03ec2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDO/lMo5Lc2Fj/n\n1ENSqVTSSMa6Q6Q01NMwph8BeRQHHPhLyEyYKVDkzMvsxrIBQftelCnucONwPdX3\nOAyUCKdTT7BkXL74OXf+C9oP2mi+ZtrYHO0oEalf3ttQNoYEmeCWCA1n2CeXvvIV\nlHiCHgFN9mgDXJvPGtZvAYKXTL5h4Q+k5plHnQfP87KTjJOgX/pjtIvQkgZr90qF\nNioAdePif1CXp0WZy/w7ZvJykOxX1ZfkPpsmDlLG/4ARpgf9UcZ4zxN9pAxDXZSI\nmGGsLDbXtErVVaIeYypi8exePzUX6UVmYGKyO2HW+AG4OBvRJoDX6gKhjJ5z6k8y\nvJdyWqG3AgMBAAECggEAIscCK9W5noHAfO/h28qNcMM/eF4TAblcPkk63mF8ZvGM\nGhduHwaaC8cI4CBGGgX++NYF8YTQAbSx9VZabqjBjDLQXRxkDYqCSZGuMomsnYjk\nbfj2M4w8G9pymJiAjddYr3xs3CyqAknXnJ6UXLAz4ehrc10k5HgK3R2w1kDTn9gF\n5iAPFru5J5sQsEtidd7Tr0sHo+n9vr9YKqlZYyszkxRTnLM5tK0Tx3oP0ggXMIuh\nf62KyajaJpqQUeBgAPwxlvotMZ5Os5RKvDcEcv0/YtNu5QJ2z4+/h26SSoxO8Ad2\nk+2AB1OuCV0Gg3Iqx9kC3NKVfyug1Wm64MUSPMSZsQKBgQD19evhU4S4FGut9O1j\n/YK3i2bgls66leegtytrljOZJJtiYtPP2wg+Ori+aQykO0e/OkXKFyBD2bWdIdiu\nE9PaSwedDi3iiozge7ccHnKfyQi6maUNfIh0FbUU0YJGGHUqYyPWsXYtm2MaDDBS\nifcJSLCBQckZHQIncI3H4+R2LwKBgQDXcTrP+ZwFuMhjldrlfNg/47PIOBMA3NkT\nVYcmj4mUsRr+D9cB9w6AfrJD2DrazQuIMLmXKZUKXAJfc2DHaKOA7M1jJKIS5MHF\nFJTP3VaVxuFGtUDBOWGmZRbb2R8ypWAwmjGNB66kwluBP0Dnqi/AtMkQP3Guvu9n\nAjyBKbmy+QKBgD9s/zrH0r21Zl8hfeX/BapXJFxeB0lORsDG+0dvIDcpnXgti/lZ\nvjJt6h4P8NaZAtNpL34BoKxeg9rVU47wRf1Qw9HYSjTVDacFwB5cK6rQqJOV814a\n8wUcY+nObQ2uWOhpUGCYuqTgIRoicoOWWEHooLt0P2tec6O//o/BULS5AoGAaJH7\nG+tqAZT5Hu0jvHPmesxI/QvKnYaUjr/aw6qz+soj8eE6WSfTkCbu2+NeXclcqZQM\n4QQ75TVXqYDVHrT5d6B46IBlcoo6SzB8MpCacESCH9HmRmNVtHAosjkm3WxLzgtp\ntaxe5nW3+Hn9RPTkDMMzPIGu6kSe6v6443CfQ/ECgYAVHq9yk84CiFndN8tF2UGd\n3k8exnpaqA4mPz+e93VTT2dNWViMQRSeuFiM64MtN4j8CdyGK/Ivq4eaYjSSV6fF\n+j98nmrI6n2unbruZwx9OKamv6MR//2prSpFgf0g12VOaUpGgdDbzvRq+KeJvyDK\nFovjMCUj8Yy/ygL3uLqNVA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "ezsplit-gdrive-svc-acct-670@ezsplit-1168.iam.gserviceaccount.com",
+  "client_id": "100100519486643201722",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ezsplit-gdrive-svc-acct-670%40ezsplit-1168.iam.gserviceaccount.com"
+}

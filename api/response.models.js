@@ -13,7 +13,7 @@ var m = {
     
     asset : function(){
         return{
-            "ExternalId": 0,
+            
             "Name": null,
             "Description": null,
             "Version": 0,
@@ -39,7 +39,7 @@ var m = {
         
             parse : function(assetModel){
                 var a = assetModel.toObject();
-                this.ExternalId = a.ExternalId;
+                
                 this.Name = a.Name;
                 this.Description = a.Description;
                 this.Version= a.Version;

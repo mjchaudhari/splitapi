@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 //Define schema for user
     var userSchema=new Schema({
-        Id:{type:Number, unique:true, required:true},//This id will be used as public facing Id
+        
         UserName:{type:String, unique:true, required:true},
         FirstName:{type:String},
         LastName:{type:String},
@@ -12,7 +12,11 @@ var Schema = mongoose.Schema;
         AlternateEmail:{type:String},
         Picture:{type:String},
         CreatedOn:{type:Date},
-        Status:{type:String}
+        Status:{type:String},
+        Address : {type:String},
+        City : {type:String},
+        Country : {type:String},
+        ZipCode : {type:String},
     });
     
     var accountSchema=new Schema({
@@ -38,7 +42,6 @@ module.exports = function(conn){
 
 module.exports = function(dbConfig){
     var init = function (){
-        userSchema.plugin(  dbConfig.autoIncrement.plugin, { model: 'Profiles', field: 'Id', startAt: 1, incrementBy: 1 });
     };
     
     init();

@@ -213,7 +213,7 @@ module.exports = function(dbConfig){
             AccessToken : "",
             RefreshToken:""
         });
-        userModel.findOneAndUpdate({"Id":req.ExternalId}, { $set: u } ,{new:true}, function (e, u ) {
+        userModel.findOneAndUpdate({"_id":req._id}, { $set: u } ,{new:true}, function (e, u ) {
             return cb(e,u);
         });
     };
@@ -226,7 +226,7 @@ module.exports = function(dbConfig){
     this.SaveAccount=function( req, cb){
         
         //find the account with Id
-        clientModel.findOne({"ExternalId":req.ExternalId}, function(e,a){
+        clientModel.findOne({"_id":req._id}, function(e,a){
             if(e){
                 return cb(e,null);
             }

@@ -4,7 +4,7 @@ var autoIncrement = require('mongoose-auto-increment');
 var Schema = mongoose.Schema;
 
 var groupSchema = new Schema({
-    ExternalId:{type:Number, unique:true, required:true,},//This id will be used as public facing Id
+    //_id:{type:Number, unique:true, required:true,},//This id will be used as public facing Id
     Name:{type:String, required:true},
     Description:{type:String},
     Locale : {
@@ -42,7 +42,7 @@ var groupSchema = new Schema({
 
 module.exports = function(dbConfig){
         var init = function (){
-            groupSchema.plugin(  autoIncrement.plugin, { model: 'Groups', "field":"ExternalId", startAt: 1, incrementBy: 1 });
+            
         };
        
         init();

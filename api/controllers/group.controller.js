@@ -23,7 +23,7 @@ exports.v1 = function(dbConfig){
         var u = req.user;
         var q = req.query;
 		var options = {
-			id:q.id,
+			_id:q._id,
 			name:q.name,
 			status:q.status
 		};
@@ -34,9 +34,9 @@ exports.v1 = function(dbConfig){
             cb(err)
         }
 
-        if(options.id > 0)
+        if(options._id && options._id != 0)
         {
-            search.ExternalId = options.id;
+            search._id = options._id;
         }
         if(options.name && options.name.length > 0)
                    {
@@ -44,24 +44,16 @@ exports.v1 = function(dbConfig){
         }
         //TODO
         //search.Members = [{"_id" : u._id}];
+        var opts = { path: 'Members', model:"Profiles" };
         groupModel.find(search)
-        .populate("CreatedBy")
-        // .populate(
-        //     {
-        //         Path:"Members",
-        //         //match:{"Members" : {$in:[u._id]}}
-        //     })
         .populate("Members")
-        
         .exec(function(e,g){
             if(e)
             {
                 return cb(new models.error(e));
             }
             return cb(new models.success(g));
-            
         });
-        
     };
     
     //Create new User User
@@ -70,8 +62,8 @@ exports.v1 = function(dbConfig){
         var param = req.body;
     
         var data = {}
-        if(param.ExternalId)
-            data.ExternalId = param.ExternalId;
+        if(param._id)
+            data._id = param._id;
         if(param.Name)
             data.Name=param.Name;
         if(param.Description)
@@ -94,10 +86,10 @@ exports.v1 = function(dbConfig){
             data.ClientId = param.ClientId;
         
         var grp = groupModel(data);
-        if(param.ExternalId && param.ExternalId > 0)
+        if(param._id && param._id != 0)
         {
-            console.log(grp.ExternalId);
-            groupModel.findOneAndUpdate({"ExternalId":data.ExternalId},{$set: data},{new:false}, function(err,g){
+            console.log(grp._id);
+            groupModel.findOneAndUpdate({"_id":data._id},{$set: data},{new:false}, function(err,g){
                 if(err){
                     console.error(err);
                     return cb(new models.error(err));
@@ -116,7 +108,9 @@ exports.v1 = function(dbConfig){
                     return cb(new models.error(err));
                 }   
                 //console.log(grp);
-                groupModel.findOne({ExternalId:data.ExternalId})
+                groupModel.findOne({_id:data._id})
+                .populate("CreatedBy")
+                .populate("UdatedBy")
                 .populate("Members")
                 .exec(function(e,g){
                     return cb(setReturnGroup(g))
@@ -140,16 +134,23 @@ exports.v1 = function(dbConfig){
         
         if(!param.members)
             return cb(new models.error("Member ids (single or csv ) is not provided" ));
+        var usersArray = [];
+        if(_.isArray(param.members)){
+            usersArray = param.members;
+        }
+        else
+        {
+            usersArray = param.members.split(',');
+        }
         
-        var usersArray = param.members.split(',');
         
-        userModel.find({ "Id" : {$in: usersArray} } )
+        userModel.find({ "_id" : {$in: usersArray} } )
         .exec(function(e, lst){
             if(e){
                 return cb(new models.error(e));
             }
             
-            groupModel.findOne({ExternalId:param.groupId} )
+            groupModel.findOne({_id:param.groupId} )
             .populate("Members")
             .exec(function(e,g){
                 if(e){
@@ -177,12 +178,14 @@ exports.v1 = function(dbConfig){
                     }
                 
                 //Update now
-                groupModel.findOneAndUpdate({"ExternalId":g.ExternalId},{$set: g},{new:false}, function(err,grp){
+                groupModel.findOneAndUpdate({"_id":g._id},{$set: g},{new:false}, function(err,grp){
                     if(err){
                         console.error(err);
                         return cb(new models.error(err));
                     }   
-                    groupModel.findOne({ExternalId:param.groupId})
+                    groupModel.findOne({_id:param.groupId})
+                    .populate("CreatedBy")
+                    .populate("UdatedBy")
                     .populate("Members")
                     .exec(function(e,g){
                         return cb(setReturnGroup(g))
@@ -206,7 +209,15 @@ exports.v1 = function(dbConfig){
         if(!param.members)
             return cb(new models.error("Member ids (single or csv ) is not provided" ));
         
-        var usersArray = param.members.split(',');
+        var usersArray = [];
+        if(_.isArray(param.members)){
+            usersArray = param.members;
+        }
+        else
+        {
+            usersArray = param.members.split(',');
+        }
+        
         var callbackParam={};
         //Parallel stack to fetch the users to be removed and the group in context
         var parallelStack = {}
@@ -225,7 +236,7 @@ exports.v1 = function(dbConfig){
         parallelStack.theGroup =   function(cb){
             //get group
             groupModel
-            .findOne({ExternalId:param.groupId})
+            .findOne({_id:param.groupId})
             .populate("Members")
             .exec(function(e,g){
                 if(e){
@@ -262,13 +273,13 @@ exports.v1 = function(dbConfig){
                 }
             });
             //Update the group now
-            groupModel.findOneAndUpdate({"ExternalId":result.theGroup.ExternalId},{$set: result.theGroup},{new:false}, function(err,grp){
+            groupModel.findOneAndUpdate({"_id":result.theGroup._id},{$set: result.theGroup},{new:false}, function(err,grp){
                 if(err){
                     console.error(err);
                     return cb(new models.error(err));
                 }   
                 
-                groupModel.findOne({ExternalId:param.groupId})
+                groupModel.findOne({_id:param.groupId})
                 .populate("Members")
                 .exec(function(e,g){
                     return cb(setReturnGroup(g))
@@ -279,7 +290,7 @@ exports.v1 = function(dbConfig){
     }
     var setReturnGroup = function(g){
         var retVal = {
-                ExternalId : g.ExternalId,
+                _id : g._id,
                 Name:g.Name,
                 Description: g.Description,
                 Locale : g.Locale,

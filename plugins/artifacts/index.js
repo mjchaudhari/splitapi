@@ -35,7 +35,7 @@ module.exports = function(dbConfig){
     this.save = function (param,  cb) {
         //var isAddNew = true;
         //find the one with same external id
-        if(param.ExternalId && param.ExternalId > 0)
+        if(param._d && param._id != 0)
         {
             update(param, function(e,d){
                 return cb(e,d);
@@ -61,7 +61,7 @@ module.exports = function(dbConfig){
        if(a)
        {
             //check if the duplicate name exist and has different id
-            if(data.ExternalId != a.ExternlaId)
+            if(data._id != a._id)
             {
                 //some other record exist with same name;
                return cb(null, true); 
@@ -164,7 +164,7 @@ module.exports = function(dbConfig){
         data.ClientId = param.ClientId;
         
         var a = new artifactModel(data);
-        artifactModel.findOneAndUpdate({"ExternalId":a.Id},a,{upsert: false}, function(err){
+        artifactModel.findOneAndUpdate({"_id":a._id},a,{upsert: false}, function(err){
             if(err){
                 console.error(err);
                 return cb(err);
