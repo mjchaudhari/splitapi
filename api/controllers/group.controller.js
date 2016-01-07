@@ -224,7 +224,7 @@ exports.v1 = function(dbConfig){
         parallelStack.usersToRemove = function(cb){
             //get all users
             userModel.find(
-                { "Id" : {$in: usersArray} }, 
+                { "_id" : {$in: usersArray} }, 
                 function(e, lst){
                     if(e){
                          cb(e);

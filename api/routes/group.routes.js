@@ -112,7 +112,7 @@ module.exports = function(dbConfig, auth,app) {
 	});
 	
 	/**
-     * @api {delete} /v1/group/members remove memember in group
+     * @api {post} /v1/group/members/delete remove memember in group
      * @apiName remove members
      * @apiGroup Group
      * @apiParam {number} groupId 
@@ -126,7 +126,7 @@ module.exports = function(dbConfig, auth,app) {
      *
      * @apiSuccess {group} group object.
     */
-	app.delete('/v1/group/members', auth.isBearerAuth, function(req, res) {
+	app.post('/v1/group/members/remove', auth.isBearerAuth, function(req, res) {
 		v1.removeMembers(req, function (d){
 			if(d.isError){
 				res.status(400).send(d);
