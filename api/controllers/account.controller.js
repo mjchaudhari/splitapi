@@ -245,7 +245,7 @@ exports.v1 = function(dbConfig){
                 return callback(e);
             }       
             //Find the matching account
-            accountModel.findOne({User:data._id})
+            accountModel.findOne({"User":data._id})
             .populate("User")
             .exec(function(err,acct){
                 if(err){
