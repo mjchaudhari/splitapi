@@ -20,7 +20,8 @@ exports.v1 = function(dbConfig){
     //get single user based on username     
     this.getGroups =function(req, cb)
     {
-        var u = req.user;
+        var u = req.user.User; //req.userIsAcount and user.User is actual user profile
+        
         var q = req.query;
 		var options = {
 			_id:q._id,
@@ -39,12 +40,12 @@ exports.v1 = function(dbConfig){
             search._id = options._id;
         }
         if(options.name && options.name.length > 0)
-                   {
+        {
             search.Name = options.name;
         }
         //TODO
-        //search.Members = [{"_id" : u._id}];
-        var opts = { path: 'Members', model:"Profiles" };
+        //search.Members = {$in : [new mongoose.Types.ObjectId(u._id)]};
+        //search.Members = {$in : [ u._id]};
         groupModel.find(search)
         .populate("Members")
         .exec(function(e,g){
@@ -52,7 +53,20 @@ exports.v1 = function(dbConfig){
             {
                 return cb(new models.error(e));
             }
-            return cb(new models.success(g));
+            var usersGroups = [];
+            g.forEach(function(grp){
+                var hasMember = false;
+                grp.Members.forEach(function(m){
+                    if(m._id.toString() == u._id.toString()){
+                        hasMember = true;
+                    }    
+                });
+                if(hasMember == true || (grp.CreatedBy.toString() == u._id.toString()))
+                {
+                    usersGroups.push(grp);
+                }
+            })
+            return cb(new models.success(usersGroups));
         });
     };
     
@@ -60,7 +74,8 @@ exports.v1 = function(dbConfig){
     this.save = function (req, cb) {
         console.log("controller : post artifact");
         var param = req.body;
-    
+        var currentUser = req.user.User; //req.userIsAcount and user.User is actual user profile
+        
         var data = {}
         if(param._id)
             data._id = param._id;
@@ -80,7 +95,7 @@ exports.v1 = function(dbConfig){
             data.GroupType= param.GroupType;
         
         
-        data.UpdatedBy = req.user
+        data.UpdatedBy = currentUser;
         data.UpdatedOn  = new Date();
         if(param.ClientId)
             data.ClientId = param.ClientId;
@@ -100,7 +115,7 @@ exports.v1 = function(dbConfig){
             
         }
         else{
-            grp.CreatedBy = req.user;
+            grp.CreatedBy = currentUser;
             grp.save( function(err, data){
                 if(err){
                     console.error(err);
@@ -127,7 +142,7 @@ exports.v1 = function(dbConfig){
     this.addMembers = function (req, cb) {
         console.log("controller : add members");
         var param = req.body;
-    
+        var currentUser = req.user.User; //req.userIsAcount and user.User is actual user profile
         var data = {};
         if(!param.groupId)
             return cb(new models.error("GroupId is not provided" ));
