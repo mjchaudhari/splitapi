@@ -240,7 +240,7 @@ exports.v1 = function(dbConfig){
         //get the user id first and then find the account
         userModel.findOne(options, function   (err, data)
         {
-            if(err){
+            if(err || data == undefined){
                 var e = models.error(err, "");
                 return callback(e);
             }       

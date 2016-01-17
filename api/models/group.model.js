@@ -1,10 +1,15 @@
 var mongoose = require('mongoose');
-var autoIncrement = require('mongoose-auto-increment');
+var shortId     =require("shortid");
+
 
 var Schema = mongoose.Schema;
 
 var groupSchema = new Schema({
-    
+    _id: {
+	    type: String,
+	    unique: true,
+	    default: shortId.generate
+	},
     Name:{type:String, required:true},
     Description:{type:String},
     Locale : {
@@ -16,18 +21,18 @@ var groupSchema = new Schema({
     Url:{type:String},
     GroupType:{type:String},
     Members : [{
-        type:mongoose.Schema.Types.ObjectId, 
+        type:String, 
         ref:'Profiles'
     }],
     CreatedBy:
     {
-        type:mongoose.Schema.Types.ObjectId, 
+        type:String, 
         ref:'Profiles'
     },
     CreatedOn : {type:Date, default:Date.now()   },
     UpdatedBy:
     {
-        type:mongoose.Schema.Types.ObjectId, 
+        type:String, 
         ref:'Profiles'
     },
     UpdatedOn : {type:Date,default:Date.now()},

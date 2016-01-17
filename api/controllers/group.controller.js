@@ -32,7 +32,7 @@ exports.v1 = function(dbConfig){
         var search = {};
         if(u == null){
             var err = new models.error("Unauthenticated");
-            cb(err)
+            return cb(err)
         }
 
         if(options._id && options._id != 0)
@@ -104,31 +104,33 @@ exports.v1 = function(dbConfig){
         if(param._id && param._id != 0)
         {
             console.log(grp._id);
-            groupModel.findOneAndUpdate({"_id":data._id},{$set: data},{new:false}, function(err,g){
+            groupModel.findOneAndUpdate({"_id":data._id},{$set: data},{new:true}, function(err,g){
                 if(err){
                     console.error(err);
                     return cb(new models.error(err));
                 }   
                 //console.log(g);
-                return cb(setReturnGroup(g));
+                groupModel.findOne({"_id" : g._id})
+                .populate("Members")
+                .exec(function(e,g){
+                    return cb(setReturnGroup(g));
+                });
             });
             
         }
         else{
             grp.CreatedBy = currentUser;
+            grp.Members = [currentUser];
             grp.save( function(err, data){
                 if(err){
                     console.error(err);
                     
                     return cb(new models.error(err));
                 }   
-                //console.log(grp);
-                groupModel.findOne({_id:data._id})
-                .populate("CreatedBy")
-                .populate("UdatedBy")
+                groupModel.findOne({"_id" : data._id})
                 .populate("Members")
                 .exec(function(e,g){
-                    return cb(setReturnGroup(g))
+                    return cb(setReturnGroup(g));
                 });
                 
                 

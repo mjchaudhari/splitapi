@@ -1,10 +1,15 @@
 var mongoose = require('mongoose');
+var shortId     =require("shortid");
 
 var Schema = mongoose.Schema;
 
 //Define schema for user
     var userSchema=new Schema({
-        
+        _id: {
+            type: String,
+            unique: true,
+            default: shortId.generate
+        },
         UserName:{type:String, unique:true, required:true},
         FirstName:{type:String},
         LastName:{type:String},
@@ -20,8 +25,13 @@ var Schema = mongoose.Schema;
     });
     
     var accountSchema=new Schema({
+        _id: {
+            type: String,
+            unique: true,
+            default: shortId.generate
+        },
         User:{
-            type:mongoose.Schema.Types.ObjectId, 
+            type:String, 
             ref:'Profiles'},        
         Secret:{type:String},
         SecretsUsed:[{type:String}],       
