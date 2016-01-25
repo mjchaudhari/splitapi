@@ -25,7 +25,7 @@
 			// Automatically stop program after launch.
 			"stopOnEntry": false,
             "program": "./server.js",
-            "args": ["--port=8085"]
+            "args": ["--harmony --port=8085"]
         },
 		{
 			"name": "Attach",

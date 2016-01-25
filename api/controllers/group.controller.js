@@ -17,7 +17,19 @@ exports.v1 = function(dbConfig){
     var m =  userModels(dbConfig);
     var userModel = m.userModel;
     
-    //get single user based on username     
+    //get single user based on username
+    this.checkGroupMembership = function(userId, groupId, cb){
+        var p = groupModel.find({"_id":groupId,  "Members" : {$in: [userId]}})
+        .exec()
+        .then(function(e){
+                return e.length > 0;
+            },
+            function (e) {
+                return e;
+        });
+             
+    }
+    
     this.getGroups =function(req, cb)
     {
         var u = req.user.User; //req.userIsAcount and user.User is actual user profile

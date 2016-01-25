@@ -22,13 +22,18 @@ var groupSchema = new Schema({
     GroupType:{type:String},
     Members : [{
         type:String, 
-        ref:'Profiles'
+        ref:'Profiles',
+        LastVisited :{type:Date}
     }],
     CreatedBy:
     {
         type:String, 
         ref:'Profiles'
     },
+    Moderators : [{
+        type:String, 
+        ref:'Profiles'
+    }],
     CreatedOn : {type:Date, default:Date.now()   },
     UpdatedBy:
     {
@@ -49,7 +54,7 @@ module.exports = function(dbConfig){
         var init = function (){
             
         };
-       
+        
         init();
     return { 
         groupModel: dbConfig.conn.model("Groups", groupSchema)
