@@ -114,7 +114,15 @@ module.exports = function(dbConfig, auth, app) {
 	});
    
     app.post("/v1/file", auth.isBearerAuth, function(req, res){
-		var fstream;
+        fileUpload(req, res);
+	});
+    
+    app.post("/v1/thumbnail", function(req, res){
+        fileUpload(req, res);
+	});
+    
+    var fileUpload = function(req, res){
+        		var fstream;
         req.pipe(req.busboy);
         req.busboy.on('file', function (fieldname, file, filename) {
             console.log("Uploading: " + filename);
@@ -151,7 +159,9 @@ module.exports = function(dbConfig, auth, app) {
                 });
             });
         });
-	})
+
+    }
+    
     app.post('/drive/upload', function(req, res){
         
         var options = {};

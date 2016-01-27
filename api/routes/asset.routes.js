@@ -34,6 +34,44 @@ module.exports = function(dbConfig, auth,app) {
 		});
 	});
     
+    /**
+     * @api {get} /v1/group/membership?groupId check if current user is member of this group
+     * @apiName Get assets
+     * @apiGroup Asset
+     * @apiParam {string} groupId the group in which asset is created
+     * @apiParam {string} parentId the parant container Id in which the asset lies. OPTIONAL
+     * @apiParam {count} count of the recorda required OPTIONAL defaults to 100
+	 * @apiHeader {updatedAfter} fetch records created/updated after this date. Optional
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     }      
+     *
+     * @apiSuccess {boolean} true if user is member of given group 
+    */
+    app.get('/v1/:groupId/assets', auth.isBearerAuth, function(req, res) {
+        
+		v1.getAssets(req, function (d){
+			if(d.isError){
+				res.status(400).send(d);
+				return;
+			}
+			res.json(d);
+		});
+	});
+    
+    app.get('/v1/assetconfig', auth.isBearerAuth, function(req, res) {
+        v1.getAssetConfig().then(function(d){
+            res.json(d);
+        });
+		// v1.getAssetConfig (function (d){
+		// 	if(d.isError){
+		// 		res.status(400).send(d);
+		// 		return;
+		// 	}
+		// 	res.json(d);
+		// });
+	});
     
     
     /**

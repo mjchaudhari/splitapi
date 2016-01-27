@@ -1,6 +1,7 @@
     var models = require("./../response.models.js").models;
 var uuid = require("node-uuid");
 var mongoose = require('mongoose');
+var configModels =  require("./../models/config.model.js");
 var assetModels =  require("./../models/artifact.model.js");
 var userModels = require("./../models/user.model.js");
 var groupCollection =  require("./../models/group.model.js");
@@ -13,16 +14,28 @@ group module
 */
 exports.v1 = function(dbConfig){
     
-    var am =  assetModels(dbConfig);
-    var assetModel = am.assetModel;
-    var assetConfigModel = am.assetModel;
-    var auditModel = am.auditModel;
+    //var am =  assetModels(dbConfig);
+    var assetConfigModel = configModels(dbConfig).assetConfigModel;
+    var assetModel = assetModels(dbConfig).assetModel;
+    
     var grpModel = groupCollection(dbConfig).groupModel;
     
     var m =  userModels(dbConfig);
     var userModel = m.userModel;
     
-    //get single user based on username
+    this.getAssetConfig = function(){
+        //return assetConfigModel.find();
+    }
+
+    this.getAllAssets = function(cb){
+       
+        assetModel.find()
+            .populate("AssetCategory")
+            .exec(function(e,g){
+                return cb(g);
+            });//get single user based on username
+    }
+
     /** Gets the assets of given group if the current user is member of this group
      * 
     */     
@@ -30,34 +43,39 @@ exports.v1 = function(dbConfig){
     {
         var u = req.user.User;         
         var q = req.query;
+        var g = req.params.groupId;
 		var options = {
-            parentId : q.parent,
-		    groupId:q.groupId,
+            parentId : q.parentId,
+		    groupId:g,
 			count:100,
-            latest : true
+            updatedAfter : q.updatedAfter
 		};
+        if(options.updatedAfter == null ){
+            options.updatedAfter = new Date("01-01-01")
+        }
         var result = {
             
         }
         //find the last user visited date time to determine which post we should be giving back
         grpModel.find({
                 "_id": options.groupId,
-                "Members":{$in:[]},
+                //"Members":{$in:[u._id]},
             })
             .populate("Members")
             .exec()
             .then(function(d){
                 if(d.length == 0){
                     result = models.error("Unauthorize: Not a group member");
-                    return result;    
+                    return cb(result);    
                 }
                 
                 return d; 
             },function (err) {
-                new models.error("Unauthenticated");
+                result = new models.error("Unauthenticated");
+                return cb(result);
             })
             //
-            .then(function(d){}, function (params) {
+            .then(function (d) {
                 var lastVisited = new Date("01-01-01")
                 if(d.LastVisited){
                   lastVisited = d.lastVisited;
@@ -67,35 +85,34 @@ exports.v1 = function(dbConfig){
                 }
                 var parentId = options.parentId;
                 if(options.parentId == null){
-                    parentId = options.groupId
+                    parentId = options.groupId;
                 }
                 
                 
                 
                 //return assetsas per criteria
-                var parentMatch = "/" + parent + "/$"
-                var filter = {'Path': {'$regex': '/' + parentMatch + '/'}};
+                //var parentMatch = "/" + parentId + "/$";
+                
+                //var filter = {'Path': {'$regex': '/' + parentMatch + '/'}};
+                var parentMatch =  parentId ;
+                //"Members" : {$in: [userId]}
+                var filter = {'Paths': {$in: [parentMatch] }};
                 assetModel.find(filter)
-                .populate("Type")
+                .populate("AssetCategory")
                 .exec()
                 .then(function (d) {
                     //transform and then resolve the promice the data
+                    result = new models.success(d);
+                    return cb(result);
                 }, function (err) {
-                    var err = new models.error("Unauthenticated");
+                    var err = new models.error(err);
                     //reject the Promise
+                    return cb(err);
                 })
                 
                 
-            })
+            });
             
-            
-            
-        var search = {};
-        
-        if(u == null){
-            var err = new models.error("Unauthenticated");
-            return cb(err)
-        }
 
     }
     
@@ -125,6 +142,10 @@ exports.v1 = function(dbConfig){
         if(param.Name)
             data.Name=param.Name;
             
+        if(param.AssetCategory){
+            data.AssetCategory=param.AssetCategory;
+        }
+            
         if(param.Description)
             data.Description=param.Description;
         if(param.Status)
@@ -148,17 +169,32 @@ exports.v1 = function(dbConfig){
         if(param.TopicId ){
             data.TopicId = param.TopicId
         }
+        else{
+            data.TopicId = data.GroupId
+        }
         
+        if(param.Paths ){
+            data.Paths = param.Paths
+        }
+        else{
+            data.Paths = [
+                data.TopicId 
+            ]
+        }
+        data.UpdatedBy = currentUser;
         var ast = assetModel(data);
+        
         if(param._id && param._id != 0)
         {
-            
             //Update
             console.log(ast._id);
             var original = null;
             assetModel.findOne({"_id":ast._id})
             .then(function(a){
                 original = a;
+            })
+            .then(function(a){
+                assetConfigModel.find();
             })
             .then(function(a){
                 //var ast = setDocToSave(data, ast);
@@ -182,7 +218,7 @@ exports.v1 = function(dbConfig){
                     }   
                     //console.log(g);
                     assetModel.findOne({"_id" : g._id})
-                    .populate("Type")
+                    .populate("AssetCategory")
                     .exec(function(e,g){
                         return cb(setReturnAsset(g));
                     });
@@ -194,6 +230,10 @@ exports.v1 = function(dbConfig){
         else{
                 //var a = {};
                 //var dataToSave = setDocToSave(ast, a);
+                //determine path based on parent
+                //if there is parent then find the path of parent and add
+                //parentId in path to make path for this asset
+                 
                 
                 var audit = {
                     AssetId : ast._id,
@@ -211,7 +251,7 @@ exports.v1 = function(dbConfig){
                         return cb(new models.error(err));
                     }
                     assetModel.findOne({"_id" : data._id})
-                    .populate("Type")
+                    .populate("AssetCategory")
                     .exec(function(e,g){
                         return cb(setReturnAsset(g));
                     });
@@ -221,34 +261,6 @@ exports.v1 = function(dbConfig){
         };
         
     };
-    
-    var setDocToSave = function(src, target){
-        
-        if(target == null){
-            target = {};
-        }
-        target.Name = src.Name;
-        target.Description = src.Description;
-        target.Type = src.Type;
-        target.Status =src.Status;
-        target.Thumbnail = src.Thumbnail;
-        target.Urls = src.Urls;
-        target.ActivateOn = src.ActivateOn;
-        target.ExpireOn = src.ExpireOn;
-        if(src.GroupId){
-            target.GroupId = src.GroupId;
-        }
-        if(target.AuditTrail = null)
-        {
-            target.AuditTrail = [];
-        }
-
-        if(src.Paths){
-            target.Paths = src.Paths    
-        }
-                    
-        return target;            
-    }
     var setReturnAsset = function(a){
         var as = {
             _id : a._id,
@@ -258,10 +270,13 @@ exports.v1 = function(dbConfig){
             , Thumbnails: a.Thumbnail
             , Urls : a.Urls 
             , Paths:a.Paths
+
             , GroupId: a.GroupId
             , ActivateOn : a.ActivateOn
             , ExpireOn : a.ExpireOn
             , AuditTrail : a.AuditTrail
+            , AssetCategory : a.AssetCategory
+            
             
             
         }
