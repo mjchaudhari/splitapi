@@ -1,7 +1,7 @@
 var oauth2orize = require('oauth2orize');
 var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
-var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
+//var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var userModels = require("./models/user.model.js");
 
