@@ -34,7 +34,7 @@ app.use(function(req, res, next) {
 app.get('/', function (req, res, next) {
    console.log('in route');
    
-  res.sendFile('./test.html');
+  res.sendFile('./index.html');
 });
 
 
