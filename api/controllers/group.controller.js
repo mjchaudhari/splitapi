@@ -196,7 +196,7 @@ exports.v1 = function(dbConfig){
                             continue;
                         }
                         var m = _.find(g.Members, function(item) {
-                            return item._id.equals(element._id);
+                            return item._id == element._id;
                         }); 
                         if(!m){
                             membersToAdd.push(element);
@@ -291,7 +291,7 @@ exports.v1 = function(dbConfig){
             result.usersToRemove.forEach(function(u){
                 var idx = -1;
                 for (var i = 0;i < result.theGroup.Members.length; i++){
-                    if(result.theGroup.Members[i]._id.equals(u._id)){
+                    if(result.theGroup.Members[i]._id == u._id){
                         idx = i;
                     }
                     
