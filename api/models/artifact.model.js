@@ -26,6 +26,7 @@ var assetSchema = new Schema({
     Thumbnail:{type:String},
     Urls:[{type:String}],
     Moderators : [{
+        _id: false,
         type:String, 
         ref:'Profiles'
     }],
@@ -33,6 +34,7 @@ var assetSchema = new Schema({
     ExpireOn : {type:Date, default:Date.now()   },
     AuditTrail : [
         {
+            _id:false,
             Action:{type:String},
             UpdatedBy:{
                 type:String, 
@@ -43,15 +45,6 @@ var assetSchema = new Schema({
             Notify:{type:Boolean}
         }
     ],
-    UpdatedBy:{
-        type:String, 
-        ref:'Profiles'
-    },
-    // AuditTrail :
-    // [{
-    //     type:String, 
-    //     ref:'AssetAudits'
-    // }],
     GroupId:
     {
         type:String, 

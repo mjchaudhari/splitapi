@@ -48,10 +48,10 @@ exports.v1 = function(dbConfig){
             parentId : q.parentId,
 		    groupId:g,
 			count:100,
-            updatedAfter : q.updatedAfter
+            from : q.from
 		};
-        if(options.updatedAfter == null ){
-            options.updatedAfter = new Date("01-01-01")
+        if(options.from == null ){
+            options.from = new Date("01-01-01")
         }
         var result = {
             
@@ -89,6 +89,18 @@ exports.v1 = function(dbConfig){
                 }
                 
                 
+                var fromDate = new Date(1,1,1);
+                if(q.from)
+                {
+                    fromDate = new Date(q.from)
+                }
+                
+                var filter = {
+                    "GroupId": options.groupId,
+                    "AuditTrail.UpdatedOn" : {"$gte": fromDate}
+                    //"Members":{$in:[u._id]},
+                }
+                
                 
                 //return assetsas per criteria
                 //var parentMatch = "/" + parentId + "/$";
@@ -96,9 +108,18 @@ exports.v1 = function(dbConfig){
                 //var filter = {'Path': {'$regex': '/' + parentMatch + '/'}};
                 var parentMatch =  parentId ;
                 //"Members" : {$in: [userId]}
-                var filter = {'Paths': {$in: [parentMatch] }};
+                filter.Paths = {$in: [parentMatch] };
+                
+                
+                //filter.AuditTrail = {"UpdatedOn" : {"$gte": fromDate}};
+                
+                // if(q.count){
+                //     options.count = q.count
+                // }
+                
                 assetModel.find(filter)
                 .populate("AssetCategory")
+                .populate("AuditTrail.UpdatedBy")
                 .exec()
                 .then(function (d) {
                     //transform and then resolve the promice the data
@@ -267,10 +288,10 @@ exports.v1 = function(dbConfig){
             _uid : a._uid
             ,Name : a.Name
             ,Description : a.Description
-            , Thumbnails: a.Thumbnail
+            , Thumbnail: a.Thumbnail
             , Urls : a.Urls 
             , Paths:a.Paths
-
+            
             , GroupId: a.GroupId
             , ActivateOn : a.ActivateOn
             , ExpireOn : a.ExpireOn
@@ -280,6 +301,16 @@ exports.v1 = function(dbConfig){
             
             
         }
+        
+        CreatedBy = null;
+        UpdatedBy = null;
+        
+        if(a.AuditTrail && Array.isArray( a.AuditTrail) ){
+            //first is always created by
+            a.CreatedBy = a.AuditTrail[0];
+            a.UpdatedBy = _.last(a.AuditTrail);
+        }
+        
         return as;
     }
 
