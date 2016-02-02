@@ -190,22 +190,22 @@ exports.v1 = function(dbConfig){
                 }
                 var membersToAdd=[];
                 for (var index = 0; index < lst.length; index++) {
-                        var element = lst[index];
-                        if(element == null)
-                        {
-                            continue;
-                        }
-                        var m = _.find(g.Members, function(item) {
-                            return item._id == element._id;
-                        }); 
-                        if(!m){
-                            membersToAdd.push(element);
-                        }
+                    var element = lst[index];
+                    if(element == null)
+                    {
+                        continue;
                     }
-                    for (var index = 0; index < membersToAdd.length; index++) {
-                        g.Members.push(membersToAdd[index]._id);
+                    var m = _.find(g.Members, function(item) {
+                        return item._id == element._id;
+                    }); 
+                    if(!m){
+                        membersToAdd.push(element);
                     }
-                
+                }
+                for (var index = 0; index < membersToAdd.length; index++) {
+                    g.Members.push(membersToAdd[index]._id);
+                }
+            
                 //Update now
                 groupModel.findOneAndUpdate({"_id":g._id},{$set: g},{new:false}, function(err,grp){
                     if(err){

@@ -240,8 +240,11 @@ exports.v1 = function(dbConfig){
                     //console.log(g);
                     assetModel.findOne({"_id" : g._id})
                     .populate("AssetCategory")
+                    .populate("AuditTrail.UpdatedBy")
                     .exec(function(e,g){
-                        return cb(setReturnAsset(g));
+                        var result = setReturnAsset(g);
+                        return cb(new models.success(result));
+                        
                     });
                 });
                     
@@ -273,11 +276,11 @@ exports.v1 = function(dbConfig){
                     }
                     assetModel.findOne({"_id" : data._id})
                     .populate("AssetCategory")
+                    .populate("AuditTrail.UpdatedBy")
                     .exec(function(e,g){
-                        return cb(setReturnAsset(g));
+                        var result = setReturnAsset(g);
+                        return cb(new models.success(result));
                     });
-                
-                
             });
         };
         
