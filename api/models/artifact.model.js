@@ -32,6 +32,12 @@ var assetSchema = new Schema({
     }],
     ActivateOn : {type:Date, default:Date.now()   },
     ExpireOn : {type:Date, default:Date.now()   },
+    
+    UpdatedOn : {type:Date, default:Date.now()},
+    UpdatedBy:{
+                type:String, 
+                ref:'Profiles'
+    },
     AuditTrail : [
         {
             _id:false,
