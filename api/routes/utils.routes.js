@@ -1,9 +1,10 @@
-//User routes
+    //User routes
 
 var models = require("./../response.models.js").models;
 var path = require("path");
 var fs = require('fs-extra'); 
 var azureStorage = require("../azureStorageHelper.js")();
+var fileCtrl = require("./../controllers/file.controller.js");
 var _dir = process.cwd();
 
 
@@ -51,8 +52,8 @@ module.exports = function(dbConfig, auth, app) {
                 console.log("Upload Finished of " + filename);         
 				var m = new models.success("File upload.");
 				m.data = {
-					FileName :filename,
-					url: "//" + res.req.headers.host + '/file/' + filename 
+					FileName :path.basename(filePath),
+					url: "//" + res.req.headers.host + '/file/' + path.basename(filePath) 
 				}
 				res.json( m);     
                 
@@ -119,6 +120,38 @@ module.exports = function(dbConfig, auth, app) {
     
     app.post("/v1/thumbnail", function(req, res){
         fileUpload(req, res);
+	});
+    /**
+     * Upload base64 thumbnail 
+     * @apiParam {string} imgUrl - image in base64 string  
+     * @apiParam {string} name - file name 
+     * @apiSuccess {string} url of the ploaded image
+     */
+    app.post("/v1/thumbnail/binary", function(req, res){
+        var base64String = req.body.imgUrl;
+        var fileName = req.body.fileName;
+        
+        fileCtrl.saveFileFromBase64(fileName, base64String, function(err, filePath){
+            if(err){
+                console.error(err);
+                var e = new models.error(err,"");
+                res.json(e);    
+                return;
+            };
+            var downloadUrl = '//' + req.headers.host + '/file/'+fileName;
+            var s = new models.success();
+            s.data = fileName;
+            res.json(s);
+            
+            // fileCtrl.uploadToAzureStorage("gallery",filePath,function(err,result){
+            //     if(err){
+            //         var e = new models.error(err,"");
+            //         res.json(e);    
+            //     }
+            //     var s = new models.success(result);
+            //     res.json(s);
+            // });
+        });
 	});
     
     var fileUpload = function(req, res){

@@ -1,23 +1,22 @@
-// obtain a JWT-enabled version of request
+    // obtain a JWT-enabled version of request
   var azure = require('azure-storage');
   var path = ure = require('path');
   var _dir = process.cwd();
   
   process.env.AZURE_STORAGE_ACCOUNT = "ezcollaborate";
-  process.env.AZURE_STORAGE_ACCESS_KEY = "Qkjcq8CdrL3cPtwHVZh1mPjJREKOWjBCrtEDh2flgHRJRWM6HHsrOc64NQz3cnJVUb3FvB0CQ3nYMaFjrhYREA==";
+  process.env.AZURE_STORAGE_ACCESS_KEY = "qYwtbk/eI8gd+gO5+IOzEKBAixXDXBTiUd5s6Ar7xYUdbscqDflsYh887Glw/BYv1FfWnHWv4Kr71NS1wqTtkA==";
   var azureBlobUrl = "https://ezcollaborate.blob.core.windows.net/gallary/";
   module.exports = function(){
     var blobService = azure.createBlobService();
     
-    var _getFiles  = function(options, cb){
-   
-        request({
-            url: 'https://www.googleapis.com/drive/v3/files',
-            jwt:jwt
-            }, function (err, res, body) {
-                return cb(err, body);
-            });    
-    }
+    // blobService.createContainer('gallery', {timeoutIntervalInMs:5000, publicAccessLevel: 'blob'},function(error, result, response){
+    //     if(error){
+    //         Console.log("Container already exist.")
+    //     }
+    //     if(!error){
+    //         Console.log("Container Created.")
+    //     }
+    // });
     
     /**
      * Upload file in azure
@@ -36,13 +35,44 @@
      * @return {object} Request object
      */
     var _uploadFile  = function(options, cb){
-        blobService.createContainerIfNotExists('gallary', {
-                publicAccessLevel: 'blob'
-            }, function(error, result, response) {
-            if (!error) {
+        if(options.container == null){
+            options.container="";
+        }
+        if(options.container == ""){
+           options.container = "gallery"; 
+        }
+        var containerName =options.container; 
+        
+        blobService.createContainerIfNotExists(containerName, {publicAccessLevel : 'blob'},function(err, result, response) {
+            if (err) {
+                console.log("Couldn't create container %s", containerName);
+                console.error(err);
+            } else {
+                if (result) {
+                    console.log('Container %s created', containerName);
+                } else {
+                    console.log('Container %s already exists', containerName);
+                }
+
+                // Your code goes here
+            }
+        });
+        // blobService.createContainerIfNotExists(options.container)
+        // .then(function(){
+            
+        // });
+        
+        //blobService.doesBlobExist(options.container,);
+        // blobService.createContainerIfNotExists(options.container, {
+                
+        //     }, function(error, result, response) {
+            // if(error){
+            //     return cb(error);
+            // }
+            //if (!error) {
                 var blobName = options.saveAs; 
                 
-                blobService.createBlockBlobFromLocalFile(options.container, blobName , options.fileName, function(error, result, response) {
+                blobService.createBlockBlobFromLocalFile(options.container, blobName , options.filePath, function(error, result, response) {
                     if (!error) {
                         // file uploaded
                     }
@@ -52,9 +82,8 @@
                     };
                     return cb(null, res);
                 });        
-            }
-        });
-        
+        //     }
+        // });
     }
     var _uploadFileFromStream  = function(options, cb){
         blobService.createContainerIfNotExists('gallary', {
@@ -78,7 +107,6 @@
     }
     
     return {
-        getFiles : _getFiles,
         uploadFile:_uploadFile,
         uploadStream : _uploadFileFromStream
     }
