@@ -1,6 +1,5 @@
     var models = require("./../response.models.js").models;
 var uuid = require("node-uuid");
-var path = require("path");
 var mongoose = require('mongoose');
 var configModels =  require("./../models/config.model.js");
 var assetModels =  require("./../models/artifact.model.js");
@@ -10,6 +9,7 @@ var fileCtrl =  require("./file.controller.js");
 var _hlp =  require("../utils.js");
 var _ = require("underscore-node");
 var async = require ("async");
+var path = require("path");
 
 /*
 group module
@@ -175,14 +175,8 @@ exports.v1 = function(dbConfig){
             data.Status = param.Status;
         if(param.Locale)
             data.Locale = param.Locale;
-        if(param.Thumbnail){
-            if(isBase64Image(param.Thumbnail)){
-                data.base64Thumbnail = param.Thumbnail;
-            }else{
-                data.Thumbnail= param.Thumbnail;
-            }
-            
-        }
+        if(param.Thumbnail)
+            data.Thumbnail= param.Thumbnail;
         if(param.Urls)
             data.Urls= param.Urls;
             
@@ -212,6 +206,7 @@ exports.v1 = function(dbConfig){
         }
         data.UpdatedBy = currentUser;
         
+        data.base64Thumbnail = param.base64Thumbnail;
         var ast = assetModel(data);
         
         if(param._id && param._id != 0)
@@ -247,27 +242,15 @@ exports.v1 = function(dbConfig){
                         console.error(err);
                         return cb(new models.error(err));
                     }   
-                    if(data.base64Thumbnail){
-                        saveThumbnail(req, g._id, g._id,data.base64Thumbnail, function(e, thumb){
-                            assetModel.findOne({"_id" : g._id})
-                            .populate("AssetCategory")
-                            .populate("AuditTrail.UpdatedBy")
-                            .exec(function(e,g){
-                                var result = setReturnAsset(g);
-                                return cb(new models.success(result));
-                            });
-                        })
-                    }
-                    else
-                    {
-                        assetModel.findOne({"_id" : data._id})
-                        .populate("AssetCategory")
-                        .populate("AuditTrail.UpdatedBy")
-                        .exec(function(e,g){
-                            var result = setReturnAsset(g);
-                            return cb(new models.success(result));
-                        });
-                    }
+                    //console.log(g);
+                    assetModel.findOne({"_id" : g._id})
+                    .populate("AssetCategory")
+                    .populate("AuditTrail.UpdatedBy")
+                    .exec(function(e,g){
+                        var result = setReturnAsset(g);
+                        return cb(new models.success(result));
+                        
+                    });
                 });
                     
             })
@@ -291,62 +274,54 @@ exports.v1 = function(dbConfig){
                 }
                 
                 ast.AuditTrail = [audit];
-                ast.save( function(err, d){
+                ast.save( function(err, data){
                     if(err){
                         console.error(err);
                         return cb(new models.error(err));
                     }
-                    if(data.base64Thumbnail){
-                        saveThumbnail(req, d._id, d._id,data.base64Thumbnail, function(e, thumb){
-                            assetModel.findOne({"_id" : d._id})
-                            .populate("AssetCategory")
-                            .populate("AuditTrail.UpdatedBy")
-                            .exec(function(e,g){
-                                var result = setReturnAsset(g);
-                                return cb(new models.success(result));
-                            });
-                        })
-                    }
-                    else
-                    {
-                        assetModel.findOne({"_id" : data._id})
-                        .populate("AssetCategory")
-                        .populate("AuditTrail.UpdatedBy")
-                        .exec(function(e,g){
-                            var result = setReturnAsset(g);
-                            return cb(new models.success(result));
-                        });
-                    }
+                    
+                    assetModel.findOne({"_id" : data._id})
+                    .populate("AssetCategory")
+                    .populate("AuditTrail.UpdatedBy")
+                    .exec(function(e,g){
+                        var result = setReturnAsset(g);
+                        return cb(new models.success(result));
+                    });
             });
         };
         
     };
-    var isBase64Image = function(data){
-        if(data.indexOf("data:image/png;base64,") > -1){
-            return true;
-        }
-        return false;
-    }
-    var saveThumbnail = function(req, assetId, thumbName, base64Thumbnail, cb){
-        fileCtrl.saveFileFromBase64(assetId,base64Thumbnail,function(err, data){
-            var downloadUrl = '//' + req.headers.host + '/file/'+ path.basename(data);
-            var ast = new assetModel({"_id":assetId, "Thumbnail":downloadUrl});
+    /***
+     * save the thumbnail
+     */
+    this.saveBase64Thumbnail = function(req, cb){
+        var assetId = req.body.assetId;
+        var imgUrl = req.body.base64ImgUrl;
+
+        fileCtrl.saveFileFromBase64( assetId, imgUrl, function(err, data){
+            if(err){
+                console.error(err);
+                return cb(new models.error(err));
+            }
+            var fileUrl = "//" + req.headers.host +'/file/'+  path.basename(data);
+            var ast = new assetModel({"_id":assetId, "Thumbnail":fileUrl});
             assetModel.findOneAndUpdate({"_id":ast._id},{$set: ast},{new:true}, function(err,g){
                 if(err){
                     console.error(err);
                     return cb(new models.error(err));
-                }   
-                return cb(new models.success());
-            });    
+                }
+                var ret = new models.success({"imageUrl" : fileUrl});
+                return cb(ret);
+            });
         });
-        
     }
+
     var setReturnAsset = function(a){
         var as = {
-            _id : a._id,
-            _uid : a._uid
-            ,Name : a.Name
-            ,Description : a.Description
+            _id : a._id
+            , _uid : a._uid
+            , Name : a.Name
+            , Description : a.Description
             , Thumbnail: a.Thumbnail
             , Urls : a.Urls 
             , Paths:a.Paths
@@ -356,9 +331,6 @@ exports.v1 = function(dbConfig){
             , ExpireOn : a.ExpireOn
             , AuditTrail : a.AuditTrail
             , AssetCategory : a.AssetCategory
-            
-            
-            
         }
         
         CreatedBy = null;

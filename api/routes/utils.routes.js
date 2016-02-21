@@ -111,7 +111,11 @@ module.exports = function(dbConfig, auth, app) {
 	
 	app.get('/file/*', function(req, res){
 		var path = tmpUploadFolder + '/' + req.params[0] ;
-		res.sendfile(path);
+        if(path.existsSync(path)){
+		res.sendFile(path);}
+        else{
+            res.status(404).send("Not found");
+        }
 	});
    
     app.post("/v1/file", auth.isBearerAuth, function(req, res){

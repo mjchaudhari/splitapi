@@ -111,5 +111,20 @@ module.exports = function(dbConfig, auth,app) {
 			res.json(d);
 		});
 	});
-    
+    /**
+     * Upload base64 thumbnail 
+     * @apiParam {string} base64ImgUrl - image in base64 string  
+     * @apiParam {string} name - file name 
+     * @apiSuccess {string} url of the ploaded image
+     */
+    app.post("/v1/asset/thumbnail/binary", function(req, res){
+        
+        v1.saveBase64Thumbnail(req, function(result){
+            if(result.isError){
+                res.json(result);    
+                return;
+            };
+            res.json(result);
+        });
+	});
 }
