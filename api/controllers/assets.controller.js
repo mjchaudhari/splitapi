@@ -333,13 +333,13 @@ exports.v1 = function(dbConfig){
             , AssetCategory : a.AssetCategory
         }
         
-        CreatedBy = null;
-        UpdatedBy = null;
+        as.CreatedBy = null;
+        as.UpdatedBy = null;
         
         if(a.AuditTrail && Array.isArray( a.AuditTrail) ){
             //first is always created by
-            a.CreatedBy = a.AuditTrail[0];
-            a.UpdatedBy = _.last(a.AuditTrail);
+            as.CreatedBy = a.AuditTrail[0];
+            as.UpdatedBy = a.AuditTrail[a.AuditTrail.length - 1];
         }
         
         return as;

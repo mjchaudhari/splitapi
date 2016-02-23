@@ -110,9 +110,9 @@ module.exports = function(dbConfig, auth, app) {
 	})
 	
 	app.get('/file/*', function(req, res){
-		var path = tmpUploadFolder + '/' + req.params[0] ;
-        if(path.existsSync(path)){
-		res.sendFile(path);}
+		var disklocation = tmpUploadFolder + '/' + req.params[0] ;
+        if(fs.existsSync(disklocation)){
+		  res.sendFile(disklocation);}
         else{
             res.status(404).send("Not found");
         }
