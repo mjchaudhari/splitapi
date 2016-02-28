@@ -6,6 +6,8 @@ var userModels = require("./../models/user.model.js");
 var _hlp =  require("../utils.js");
 var _ = require("underscore-node");
 var async = require ("async");
+var fileCtrl =  require("./file.controller.js");
+var path = require("path");
 
 /*
 group module
@@ -112,42 +114,24 @@ exports.v1 = function(dbConfig){
         if(param.ClientId)
             data.ClientId = param.ClientId;
         
-        var grp = groupModel(data);
-        if(param._id && param._id != 0)
-        {
-            console.log(grp._id);
-            groupModel.findOneAndUpdate({"_id":data._id},{$set: data},{new:true}, function(err,g){
-                if(err){
-                    console.error(err);
-                    return cb(new models.error(err));
-                }   
-                //console.log(g);
-                groupModel.findOne({"_id" : g._id})
-                .populate("Members")
-                .exec(function(e,g){
-                    return cb(setReturnGroup(g));
-                });
+        
+        
+        if(data.Thumbnail && _hlp.isBase64Image(req.body.Thumbnail)){
+            var base64Thumbnail = req.body.Thumbnail;
+            fileCtrl.saveFileFromBase64(null, base64Thumbnail, function(err, file){
+                var fileUrl = "//" + req.headers.host +'/file/'+  path.basename(file);
+                data.Thumbnail = fileUrl;
+                saveGroupData(data, function(d){
+                    return cb(d);
+                })
             });
-            
+        }else{
+            saveGroupData(data, function(d){
+                return cb(d);
+            })
         }
-        else{
-            grp.CreatedBy = currentUser;
-            grp.Members = [currentUser];
-            grp.save( function(err, data){
-                if(err){
-                    console.error(err);
-                    
-                    return cb(new models.error(err));
-                }   
-                groupModel.findOne({"_id" : data._id})
-                .populate("Members")
-                .exec(function(e,g){
-                    return cb(setReturnGroup(g));
-                });
-                
-                
-            });
-        };
+        
+        
         
     };
     /***
@@ -317,6 +301,46 @@ exports.v1 = function(dbConfig){
         });
         
     }
+    
+    var saveGroupData = function(data, cb ){
+        var grp = groupModel(data);
+        if(data._id && data._id != 0)
+        {
+            console.log(data._id);
+            groupModel.findOneAndUpdate({"_id":data._id},{$set: data},{new:true}, function(err,g){
+                if(err){
+                    console.error(err);
+                    return cb(new models.error(err));
+                }   
+                //console.log(g);
+                groupModel.findOne({"_id" : g._id})
+                .populate("Members")
+                .exec(function(e,g){
+                    return cb(setReturnGroup(g));
+                });
+            });
+            
+        }
+        else{
+            grp.CreatedBy = currentUser;
+            grp.Members = [currentUser];
+            grp.save( function(err, data){
+                if(err){
+                    console.error(err);
+                    
+                    return cb(new models.error(err));
+                }   
+                groupModel.findOne({"_id" : data._id})
+                .populate("Members")
+                .exec(function(e,g){
+                    return cb(setReturnGroup(g));
+                });
+                
+                
+            });
+        };
+    }
+    
     var setReturnGroup = function(g){
         var retVal = {
                 _id : g._id,

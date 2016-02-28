@@ -142,20 +142,67 @@ exports.v1 = function(dbConfig){
         //Create new User User
     this.save = function (req, cb) {
         console.log("controller : post artifact");
-        var param = req.body;
-        var currentUser = req.user.User; //req.userIsAcount and user.User is actual user profile
         //validate memebership to the group
-        
+        var currentUser = req.user.User
         //mandatory checks
-        if(param.GroupId == null){
+        if(req.body.GroupId == null){
             return cb(new models.error("group required"));
         }
 
-        if(param.Name == null){
+        if(req.body.Name == null){
             return cb(new models.error("Name required"));
         }
 
+        var data = getAssetDataFromBody(req);
+        if(req.body.Thumbnail && _hlp.isBase64Image(req.body.Thumbnail)){
+            var base64Thumbnail = req.body.Thumbnail;
+            fileCtrl.saveFileFromBase64(null, base64Thumbnail, function(err, file){
+                var fileUrl = "//" + req.headers.host +'/file/'+  path.basename(file);
+                data.Thumbnail = fileUrl;
+                saveAssetData(data,currentUser, function(d){
+                    return cb(d);
+                })
+            });
+        }
+        else{
+            saveAssetData(data,currentUser, function(d){
+                    return cb(d);
+            });
+        }
         
+        
+    };
+    /***
+     * save the thumbnail
+     */
+    this.saveBase64Thumbnail = function(req, cb){
+        var assetId = req.body.assetId;
+        var imgUrl = req.body.base64ImgUrl;
+
+        fileCtrl.saveFileFromBase64( assetId, imgUrl, function(err, data){
+            if(err){
+                console.error(err);
+                return cb(new models.error(err));
+            }
+            var fileUrl = "//" + req.headers.host +'/file/'+  path.basename(data);
+            var ast = new assetModel({"_id":assetId, "Thumbnail":fileUrl});
+            assetModel.findOneAndUpdate({"_id":ast._id},{$set: ast},{new:true}, function(err,g){
+                if(err){
+                    console.error(err);
+                    return cb(new models.error(err));
+                }
+                var ret = new models.success({"imageUrl" : fileUrl});
+                return cb(ret);
+            });
+        });
+    };
+    
+    /**
+     * Get asset data from body
+     */
+    var getAssetDataFromBody = function(req){
+      var param = req.body;
+        var currentUser = req.user.User; //req.userIsAcount and user.User is actual user profile
 
         var data = {}
         if(param._id)
@@ -168,7 +215,6 @@ exports.v1 = function(dbConfig){
         if(param.AssetCategory){
             data.AssetCategory=param.AssetCategory;
         }
-            
         if(param.Description)
             data.Description=param.Description;
         if(param.Status)
@@ -179,15 +225,12 @@ exports.v1 = function(dbConfig){
             data.Thumbnail= param.Thumbnail;
         if(param.Urls)
             data.Urls= param.Urls;
-            
         if(param.Moderators)
             data.Moderators = param.Moderators;
-        
         if(param.ActivateOn)
             data.ActivateOn = param.ActivateOn;
         if(param.ExpireOn)
             data.ExpireOn = param.ExpireOn
-        
         data.GroupId = param.GroupId;
         if(param.TopicId ){
             data.TopicId = param.TopicId
@@ -195,7 +238,6 @@ exports.v1 = function(dbConfig){
         else{
             data.TopicId = data.GroupId
         }
-        
         if(param.Paths ){
             data.Paths = param.Paths
         }
@@ -205,11 +247,12 @@ exports.v1 = function(dbConfig){
             ]
         }
         data.UpdatedBy = currentUser;
-        
-        data.base64Thumbnail = param.base64Thumbnail;
+        return data;  
+    };
+    var saveAssetData = function(data, currentUser, callback){
         var ast = assetModel(data);
         
-        if(param._id && param._id != 0)
+        if(data._id && data._id != 0)
         {
             //Update
             console.log(ast._id);
@@ -240,7 +283,7 @@ exports.v1 = function(dbConfig){
                 assetModel.findOneAndUpdate({"_id":ast._id},{$set: ast},{new:true}, function(err,g){
                     if(err){
                         console.error(err);
-                        return cb(new models.error(err));
+                        return callback(new models.error(err));
                     }   
                     //console.log(g);
                     assetModel.findOne({"_id" : g._id})
@@ -248,13 +291,10 @@ exports.v1 = function(dbConfig){
                     .populate("AuditTrail.UpdatedBy")
                     .exec(function(e,g){
                         var result = setReturnAsset(g);
-                        return cb(new models.success(result));
-                        
+                        return callback(new models.success(result));
                     });
                 });
-                    
             })
-            
         }
         else{
                 //var a = {};
@@ -262,8 +302,6 @@ exports.v1 = function(dbConfig){
                 //determine path based on parent
                 //if there is parent then find the path of parent and add
                 //parentId in path to make path for this asset
-                 
-                
                 var audit = {
                     AssetId : ast._id,
                     Action: "Created",
@@ -277,7 +315,7 @@ exports.v1 = function(dbConfig){
                 ast.save( function(err, data){
                     if(err){
                         console.error(err);
-                        return cb(new models.error(err));
+                        return callback(new models.error(err));
                     }
                     
                     assetModel.findOne({"_id" : data._id})
@@ -285,37 +323,11 @@ exports.v1 = function(dbConfig){
                     .populate("AuditTrail.UpdatedBy")
                     .exec(function(e,g){
                         var result = setReturnAsset(g);
-                        return cb(new models.success(result));
+                        return callback(new models.success(result));
                     });
             });
         };
-        
-    };
-    /***
-     * save the thumbnail
-     */
-    this.saveBase64Thumbnail = function(req, cb){
-        var assetId = req.body.assetId;
-        var imgUrl = req.body.base64ImgUrl;
-
-        fileCtrl.saveFileFromBase64( assetId, imgUrl, function(err, data){
-            if(err){
-                console.error(err);
-                return cb(new models.error(err));
-            }
-            var fileUrl = "//" + req.headers.host +'/file/'+  path.basename(data);
-            var ast = new assetModel({"_id":assetId, "Thumbnail":fileUrl});
-            assetModel.findOneAndUpdate({"_id":ast._id},{$set: ast},{new:true}, function(err,g){
-                if(err){
-                    console.error(err);
-                    return cb(new models.error(err));
-                }
-                var ret = new models.success({"imageUrl" : fileUrl});
-                return cb(ret);
-            });
-        });
     }
-
     var setReturnAsset = function(a){
         var as = {
             _id : a._id
@@ -344,6 +356,7 @@ exports.v1 = function(dbConfig){
         
         return as;
     }
+    
 
     
 };

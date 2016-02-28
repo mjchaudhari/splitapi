@@ -61,6 +61,21 @@
 
     };
     /**
+     * is valid base 64 image url string
+     */
+    _hlp.isBase64Image = function(b64String){
+        var matches = b64String.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+        
+        
+        if (matches.length !== 3) {
+            return false
+        }
+        else{
+            return true;
+        }
+                
+    };
+    /**
      * Check if the object has a value or resolves to undefined
      *
      * @param {object} [object to be checked]
