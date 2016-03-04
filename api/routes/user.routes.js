@@ -52,8 +52,8 @@ module.exports = function(dbConfig, auth, app) {
 	 * * @apiSuccess {String} groups object [{Firstname:"", LastName : "", UserName:"", "Status":"", CreatedOn : "", EmailId:"",Picture:""}]
     */
 	app.post('/v1/user', function(req, res) {
-		console.log(req.body);
-		v1.registerUser(req, function (d){
+		//console.log(req.body);
+		v1.createUser(req, function (d){
 			if(d.isError){
 				//res.status(400).send(d);
 				res.json(d);
@@ -67,6 +67,26 @@ module.exports = function(dbConfig, auth, app) {
 			}
 			d.data.Secret = undefined;
 			res.json(d);
+		});
+	});
+    
+    /**
+     * @api {post} /v1/users save profile
+     * @apiName save user
+     * @apiGroup User		
+     *
+     * 
+     *
+	 * * @apiSuccess {String} groups object [{Firstname:"", LastName : "", UserName:"", "Status":"", CreatedOn : "", EmailId:"",Picture:""}]
+    */
+	app.post('/v1/profile', function(req, res) {
+		
+		v1.saveUser(req, function (d){
+			if(d.isError){
+				res.json(d);
+				return;
+			}
+            res.json(d);
 		});
 	});
 	

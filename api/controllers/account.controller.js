@@ -50,7 +50,7 @@ exports.v1 = function(dbConfig){
     };
     
     //Register User
-    this.registerUser = function (req, cb) {
+    this.createUser = function (req, cb) {
         console.log("controller : post user");
         var r = req.body;
     
@@ -78,7 +78,6 @@ exports.v1 = function(dbConfig){
                 City : r.City,
                 Country : r.Country,
                 ZipCode : r.ZipCode
-                
                 
             });
             
@@ -121,6 +120,35 @@ exports.v1 = function(dbConfig){
                     return cb(m);
                 });
             });
+        });
+    };
+    //save User
+    this.saveUser = function (req, cb) {
+        console.log("controller : post user");
+        var r = req.body;
+        var id = r._id;
+        var usr = {
+            //UserName: r.UserName,
+            //FirstName: r.FirstName,
+            //LastName: r.LastName,
+            
+            //Status:"REQUESTED",
+            AlternateEmail : r.AlternateEmail,
+            EmailId : r.EmailId,
+            Picture : r.Picture,
+            //CreatedOn : new Date(),
+            Address : r.Address,
+            City : r.City,
+            Country : r.Country,
+            ZipCode : r.ZipCode
+        }
+        userModel.findOneAndUpdate({"_id":id},{$set: usr},{new:true}, function(err,u){
+            if(err){
+                console.error(err);
+                return cb(new models.error(e));
+            }   
+            cb(new models.success(u));
+            return;
         });
     };
     
