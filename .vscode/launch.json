@@ -24,7 +24,7 @@
             "type": "node",
 			// Automatically stop program after launch.
 			"stopOnEntry": false,
-            "program": "./server.js",
+            "program": "${workspaceRoot}/server.js",
             "args": ["--harmony --port=8085"]
         },
 		{

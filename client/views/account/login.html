@@ -1,0 +1,38 @@
+
+<div  ng-controller="accountController"   >
+    
+    <div class="bg-orangered" layout="row " layout-align="center center" style="height:100vh;" layout-wrap  >
+          <div flex-sm="30" flex-md="35" ></div>
+          <md-card style="" flex="" >
+            <img ng-src="./content/images/bg-6.jpg" class="md-card-image" style="height:150px" alt="">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Sign in</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-input-container class="md-icon-float md-block">
+                    <label>
+                        <ng-md-icon icon="account_circle"></ng-md-icon>
+                        Name
+                    </label>
+                    <input ng-model="loginModel.userName" type="text">
+                </md-input-container>
+                <md-input-container class="md-icon-float md-block">
+                    <label>
+                        <ng-md-icon icon="vpn_key"></ng-md-icon>
+                        Password
+                    </label>
+                    <input ng-model="loginModel.password" type="password">
+                </md-input-container>
+            </md-card-content>
+            <md-card-actions layout="column" layout-align="start">
+                <md-button class="md-raised md-primary">Ok</md-button>
+                
+                <md-button ui-sref="account.forgotpassword" >Forgot password? Click to reset.</md-button>
+            </md-card-actions>
+        </md-card>        
+     <div flex-sm="30" flex-md="35" ></div>
+  </div>
+ 
+</div>

@@ -1,29 +1,61 @@
-    <!doctype html>
-    <html lang="en" >
-      <head>
-        <title>-split-api</title>
-        <link rel="shortcut icon" href="/img/favicon.jpg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
-        <style>
-          body {
-            padding-top: 60px;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container" ng-app="app" >
-          <img style="height:50px;width:auto;" src="img/favicon.jpg"></img>
-          <h1>Split group expenses for easy sharing</h1>
-          <h4> <a href="help/index.html">Browse API help docs </a> </h4>
-    	  </div>
-        </div>
-        
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/angular.min.js"></script>  
-        <script src="/app/mainApp.js"></script>
-        <script src="/app/assetCtrl.js"></script>
-      </body>
-    </html>
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Collaborate</title>
+  <link rel="shortcut icon" type="image/png" href="./content/images/cp.png"/>
+  <link rel="stylesheet" href="./content/angular-material-1.0.4/angular-material.min.css">
+  <link rel="stylesheet" href="./content/angular-material-1.0.4/angular-material.layouts.min.css">  
+  <link rel="stylesheet" href="./content/robotodraft.css">
+  <link rel="stylesheet" href="./content/icon.css">
+  <link rel="stylesheet" href="./content/eztree.css">
+  <link rel="stylesheet" href="./content/style.css">
+  <link rel="stylesheet" href="./content/ng-img-crop.css">
+  
+<!--    <link rel="stylesheet" href="./client/styles.css">  -->
+</head>
+<body ng-controller="indexController" >
+    <div ui-view >
+    </div>
+
+<!--
+    <script src="./scripts/angular/angular.min.js"></script>
+    <script src="./scripts/angular/angular-animate.min.js"></script>
+    <script src="./scripts/angular/angular-aria.min.js"></script>
+    <script src="./scripts/angular/angular-sanitize.min.js"></script>
+    <script src="./scripts/angular-material-1.0.4/angular-material.min.js"></script>
+    <script src="./scripts/angular-material-icons.min.js"></script>
+    <script src="./scripts/angular-cache.min.js"></script>  
+    <script src="./scripts/angular-ui-router.js"></script>
+    <script src="./scripts/ng-file-upload.js"></script>  
+    <script src="./scripts/ng-img-crop.min.js"></script>  
+    <script src="./scripts/underscore-min.js"></script>
+    <script src="./scripts/moment.min.js"></script>
+    <script src="./scripts/angular-moment.min.js"></script>
+    <script src="./scripts/ngStorage.min.js"></script>
+    <script src="./scripts/angular-ellipsis.min.js"></script>
+    <script src="./scripts/angular-md-pull-to-refresh.js"></script>
+-->
+    <script src="./app/vendor.js"></script>
+
+    
+    <script src="./scripts/ez-directives/ezTree.directive.js"></script>
+    <script src="./scripts/ez-directives/ezImageUpload.directive.js"></script>
+    <script src="./scripts/ez-directives/ezInitials.directive.js"></script>
+    
+<!--     <script src="./client/directives.js"></script> -->
+    
+    <script src="./app.js"></script>
+    <script src="./services/data.service.js"></script>
+    <script src="./services/auth.service.js"></script>
+    <script src="./httpInterceptor.js"></script>
+    <script src="./index.controller.js"></script>
+    <script src="./landing.controller.js"></script>
+    
+    <script src="./controllers/home.controller.js"></script>
+    <script src="./controllers/account.controller.js"></script>
+
+  </body>
+</html>

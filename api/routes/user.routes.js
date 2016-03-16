@@ -159,8 +159,30 @@ module.exports = function(dbConfig, auth, app) {
 		else	
 			res.json(new model.error("Unauthenticated user."));
 	});
+    
+	/**
+     * @api {get} /v1/isLoggedIn 
+     * @apiName Check if user is authenticated
+     * @apiGroup User
+     * @apiParam {number} userName 
+	 *
+	 * @apiHeader {String} Authorization the security token
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     } 
+     * @apiSuccess on success returns the authentication token
+    */
+	app.post('/v1/isauthenticated', function(req, res) {
+		console.log('isAuthenticated');
+		if (req.isAuthenticated())
+			res.json(new model.success('true'));
+		else	
+			res.json(new model.error("false"));
+	});
 	
-	// route middleware to ensure user is logged in
+	
+    // route middleware to ensure user is logged in
 	function isLoggedIn(req, res, next) {
 		if (req.isAuthenticated())
 			return next();

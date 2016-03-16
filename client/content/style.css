@@ -1,0 +1,145 @@
+
+.body-bg-landing{
+    background-image: url(images/bg-3.jpg) ;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    image-rendering: pixelated;
+    min-width: 100%;
+    min-height: 100vh;
+}
+.body-bg{
+    background-image: url(images/bg-9.jpg) ;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    image-rendering: pixelated;
+    min-width: 100%;
+    min-height: 100vh;
+}
+
+/* 
+Show the image as background to display: block;
+*/
+.bgImage {
+    position: fixed;
+    top: 0;
+    left: 0;/* Preserve aspet ratio */
+    min-width: auto;
+    min-height: auto;
+    image-rendering: pixelated;
+    background-size: cover;
+}
+.bgOverlay {
+    position: relative;
+}
+
+.whiteText {
+    color: white;
+}
+
+
+.avatar, avatar-small {
+  border-radius: 99%;
+  border: 1px solid #ddd;
+  width: 55px;
+  height: 55px;
+  margin: 0px;
+  }
+.avatar-small {
+   border-radius: 99%;
+   border: 3px solid #fff;
+   width: 35px;
+   height: 35px;
+   margin: 0px;
+  }
+
+  /*  Select User item template Ends */
+.circle
+{
+  border-radius:50%;
+  color:#fff;
+  width:40px;
+  height:40px;
+  line-height:40px;
+  text-align:center;
+  background: dimgrey;
+  border-radius: 20% !important;
+  border-bottom-right-radius: 0 !important;
+}
+ 
+.transperent-bg{
+  background-color:transparent;
+}
+
+
+@-webkit-keyframes rotating {
+0% { -webkit-transform: rotate(0deg);}
+100% { -webkit-transform: rotate(360deg);}
+}
+@-moz-keyframes rotating {
+0% { -moz-transform: rotate(0deg);}
+100% { -moz-transform: rotate(360deg);}
+}
+@-o-keyframes rotating {
+0% { -o-transform: rotate(0deg);}
+100% { -o-transform: rotate(360deg);}
+}
+@-ms-keyframes rotating {
+0% { -ms-transform: rotate(0deg);}
+100% { -ms-transform: rotate(360deg);}
+}
+@-keyframes rotating {
+0% { transform: rotate(0deg);}
+100% { transform: rotate(360deg);}
+}
+
+
+.rotating {
+    -webkit-animation: rotating 2s infinite linear;
+    -moz-animation: rotating 2s infinite linear;
+    -o-animation: rotating 2s infinite linear;
+    -ms-animation: rotating 2s infinite linear;
+    animation: rotating 2s infinite linear;
+}
+
+
+.thumbnail-card{
+  border: 1px solid silver;
+  height: 110px;
+  width: 110px;
+  padding:5px;
+  border-radius: 50%;
+}
+
+.thumbnail-img{
+  height:100px;
+  width:100px;
+  border-radius: 50px;
+  margin:;
+}
+
+.margin5{
+  margin:5px !important;
+}
+.bg{
+  background-image: url(./images/bg-5.jpg);  
+}
+.bg-red{
+    background-color: red;
+}
+
+.bg-orangered{
+    background-color: orangered;
+}
+.bg-darkorange{
+    background-color: darkorange;
+}
+.bg-orange{
+    background-color: orange;
+}   
+.bg-yellow{
+    background-color: yellow;
+}

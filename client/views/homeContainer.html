@@ -1,0 +1,90 @@
+<div  class="body-bg" ng-controller="homeController" md-theme="{{themes[theme]}}" md-theme-watch="true"  >
+    <!--header-->
+    <section layout="column" flex>
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" >
+            <md-toolbar class="md-tall md-hue-2">
+                <span flex></span>
+                <div layout="column" class="md-toolbar-tools-bottom inset">
+                    <div layout="row">
+                        <img src ng-src="{{AUTHDATA.Picture}}" class="md-avatar thumbnail-img"  md-click="editProfile()" /> 
+                        <div>{{AUTHDATA.FirstName}} {{AUTHDATA.LastName}}</div>
+                    </div>
+                    <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+                    <div flex></div>
+                    <md-icon-button class="md-icon-button md-accent" aria-label="Favorite" ng-click="editProfile()">
+                        <i class="material-icons">settings</i>
+                    </md-icon-button>
+                    </h2>
+                </div>
+            </md-toolbar>
+            <md-list>
+            <md-list-item  >
+                <md-list-content  ng-click="toggleLeft()"  ui-sref="home.dashboard" md-ink-ripple layout="row" layout-align="start center">
+                    <div class="inset">
+                        <ng-md-icon icon="dashboard"></ng-md-icon>
+                    </div>
+                    <div class="">Dashboard
+                    </div>
+                </md-list-content>
+            </md-list-item >
+            <md-list-item  >
+                <md-list-content  ng-click="toggleLeft()"  ui-sref="home.assets"  md-ink-ripple layout="row" layout-align="start center">
+                    <div class="inset">
+                        <ng-md-icon icon="people"></ng-md-icon>
+                    </div>
+                    <div class="">Assets
+                    </div>
+                </md-list-content>
+            </md-list-item >
+            <md-list-item  >
+                <md-list-content  ng-click="toggleLeft()"  ui-sref="home.groups"  md-ink-ripple layout="row" layout-align="start center">
+                    <div class="inset">
+                        <ng-md-icon icon="group"></ng-md-icon>
+                    </div>
+                    <div class="">Groups
+                    </div>
+                </md-list-content>
+                </md-list-item >
+            <md-divider></md-divider>
+                <md-subheader ui-sref="account.users"  aria-label="goups">
+                    <div layout="row">
+                        
+                        <div >
+                        <ng-md-icon icon="group"></ng-md-icon>
+                        </div>
+                        <div>Users</div>
+                    </div>
+                </md-subheader>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-button ng-click="nextTheme()">
+                <md-item-content md-ink-ripple layout="row" layout-align="start center">
+                    <div class="inset">
+
+                    <ng-md-icon icon="format_color_fill"></ng-md-icon>
+                    </div>
+                    <div class="">Change color
+                    </div>
+                </md-item-content>
+                </md-button>
+            </md-list-item>
+            
+            </md-list>
+        </md-sidenav>
+    </section>
+    <!--view for dashbaord, assets, groups-->
+    <md-toolbar >
+        <div class="md-toolbar-tools">
+            <span >Collaboration</span>
+            <span flex></span>
+            <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleLeft()">
+                <ng-md-icon icon="menu"></ng-md-icon> 
+            </md-button>
+            <img src ng-src="{{AUTHDATA.Picture}}" class="md-avatar avatar-small"  md-click="editProfile()" />
+        </div>
+  </md-toolbar>
+   <div ui-view>
+       
+   </div>
+   <!--footer-->
+</div>
