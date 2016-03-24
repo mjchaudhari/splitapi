@@ -35,8 +35,9 @@ function ($q, $location, $injector , $localStorage, $log) {
         if (rejection.status === 401) {
             if ($location.$$path.indexOf("login") <= -1  )
             {
-                $log.info('Unauthenticated...redirecting to login page.');
-                $injector.get('$state').go("account.login");
+                //$log.info('Unauthenticated...redirecting to login page.');
+                //$injector.get('$state').go("account.login");
+                $rootScope.$emit("onUnauthenticatedAccess");
             }
         }
         else {

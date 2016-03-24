@@ -4,7 +4,7 @@ angular.module('app').factory('authService', ['$http', '$log','$q','config' ,'$l
 
     var authServiceFactory = {
         get isLoggedIn () {
-            return _isLoggedIn
+            return _isLoggedIn;
         }
 
     };
@@ -50,9 +50,8 @@ angular.module('app').factory('authService', ['$http', '$log','$q','config' ,'$l
     var _logOut = function () {
     	var deferred = $q.defer();
     	$q.all(
-			storageService.remove('__splituser'),
-			storageService.remove('__splituserat'),
-			storageService.remove()
+			$localStorage.__splituser = null,
+			$localStorage.__splituserat=null
             
     	).then(function(){
     		dataService.clearCache();
@@ -63,11 +62,12 @@ angular.module('app').factory('authService', ['$http', '$log','$q','config' ,'$l
     };
 
     var _isAuthenticated = function () {
-        var url = config.apiBaseUrl + "/v1/isauthenticated";
-        return $http.post(url).then(function(){
-            _isLoggedIn = f.isError; 
+        var url = config.apiBaseUrl + "/v1/isAuthenticated";
+        return $http.post(url).then(function(f){
+            _isLoggedIn = !f.data.isError;
         })
     };
+    
 
     authServiceFactory.login = _login;
     authServiceFactory.logOut = _logOut;
@@ -77,7 +77,15 @@ angular.module('app').factory('authService', ['$http', '$log','$q','config' ,'$l
     authServiceFactory.resendPin = _resendPin;
     authServiceFactory.register = _register;
     
-    _isAuthenticated();
-    return authServiceFactory;
+    function init(){
+    	_isAuthenticated().then(function(){
+			
+	});
+	
+    }
+    
+
+    //init();
+    return authServiceFactory;	
 }])
 

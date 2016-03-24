@@ -2,9 +2,9 @@
     angular.module("app")
     .controller("homeController",homeController);
     
-    homeController.$inject = ["$scope", "$log", "$q", "$localStorage", "$state" ,"dataService", "config","authService","$mdSidenav"];
+    homeController.$inject = ["$scope", "$log", "$q", "$localStorage", "$state" ,"dataService", "config","$mdSidenav"];
     
-    function homeController($scope, $log, $q, $localStorage, $state, dataService, config, authService, $mdSidenav){
+    function homeController($scope, $log, $q, $localStorage, $state, dataService, config, $mdSidenav){
         
         //bindable mumbers
         $scope.title  = "index";
@@ -12,6 +12,8 @@
         $scope.nextTheme = _nextTheme
         $scope.themes = config.themes,
         $scope.theme = $localStorage.theme;
+        $scope.user = $localStorage.__splituser;
+        
         if($scope.theme == undefined){
             $scope.theme = 0;
         }

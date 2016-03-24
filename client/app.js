@@ -3,7 +3,8 @@
 // Code goes here
  //module = angular.module('ezDirectives', ['ngFileUpload']);
  var app = angular.module('app', ['ngMaterial','ngMdIcons', 'ngAnimate', 'ngSanitize', 'ui.router',
-      ,'ngStorage','ngFileUpload','ngImgCrop', 'ezDirectives','angular-cache','angularMoment']);
+      'ngStorage','ngFileUpload','ngImgCrop', 'ezDirectives','angular-cache','angularMoment',
+      'cgBusy']);
  app.constant("config",{
      appTitle:"easy collaborate",
      apiBaseUrl : "",
@@ -13,6 +14,8 @@
  app.config([ "$httpProvider","$urlRouterProvider", '$stateProvider','$mdThemingProvider', 'CacheFactoryProvider', '$localStorageProvider',
  function($httpProvider, $urlRouterProvider, $stateProvider, $mdThemingProvider, CacheFactoryProvider, $localStorageProvider ){
    
+   
+
    angular.extend(CacheFactoryProvider.defaults, { maxAge: 1 * 60 * 1000 });
    $localStorageProvider.setKeyPrefix("__cpadmin");
    
@@ -47,11 +50,12 @@
     .primaryPalette('light-green')
     .accentPalette('red');
 //lime
-      $mdThemingProvider.theme('lime')
-          .primaryPalette('lime')
-          .accentPalette('pink');
+  $mdThemingProvider.theme('lime')
+      .primaryPalette('lime')
+      .accentPalette('pink');
          
-         $mdThemingProvider.alwaysWatchTheme(true);
+   $mdThemingProvider.alwaysWatchTheme(true);
+   
    $httpProvider.interceptors.push('httpInterceptor');
    
    $urlRouterProvider.otherwise("/");
@@ -63,9 +67,9 @@
    .state("account.login", {url:"/login", templateUrl : "/views/account/login.html"})
    .state("account.forgotpassword", {url:"/forgotpassword", templateUrl : "/views/account/forgotpassword.html"})     
    .state("home", {url:"/home", templateUrl : "/views/homeContainer.html", abstract:true})
-   .state("home.dashboard", {url:"dashboard", templateUrl : "/views/dashboard.html"})
-   .state("home.groups", {url:"groups", templateUrl : "/views/groups.html"})
-   .state("home.assets", {url:"assets", templateUrl : "/views/assets.html"})
+   .state("home.dashboard", {url:"/dashboard", templateUrl : "/views/dashboard.html"})
+   .state("home.groups", {url:"/groups", templateUrl : "/views/groups.html"})
+   .state("home.assets", {url:"/assets", templateUrl : "/views/assets.html"})
       
       
       

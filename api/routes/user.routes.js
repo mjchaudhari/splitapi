@@ -155,9 +155,9 @@ module.exports = function(dbConfig, auth, app) {
 	app.post('/v1/isauthenticated', auth.isBearerAuth,function(req, res) {
 		console.log('isAuthenticated');
 		if (req.isAuthenticated())
-			res.json(new model.success('Authenticated'));
+			res.json(new models.success('Authenticated'));
 		else	
-			res.json(new model.error("Unauthenticated user."));
+			res.json(new models.error("Unauthenticated user."));
 	});
     
 	/**
@@ -173,12 +173,12 @@ module.exports = function(dbConfig, auth, app) {
 	 *     } 
      * @apiSuccess on success returns the authentication token
     */
-	app.post('/v1/isauthenticated', function(req, res) {
-		console.log('isAuthenticated');
+	app.post('/v1/isLoggedIn', function(req, res) {
+		console.log('isLoggedIn');
 		if (req.isAuthenticated())
-			res.json(new model.success('true'));
+			res.json(new models.success('true'));
 		else	
-			res.json(new model.error("false"));
+			res.json(new models.error("false"));
 	});
 	
 	

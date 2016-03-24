@@ -2,20 +2,28 @@
     angular.module("app")
     .controller("indexController",indexController);
     
-    indexController.$inject = ["$scope", "$log", "$state" ,"dataService", "config","authService","$mdSidenav"];
+    indexController.$inject = ["$scope", "$rootScope","$q", "$log", "$state" ,"dataService", "config","$mdSidenav","authService"];
     
-    function indexController($scope, $log, $state, dataService, config, authService, $mdSidenav){
-        
+    function indexController($scope, $rootScope, $q, $log, $state, dataService, config, $mdSidenav,authService){
+        $scope.initializingPromice = null;
+
         function init(){
-                authService.isAuthenticated()
-                .then( function(d){
-                    if(d.isError){
-                        
-                    }
-                }, function(e){
-                    
-                })
+            $scope.initializingPromice = authService.isAuthenticated()
+            .then(function(d){
+                $log.log("Initialized...")
+            })
+//             $scope.initializingPromice = $q.all([
+//                 authService.isAuthenticated()
+//             ]).then(function(d){
+//                 $log.log("Initialized...")
+//             })
+
         }
+        
+        $rootScope.$on("evtLogged", function(){
+            $log.info("index logged in");
+        })
+        
         init();
     }//conroller ends
 })();
