@@ -1,4 +1,5 @@
 
+
 .body-bg-landing{
     background-image: url(images/bg-3.jpg) ;
     -webkit-background-size: cover;
@@ -71,7 +72,7 @@ Show the image as background to display: block;
 }
  
 .transperent-bg{
-  background-color:transparent;
+  background-color: transparent !important;
 }
 
 

@@ -22,6 +22,17 @@
         
         $rootScope.$on("evtLogged", function(){
             $log.info("index logged in");
+            if($state.params.returnUrl){
+
+            }
+            else{
+                $state.go("home.dashboard");
+            }
+        })
+        
+        $rootScope.$on("onUnauthenticatedAccess", function(){
+            $log.info("Require login");
+            var returnUrl = ""
         })
         
         init();

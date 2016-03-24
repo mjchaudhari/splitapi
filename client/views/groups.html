@@ -1,4 +1,39 @@
-<div  >
-    groups
+<div  ng-controller="groupsController">
     
+    <div layout="column" ng-cloak class="">
+		<md-toolbar md-scroll-shrink="false" class=" md-hue-3">
+		  <div class="md-toolbar-tools">
+			<span>{{title}}</span>
+		  </div>
+		</md-toolbar>
+		<md-content flex class='md-padding content-height transperent-bg'>
+		  <div layout="row" layout-padding cg-busy="promices.groupsPromice">
+                <div flex="40">
+                    <md-list>
+                        <md-list-item  >
+                            <md-list-content  md-ink-ripple layout="row" layout-align="">
+                                <div class="inset">
+                                    <ng-md-icon icon="group"></ng-md-icon>
+                                </div>
+                                <div class="">Groups
+                                </div>
+                            </md-list-content>                            
+                        </md-list-item >
+                        <md-list-item layout="" ng-repeat="item in groups">
+                          <md-item-content  ui-sref="index.group({'id':item._id})" md-ink-ripple layout="row" layout-align="start center">
+                            <div class="inset">
+                              <img ng-src="{{item.Thumbnail }}" class="md-avatar avatar-small"/>
+                            </div>
+                            <div class="">{{item.Name}}</div>
+
+                          </md-item-content>
+                        </md-list-item>                        
+                    <md-list>
+                </div>
+                <div flex="60"> right</div>
+		  </div>
+
+		</md-content>
+    </div>    
+        
 </div>
