@@ -51,7 +51,7 @@ Show the image as background to display: block;
   }
 .avatar-small {
    border-radius: 99%;
-   border: 3px solid #fff;
+   border: 0px solid #fff;
    width: 35px;
    height: 35px;
    margin: 0px;
