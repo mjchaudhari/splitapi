@@ -69,7 +69,8 @@
    //requires login
    .state("home", {url:"", templateUrl : "/views/homeContainer.html", abstract:true})
    .state("home.dashboard", {url:"/dashboard", templateUrl : "/views/dashboard.html"})
-   .state("home.groups", {url:"/groups", templateUrl : "/views/groups.html"})
+   .state("home.groups", {url:"/groups", templateUrl : "/views/groups/groups.html"})
+   .state("home.group", {url:"/group/:id&v?", templateUrl : "/views/groups/group.html"})
    .state("home.assets", {url:"/assets", templateUrl : "/views/assets.html"})
       
       

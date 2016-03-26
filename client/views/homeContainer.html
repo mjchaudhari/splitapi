@@ -1,6 +1,6 @@
 <md-content class="transperent-bg" layout="column" flex >
     <div  class="body-bg"  ng-controller="homeController" md-theme="{{themes[theme]}}" md-theme-watch="true"  
-    layout="column" flex style="height:95vh;">
+    layout="column" flex style="height:95vh;" cg-busy="promices.groupsPromice" >
         <!--header-->
         <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
                 <md-toolbar class="md-tall md-hue-2">
@@ -81,7 +81,7 @@
                             </md-list-item >
                             <md-divider></md-divider>
                             <md-subheader class="md-no-sticky">Groups</md-subheader>
-                            <md-list-item ui-sref="index.group({'id':item._id})" class="" ng-repeat="item in groupsList">
+                            <md-list-item ui-sref="home.group({'id':item._id})" class="" ng-repeat="item in groupsList">
                               <img ng-src="{{item.Thumbnail}}" class="md-avatar avatar-small" alt="{{item.Name}}"
                                    ng-if="item.Thumbnail"/>
                               <div class="md-list-item-text">

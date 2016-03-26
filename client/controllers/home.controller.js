@@ -3,7 +3,7 @@
     .controller("homeController",homeController);
     
     homeController.$inject = ["$scope", "$log", "$q", "$localStorage", "$state" ,"dataService", 
-    "config","$mdSidenav","authService","$mdDialog"];
+        "config","$mdSidenav","authService","$mdDialog"];
     
     function homeController($scope, $log, $q, $localStorage, $state, dataService, 
         config, $mdSidenav, authService, $mdDialog){
@@ -18,7 +18,6 @@
         $scope.groupsList = [];
         $scope.promices = {};
         
-
         if($scope.theme == undefined){
             $scope.theme = 0;
         }

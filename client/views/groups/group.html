@@ -1,14 +1,16 @@
-<div  ng-controller="groupsController">
+<div  ng-controller="groupController" cg-busy="promices.groupDetail" >
     
     <div layout="column" ng-cloak class="">
 		<md-toolbar class=" md-hue-3" md-sticky>
 		  <div class="md-toolbar-tools">
-			<span>{{title}}</span>
+			<span>Group > {{group.Name}}</span>
 		  </div>
 		</md-toolbar>
 		<md-content class='md-padding content-height transperent-bg' >
-		  <div layout=""  >
-                
+		  <div layout=""  cg-busy="promices.groupPromice">
+                <div>
+                    {{group.Description}}
+                <div>
 		  </div>
 		</md-content>
     </div>    

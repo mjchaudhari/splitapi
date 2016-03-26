@@ -3,9 +3,9 @@
     angular.module("app")
     .controller("groupsController",groupsController);
     
-    groupsController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state" ,"dataService", "config","authService"];
+    groupsController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state","$stateParams" ,"dataService", "config","authService"];
     
-    function groupsController($scope, $rootScope,  $log, $q, $localStorage, $state, dataService, config, authService){
+    function groupsController($scope, $rootScope,  $log, $q, $localStorage, $state, stateParams, dataService, config, authService){
         
         //bindable mumbers
         $scope.title = "Groups";
