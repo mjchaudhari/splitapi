@@ -9,6 +9,7 @@
         
         //bindable mumbers
         $scope.title = "Assets";
+
         $scope.groups={
             selected : null
         }
@@ -24,6 +25,5 @@
             "childrenAttrib":"Children"
         }
         
-
     }//conroller ends
 })();

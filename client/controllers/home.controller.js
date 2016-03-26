@@ -45,6 +45,31 @@
                 });
            
         }
+        $scope.toggleLeft = function(){
+            return $mdSidenav('left')
+            .toggle();
+        }
+
+        function _toggleLeft(){
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                  .title('Log off')
+                  .textContent('Unsaved data will be lost. Are you sure you want to logoff?')
+                  .ariaLabel('Lucky day')
+                  .targetEvent(ev)
+                  .ok('Yes, Log off.')
+                  .cancel('No, Do not logoff');
+
+            $mdDialog.show(confirm)
+            .then(function() {
+                authService.logOut();
+                $state.go("landing")
+                }, 
+                function() {
+                    $scope.status = 'You decided to keep your debt.';
+                });
+           
+        }
         $scope.toggleSideBar = function(id){
             return $mdSidenav(id)
             .toggle();

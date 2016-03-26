@@ -12,7 +12,6 @@
         $scope.groupsList = [];
         $scope.promices = {};
         
-
         function getGroups (){
             $scope.promices.groupsPromice = dataService.getGroups()
             .then(function(d){
