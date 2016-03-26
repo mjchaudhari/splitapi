@@ -15,3 +15,14 @@
   border-left:2px Red solid;
   background-color:lightgray;
 }
+.handCursor{
+
+  cursor: pointer; cursor: hand;
+}
+
+.tree-toggler {
+  
+}
+.tree-toggler-right{
+  
+}

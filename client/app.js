@@ -61,12 +61,13 @@
    $urlRouterProvider.otherwise("/");
    
    $stateProvider
-   
    .state("landing", {url:"/", templateUrl : "/landing.html"})
    .state("account", {url:"/account", templateUrl : "/views/account/accountContainer.html", abstract:"true"})
    .state("account.login", {url:"/login", templateUrl : "/views/account/login.html"})
    .state("account.forgotpassword", {url:"/forgotpassword", templateUrl : "/views/account/forgotpassword.html"})     
-   .state("home", {url:"/home", templateUrl : "/views/homeContainer.html", abstract:true})
+   
+   //requires login
+   .state("home", {url:"", templateUrl : "/views/homeContainer.html", abstract:true})
    .state("home.dashboard", {url:"/dashboard", templateUrl : "/views/dashboard.html"})
    .state("home.groups", {url:"/groups", templateUrl : "/views/groups.html"})
    .state("home.assets", {url:"/assets", templateUrl : "/views/assets.html"})

@@ -1,8 +1,8 @@
 
 'use strict';
 
-angular.module('app').factory('httpInterceptor', ['$q', '$location', '$injector', '$localStorage','$log',
-function ($q, $location, $injector , $localStorage, $log) {
+angular.module('app').factory('httpInterceptor', ["$rootScope", '$q', '$location', '$injector', '$localStorage','$log',
+function ($rootScope, $q, $location, $injector , $localStorage, $log) {
 
     var authInterceptorServiceFactory = {};
 

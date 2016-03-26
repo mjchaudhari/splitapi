@@ -1,90 +1,136 @@
-<div  class="body-bg" ng-controller="homeController" md-theme="{{themes[theme]}}" md-theme-watch="true"  >
-    <!--header-->
-    <section layout="column" flex>
-        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" >
-            <md-toolbar class="md-tall md-hue-2">
-                <span flex></span>
-                <div layout="column" class="md-toolbar-tools-bottom inset">
-                    <div layout="row">
-                        <img src ng-src="{{user.Picture}}" class="md-avatar thumbnail-img"  md-click="editProfile()" /> 
-                        <div>{{user.FirstName}} {{user.LastName}}</div>
-                    </div>
-                    <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-                    <div flex></div>
-                    <md-icon-button class="md-icon-button md-accent" aria-label="Favorite" ng-click="editProfile()">
-                        <i class="material-icons">settings</i>
-                    </md-icon-button>
-                    </h2>
-                </div>
-            </md-toolbar>
-            <md-list>
-            <md-list-item  >
-                <md-list-content  ng-click="toggleLeft()"  ui-sref="home.dashboard" md-ink-ripple layout="row" layout-align="start center">
-                    <div class="inset">
-                        <ng-md-icon icon="dashboard"></ng-md-icon>
-                    </div>
-                    <div class="">Dashboard
-                    </div>
-                </md-list-content>
-            </md-list-item >
-            <md-list-item  >
-                <md-list-content  ng-click="toggleLeft()"  ui-sref="home.assets"  md-ink-ripple layout="row" layout-align="start center">
-                    <div class="inset">
-                        <ng-md-icon icon="people"></ng-md-icon>
-                    </div>
-                    <div class="">Assets
-                    </div>
-                </md-list-content>
-            </md-list-item >
-            <md-list-item  >
-                <md-list-content  ng-click="toggleLeft()"  ui-sref="home.groups"  md-ink-ripple layout="row" layout-align="start center">
-                    <div class="inset">
-                        <ng-md-icon icon="group"></ng-md-icon>
-                    </div>
-                    <div class="">Groups
-                    </div>
-                </md-list-content>
-                </md-list-item >
-            <md-divider></md-divider>
-                <md-subheader ui-sref="account.users"  aria-label="goups">
-                    <div layout="row">
-                        
-                        <div >
-                        <ng-md-icon icon="group"></ng-md-icon>
+<md-content class="transperent-bg" layout="column" flex >
+    <div  class="body-bg"  ng-controller="homeController" md-theme="{{themes[theme]}}" md-theme-watch="true"  
+    layout="column" flex style="height:95vh;">
+        <!--header-->
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+                <md-toolbar class="md-tall md-hue-2">
+                    <span flex></span>
+                    <div layout="column" class="md-toolbar-tools-bottom inset">
+                        <div layout="row">
+                            <img src ng-src="{{user.Picture}}" class="md-avatar thumbnail-img"  md-click="editProfile()" /> 
+                            <div>{{user.FirstName}} {{user.LastName}}</div>
                         </div>
-                        <div>Users</div>
+                        <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+                            <div flex></div>
+                            <md-button class="md-icon-button" aria-label="Menu" ng-click="editProfile()">
+                                <i class="material-icons">settings</i>
+                            </md-button>
+                            <md-button class="md-icon-button" aria-label="Menu" ng-click="logoff($event)">
+                                <i class="material-icons">input</i>
+                            </md-button>
+                        </h2>
                     </div>
-                </md-subheader>
-            <md-divider></md-divider>
-            <md-list-item>
-                <md-button ng-click="nextTheme()">
-                <md-item-content md-ink-ripple layout="row" layout-align="start center">
-                    <div class="inset">
-
-                    <ng-md-icon icon="format_color_fill"></ng-md-icon>
-                    </div>
-                    <div class="">Change color
-                    </div>
-                </md-item-content>
-                </md-button>
-            </md-list-item>
-            
-            </md-list>
-        </md-sidenav>
-    </section>
+                </md-toolbar>
+       </md-sidenav>
     <!--view for dashbaord, assets, groups-->
-    <md-toolbar >
-        <div class="md-toolbar-tools">
-            <span >Collaboration</span>
-            <span flex></span>
-            <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleLeft()">
-                <ng-md-icon icon="menu"></ng-md-icon> 
-            </md-button>
-            <img src ng-src="{{AUTHDATA.Picture}}" class="md-avatar avatar-small"  md-click="editProfile()" />
+
+        <md-toolbar md-scroll-shrink="true " md-scroll-shrink="0.5" class="" >
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleSideBar('left')">
+                    <ng-md-icon icon="menu"></ng-md-icon> 
+                </md-button>
+                <span >Collaboration</span>
+                <span flex></span>
+
+                <md-fab-speed-dial md-direction="left" md-open="false" class="md-scale">
+                    <md-fab-trigger>
+                      <md-button aria-label="menu" class="md-icon-button " >
+                        <i class="material-icons">more_vert</i>
+                      </md-button>
+                    </md-fab-trigger>
+                    <md-fab-actions>
+                      <md-button aria-label="Logoff" class="md-fab md-raised md-mini" ng-click="logoff()" >
+                        <i class="material-icons">input</i>
+                      </md-button>
+                      <md-button aria-label="theme" class="md-fab md-raised md-mini" ng-clik="nextTheme()">
+                        <i class="material-icons">format_color_fill</i>    
+                      </md-button>
+                      <md-button aria-label="settings" class="md-fab md-raised md-mini" ng-clik="settings()">
+                        <i class="material-icons">settings</i>    
+                      </md-button>
+                    </md-fab-actions>
+                </md-fab-speed-dial>
+                <md-button class="md-icon-button" aria-label="Menu" ng-click="editProfile()">
+                    <i class="material-icons">add_alert</i>
+                </md-button>
+
+                <img src ng-src="{{user.Picture}}" class="md-avatar avatar-small"  md-click="editProfile()" />
+            </div>
+        </md-toolbar>
+
+        <div layout="row" flex>
+            <md-sidenav class="md-sidenav-left md-whiteframe-z2 " md-component-id="left"
+                md-is-locked-open="$mdMedia('gt-sm')"  >
+                <md-toolbar layout="row" class="md-hue-1">
+                  <div class="md-toolbar-tools">
+                    <span></span>
+                  </div>
+                </md-toolbar>
+                <div>
+                <md-content  class="md-hue-1" layout="column" flex>
+                    <div  layout="column" flex style="height:70vh;">
+                        <md-list class="md-body-1">
+                            <md-list-item  ui-sref="home.dashboard">
+                                <md-list-content    md-ink-ripple layout="row" >
+                                    <div class="inset">
+                                        <ng-md-icon icon="dashboard"></ng-md-icon>
+                                    </div>
+                                    <div class="">Dashboard
+                                    </div>
+                                </md-list-content>
+                            </md-list-item >
+                            <md-divider></md-divider>
+                            <md-subheader class="md-no-sticky">Groups</md-subheader>
+                            <md-list-item ui-sref="index.group({'id':item._id})" class="" ng-repeat="item in groupsList">
+                              <img ng-src="{{item.Thumbnail}}" class="md-avatar avatar-small" alt="{{item.Name}}"
+                                   ng-if="item.Thumbnail"/>
+                              <div class="md-list-item-text">
+                                <span> {{ item.Name }} </span>
+                              </div>
+                            </md-list-item>
+                            <md-divider></md-divider>
+                            <md-list-item ui-sref="account.users"  aria-label="goups">
+                                <md-list-content  ng-click="toggleSideBar('left')"  ui-sref="home." md-ink-ripple layout="row" > 
+                                    <div class="inset">
+                                        <ng-md-icon icon="group"></ng-md-icon>
+                                    </div>
+                                    <span >Users</span>
+                                </md-list-content>
+                            </md-list-item>
+                            <md-list-item ng-click="nextTheme()">
+                                <md-item-content md-ink-ripple layout="row" >
+                                    <div class="inset">
+                                        <ng-md-icon icon="format_color_fill"></ng-md-icon>
+                                    </div>
+                                    <span>Change color</span>
+                                </md-item-content>
+                            </md-list-item>
+                            
+                        </md-list>
+                    </div>
+                <md-content>
+                </div>
+                <footer flex="none" class="bg-gray-transerent" style="">
+                    <div layout="column"  layout-align="center center">
+                        <span></span>
+                        
+                    </div>
+                </footer>
+                
+            </md-sidenav>
+
+            <md-content class="transperent-bg" layout="column" flex>
+                <div  ui-view  layout="column" flex >
+
+                </div>
+
+            </md-content>
         </div>
-  </md-toolbar>
-   <div ui-view>
-       
-   </div>
-   <!--footer-->
-</div>
+    </div>
+    <footer flex="none" class="bg-gray-transerent" style="height:5vh;">
+        <div layout="column"  layout-align="center center">
+            <span>Colaboration platform v1.5</span>
+            <span>copy rights 2016</span>
+        </div>
+    </footer>
+</md-content>
