@@ -47,7 +47,7 @@
                                 <md-icon area-label="Add member">person_add</md-icon>
                         </md-button>
                         <md-sub-header>Group Members</md-sub-header>
-                        <md-content>
+                        <md-content class="md-padding">
                             <md-list>
                                 <md-list-item class="md-2-line" ng-repeat="item in group.Members">
 
@@ -61,7 +61,6 @@
                                     <md-button ng-if="" ng-click="removeMemberConfirmation($event,item)">
                                         <i class="material-icons">remove_circle_outline</i>
                                     </md-button>
-
                                 </md-list-item>
                             </md-list>            
                         </md-content>

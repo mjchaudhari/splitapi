@@ -148,3 +148,44 @@ Show the image as background to display: block;
 .bg-gray-transerent{
     background-color: rgba(0,0,0,0.1);
 }
+
+
+/**
+  Chips 
+*/
+
+.chipsContactChips md-content.autocomplete {
+  min-height: 250px; }
+  .chipsContactChips md-content.autocomplete input {
+    min-width: 400px; }
+.chipsContactChips .md-item-text.compact {
+  padding-top: 8px;
+  padding-bottom: 8px; }
+.chipsContactChips .contact-item {
+  box-sizing: border-box; }
+  .chipsContactChips .contact-item.selected {
+    opacity: 0.5; }
+    .chipsContactChips .contact-item.selected h3 {
+      opacity: 0.5; }
+  .chipsContactChips .contact-item .md-list-item-text {
+    padding: 14px 0;
+    max-width: 190px; }
+    .chipsContactChips .contact-item .md-list-item-text h3 {
+      margin: 0 !important;
+      padding: 0;
+      line-height: 1.2em !important; }
+    .chipsContactChips .contact-item .md-list-item-text h3, .chipsContactChips .contact-item .md-list-item-text p {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+  @media screen and (min-width: 960px) {
+    .chipsContactChips .contact-item {
+      float: left;
+      width: 33%; } }
+.chipsContactChips md-contact-chips {
+  margin-bottom: 10px; }
+.chipsContactChips .md-chips {
+  padding: 5px 0 8px; }
+.chipsContactChips .fixedRows {
+  height: 250px;
+  overflow: hidden; }
