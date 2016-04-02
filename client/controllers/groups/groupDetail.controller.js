@@ -3,44 +3,36 @@
     angular.module("app")
     .controller("groupDetailController",groupDetailController);
     
-    groupDetailController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state", "$stateParams" ,"dataService", "config","authService"];
+    groupDetailController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state", "$stateParams" ,"dataService", "config","authService","$mdConstant","$mdToast"];
     
-    function groupDetailController($scope, $rootScope,  $log, $q, $localStorage, $state, $stateParams, dataService, config, authService){
+    function groupDetailController($scope, $rootScope,  $log, $q, $localStorage, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast ){
         
         //bindable mumbers
         $scope.title = "Group Details";
         $scope.promices = {};
         $scope._id = $stateParams.id;
         $scope.group = null;
+        $scope.groupCopy = null;
+
         $scope.selectedMembers = null;
         
         $scope.view = $stateParams.v;
         
         $scope.searchText ="";
         $scope.searchResult = [];
-        $scope.memberSearchTextChange = _memberSearchTextChange();
+        
         $scope.querySearch   = _querySearch;
-        
-        
-        function _memberSearchTextChange (text){
-            $log.info('Text changed to ' + text);
-        }
-        
-        function getGroupDetail (){
-            $scope.promices.groupDetail = dataService.getGroup($scope._id)
-            .then(function(d){
-                $scope.group = angular.copy(d.data.data[0]);
-                if($scope.group.Members){
-                    $scope.group.Members.forEach(function(m){
-                        m._name = m.FirstName + ' ' + m.LastName;
-                    })
-                }
-            },
-            function(e){
+        $scope.saveGroupDetails = _saveGroupDetails;
 
-            });
-            return $scope.promices.groupPromice;
-        }
+        function showSimpleToast (message) {
+            $mdToast.show(
+                $mdToast.simple()
+                .textContent(message)
+                .position('bottom')
+                .hideDelay(3000)
+                .action('OK')
+            );
+        };
 
         var preInit = function(){
             var tasks = [];
@@ -56,7 +48,24 @@
         var init = function(){
 
         };
-        
+
+        function getGroupDetail (){
+            $scope.promices.groupDetail = dataService.getGroup($scope._id)
+            .then(function(d){
+                $scope.group = angular.copy(d.data.data[0]);
+                if($scope.group.Members){
+                    $scope.group.Members.forEach(function(m){
+                        m._name = m.FirstName + ' ' + m.LastName;
+                    })
+                }
+                $scope.groupCopy = angular.copy($scope.group);
+            },
+            function(e){
+
+            });
+            return $scope.promices.groupPromice;
+        }
+
         function _querySearch(term){
             $scope.searchResult=[];
             if(term && term.length > 0){
@@ -97,8 +106,30 @@
             return defer.promise;
         }
         
+        function _saveGroupDetails(){
+            //basic validation
+            if($scope.group.Name == ""){
+                showSimpleToast("Group name requied");
+                return;
+            }
+
+            dataService.saveGroup($scope.group)
+            .then(function(g){
+                $scope.showToast("Group saved.");
+                //if this group is created by current user then allow user to manage users
+                $scope.group._id = g.data._id;
+                $scope.group.Members = g.data.Members;
+                $scope.group.CreatedBy = g.data.CreatedBy;
+                showSimpleToast("Group saved");
+            },
+            function(e){
+                $log.error(e);
+            });
+        }
+        
 
         preInit();
+
 
     }//conroller ends
 })();

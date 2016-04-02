@@ -49,7 +49,7 @@ function($http,$q, $log, config, $timeout, CacheFactory){
       });
       return defered.promise;
     },
-    getGroup : function(id){
+    getGroup     : function(id){
       
       var url = config.apiBaseUrl + "/v1/groups?_id="+id;
       return $http.get(url, requestOpts);

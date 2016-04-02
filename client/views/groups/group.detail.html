@@ -19,84 +19,21 @@
     <div class="chipsContactChips">
         <md-sub-header>Group Members</md-sub-header>
         <md-content class="md-padding autocomplete" layout="column">
+            
             <md-contact-chips
-                md-model="selectedMembers"
+                ng-model="group.Members"
                 md-contacts="querySearch($query)"
                 md-contact-name="_name"
                 md-contact-image="Picture"
                 md-contact-email="UserName"
                 md-require-match="true"
                 md-highlight-flags="i"
-                filter-selected="filterSelected"
-                placeholder="Add Members">
+                filter-selected="false"
+                md-separator-keys="separatorKeys"
+                placeholder="+Member">
             </md-contact-chips>
-            <md-list class="fixedRows">
-              <md-subheader class="md-no-sticky">Members</md-subheader>
-              <md-list-item class="md-2-line contact-item selected" ng-repeat="(index, contact) in selectedMembers">
-                <img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact._name}}" />
-                <div class="md-list-item-text compact">
-                  <h3>{{contact._name}}</h3>
-                  <p>{{contact.UserName}}</p>
-                </div>
-                <md-button class="md-icon-button"  ng-click="removeMemberConfirmation($event,item)">
-                    <i class="material-icons">remove_circle_outline</i>
-                </md-button>
-              </md-list-item>
-              <md-list-item class="md-2-line contact-item" ng-repeat="(index, member) in group.Members" >
-                <img ng-if="member.Picture!=null" ng-src="{{member.Picture}}" class="md-avatar" />
-                <ez-initials ng-if="member.Picture==null" class="md-avatar avatar-small" text="member.FirstName" ></ez-initials >
-                <div class="md-list-item-text compact">
-                  <h3>{{member._name}}</h3>
-                  <p>{{member.UserName}}</p>
-                </div>
-                <md-button class="md-icon-button" ng-click="removeMemberConfirmation($event,item)">
-                    <i class="material-icons">remove_circle_outline</i>
-                </md-button>
-              </md-list-item>
-              
-            </md-list>
-        </md-content>
-<!--         <md-autocomplete
-            md-no-cache="false"
-            md-selected-item="selectedMember"
-            md-input-minlength="3"
-            md-search-text-change="memberSearchTextChange(searchText)"
-            md-search-text="searchText"
-            md-selected-item-change="selectedItemChange(item)"
-            md-items="item in querySearch(searchText)"
-            md-item-text="item._name"
-            md-min-length="3"
-            placeholder="Search members"
-            md-menu-class="autocomplete-custom-template">
-            <md-item-template>
-                <div layout="row">
-                    <img ng-if="item.Picture!=null" ng-src="{{item.Picture}}" class="md-avatar avatar-small" />
-                    <ez-initials ng-if="item.Picture==null" class="md-avatar avatar-small" text="item.FirstName" ></ez-initials >
-                    <div class=" md-padding bg-red" layout="column" layout-align="start center">
-                            <span> {{ item._name }}</span>
-                            <span>{{ item.UserName}}, {{item.City }}</span>
-                    </div>
-                </div>
-            </md-item-template>
-        </md-autocomplete>
-        <md-content class="md-padding">
-            <md-list>
-                <md-list-item class="md-2-line" ng-repeat="item in group.Members">
-                    <md-button ng-if="" ng-click="removeMemberConfirmation($event,item)">
-                        <i class="material-icons">remove_circle_outline</i>
-                    </md-button>
-                    <img ng-if="item.Picture!=null" ng-src="{{item.Picture}}" class="md-avatar" />
-                    <ez-initials ng-if="item.Picture==null" class="md-avatar" text="item.FirstName" ></ez-initials >
-
-                    <div class="md-list-item-text" layout="column">
-                            <h3>{{ item.FirstName }} {{item.LastName }}</h3>
-                            <p>{{ item.UserName}}, {{item.City }}</p>
-                    </div>
-                </md-list-item>
-            </md-list>            
-        </md-content> -->
         <div>
-            <md-button class="md-button md-raised md-primary accent" ng-click="save()">
+            <md-button class="md-button md-raised md-primary accent" ng-click="saveGroupDetails()">
                 Save
             </md-button>
             <md-button class="md-button md-raised md-primary accent" ng-click="cancel()">

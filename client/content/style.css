@@ -178,7 +178,7 @@ Show the image as background to display: block;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden; }
-  @media screen and (min-width: 960px) {
+  @media (min-width: 960px) {
     .chipsContactChips .contact-item {
       float: left;
       width: 33%; } }
