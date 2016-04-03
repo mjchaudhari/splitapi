@@ -27,69 +27,13 @@
                 </md-tab>
                 <md-tab label="Details">
                     <div layout="row" flex>
-                        <ez-image-upload img="group.Thumbnail" ></ez-image-upload>
-                        <div layout="column" flex>
-                            <div layout-gt-sm="row">
-                                <md-input-container class="md-block" flex-gt-sm>
-                                    <label>What's the group called!</label>
-                                    <input ng-model="group.Name">
-                                </md-input-container>
-                                <div class="hint" ></div>
-                            </div>
-                            <md-input-container class="md-block">
-                                <label>More about this awesome group</label>
-                                <textarea ng-model="group.Description" columns="1" md-maxlength="150" rows="5"></textarea>
-                            </md-input-container>
-                        </div>
-                    </div>
-                    <div>
-                        <md-button class="md-fab md-mini" aria-label="Add" ng-click="showAddMembers()">
-                                <md-icon area-label="Add member">person_add</md-icon>
-                        </md-button>
-                        <md-sub-header>Group Members</md-sub-header>
-                        <md-content class="md-padding">
-                            <md-list>
-                                <md-list-item class="md-2-line" ng-repeat="item in group.Members">
-
-                                    <img ng-if="item.Picture!=null" ng-src="{{item.Picture}}" class="md-avatar" />
-                                    <ez-initials ng-if="item.Picture==null" class="md-avatar" text="item.FirstName" ></ez-initials >
-
-                                    <div class="md-list-item-text" layout="column">
-                                            <h3>{{ item.FirstName }} {{item.LastName }}</h3>
-                                            <p>{{ item.UserName}}, {{item.City }}</p>
-                                    </div>
-                                    <md-button ng-if="" ng-click="removeMemberConfirmation($event,item)">
-                                        <i class="material-icons">remove_circle_outline</i>
-                                    </md-button>
-                                </md-list-item>
-                            </md-list>            
-                        </md-content>
-                        <div>
-                            <md-button class="md-button md-raised md-primary accent" ng-click="save()">
-                                Save
-                            </md-button>
-                            <md-button class="md-button md-raised md-primary accent" ng-click="cancel()">
-                                Cancel
-                            </md-button>
-                        </div>
+                        <ng-include src="'./views/groups/group.detail.html'"></ng-include>
                     </div>    
-                    
-                </md-tab>
-                <md-tab label="Members">
-                    <div class="" style="">
-                        <div >
-                            Members
-                        </div>  
-                        <div>                  
-                            <md-button class="md-primary md-raised" ng-click="saveSettings()" >Save</md-button>
-                            <md-button class="md-primary md-raised" ng-click="cancel()" >Cancel</md-button>
-                        </div>
-                    </div>
                 </md-tab>
                 <md-tab label="Assets">
                     <div class="" style="">
                         <div >
-                            Assets
+                            <ng-include src="'./views/groups/assetlist.html'"></ng-include>
                         </div>  
                         <div>                  
                             <md-button class="md-primary md-raised" ng-click="saveSettings()" >Save</md-button>

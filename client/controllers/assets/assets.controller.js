@@ -13,6 +13,7 @@
         $scope.groups={
             selected : null
         }
+        $scope.assets = {}
         $scope.assets.tree = {
             "_id":0,
             "Name":"My Groups",

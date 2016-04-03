@@ -73,7 +73,7 @@ module.exports = function(dbConfig, auth,app) {
  
     */
 	app.post('/v1/group', auth.isBearerAuth,function(req, res) {
-		console.log(req.body);
+		//console.log(req.body);
 		v1.save(req, function (d){
 			if(d.isError){
 				res.status(400).send(d);

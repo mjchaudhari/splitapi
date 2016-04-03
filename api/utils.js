@@ -67,7 +67,7 @@
         var matches = b64String.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
         
         
-        if (matches.length !== 3) {
+        if (matches == null || matches.length !== 3) {
             return false
         }
         else{

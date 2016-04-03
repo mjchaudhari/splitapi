@@ -21,10 +21,18 @@
    
    $mdThemingProvider.theme('default')
     .primaryPalette('grey')
-    .accentPalette('blue-grey');
+    .accentPalette('blue-grey')
+    .warnPalette('deep-orange');
     
     // $mdThemingProvider.theme('default')
     // .primaryPalette('purple')
+   
+//    $mdThemingProvider.theme('white')
+//     .primaryPalette("White")
+//     .accentPalette('blue-gray')
+//     .warnPalette('Deep-orange')
+//     .backgroundPalette('grey')
+
     
    $mdThemingProvider.theme('light-blue')
     .primaryPalette('light-blue')

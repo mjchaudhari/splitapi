@@ -1,0 +1,18 @@
+<div  ng-controller="assetLstController" layout-padding cg-busy="promices.groupDetail" >
+    <div layout="row" flex layout-align="start start">
+    </div>
+    <div class="">
+        <md-sub-header>Assets : {{assets.length || '000'}}</md-sub-header>
+        <md-content class="md-padding autocomplete" layout="column">
+            <md-list>
+                <md-list-item ng-repeat="a in assets" ng-click="openAsset( $event)">
+                    <img alt="{{ a.Name }}" ng-src="{{ a.Thumbnail }}" class="md-avatar" />
+                    <p>{{ a.Name }}</p>
+                    <md-icon md-svg-icon="communication:messenger" ng-click="doSecondaryAction($event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon>
+                </md-list-item>
+            </md-list>
+        </md-content>
+        <div>
+        </div>
+    </div>        
+</div>
