@@ -1,8 +1,11 @@
-<div  ng-controller="assetLstController" layout-padding cg-busy="promices.groupDetail" >
+<div cg-busy="promices.assetList" ng-controller="assetLstController" layout-padding cg-busy="promices.groupDetail" >
     <div layout="row" flex layout-align="start start">
     </div>
     <div class="">
         <md-sub-header>Assets : {{assets.length || '000'}}</md-sub-header>
+        <md-button class="md-fab md-fab-bottom-right" aria-label="add">
+            <md-icon md-icon="add"></md-icon>
+        </md-button>
         <md-content class="autocomplete transperent-bg" layout="column">
 <!--             <md-list>
                 <md-list-item ng-repeat="a in assets" ng-click="openAsset( $event)">
@@ -18,10 +21,9 @@
                         <tr md-row >
                             <th md-column style="width:5%">
                                 <md-checkbox aria-label="Select All"
-                                             ng-checked="isChecked()"
-                                             md-indeterminate="isIndeterminate()"
-                                             ng-click="toggleAll()">
-                                  <span ng-if="isChecked()">Un-</span>
+                                             ng-model="isAllChecked"
+                                             ng-change="selectAllChecked()"
+                                             md-indeterminate>
                                 </md-checkbox>
                             </th>
                             <th md-column style="width:10%" ><span></span></th>
@@ -35,7 +37,7 @@
                         <tbody md-body>
                           <tr md-row class="md-table-content" ng-repeat="asset in assets">
                             <td>
-                                <md-checkbox ng-checked="asset.isSelected)" ng-click="toggle(asset)">
+                                <md-checkbox aria-label="Select" ng-checked="asset.__isSelected" ng-click="toggle(asset)">
                                  </md-checkbox>
                             </td>
                             <td >

@@ -18,6 +18,8 @@
         $scope.searchText ="";
         $scope.searchResult = [];
         
+        $scope.isAllChecked = false;
+        $scope.isIndeterminate = false;
         $scope.filter = {
             groupId:$scope.groupId,
             parentId:$scope.parentId,
@@ -34,34 +36,39 @@
                 .action('OK')
             );
         };
-        $scope.toggle = function (item, list) {
-            var idx = list.indexOf(item);
-            if (idx > -1) {
-              list.splice(idx, 1);
-            }
-            else {
-              list.push(item);
-            }
-        };
-        $scope.exists = function (item, list) {
-            return list.indexOf(item) > -1;
-        };
-        $scope.isIndeterminate = function() {
-            return ($scope.selected.length !== 0 &&
-                $scope.selected.length !== $scope.items.length);
-        };
-        $scope.isChecked = function() {
-            var selected = _.find($scope.assets,"isSelected:true");
-            
+       
+        $scope.selectAllChecked = function() {
+            var selected = _.where($scope.assets,{"__isSelected":true});
+            $scope.toggleAll()
             return selected.length === $scope.assets.length;
         };
-        $scope.toggleAll = function() {
-            if ($scope.selected.length === $scope.items.length) {
-              $scope.selected = [];
-            } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
-              $scope.selected = $scope.items.slice(0);
+        $scope.toggle = function (asset) {
+            if(asset.__isSelected){
+                asset.__isSelected = !asset.__isSelected;    
             }
+            else{
+                asset.__isSelected = true;
+            }
+            determineSelectAll()
         };
+
+        $scope.toggleAll = function() {
+            var status = $scope.isAllChecked;
+            _.forEach($scope.assets, function(a){
+                a.__isSelected = status;
+            });        };
+        function determineSelectAll(){
+            var selected = _.where($scope.assets,{"__isSelected":true});
+            $scope.isAllChecked = selected.length === $scope.assets.length;
+            if(selected.length == 0 ||
+                selected.length === $scope.assets.length){
+                $scope.isIndeterminate = false;    
+            }
+            else{
+                $scope.isIndeterminate = selected.length != $scope.assets.length;    
+            }
+
+        }
         var preInit = function(){
 
             var tasks = [];
