@@ -12,6 +12,7 @@
         $scope.title = "Assets Crtl";
         $scope.groupId = $stateParams.id;
         $scope.parentId = $stateParams.pId;
+
         $scope.promices = {};
         $scope.assets = [];
         $scope.searchText ="";
@@ -35,6 +36,7 @@
         };
 
         var preInit = function(){
+
             var tasks = [];
             tasks.push(getAssets());
             $q.all([
@@ -44,11 +46,10 @@
                 init()
             });
         }
-
+    
         var init = function(){
-
+        
         };
-
         function getAssets (){
             
             $scope.promices.assetList = dataService.getAssets($scope.filter)

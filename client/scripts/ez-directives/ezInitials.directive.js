@@ -11,10 +11,13 @@
 //         '<span class="initials-circle" style="background: blueviolet;" >',
 //             '<span style="color: whitesmoke;margin:0;">{{initials}}</span>',
 //         '</span> ',
-        '<div class="circle accent  md-title">{{initials}}</div>'
+        '<span>',
+          '<img ng-if="img!=null" src="{{img}}" class="md-avatar avatar-small" /> ',
+          '<div ng-if="img==null" class="circle accent  md-title">{{initials}}</div>',
+        '</span>',
     ].join('\n');
     
-  module.directive('ezInitials', [
+  module.directive('ezThumb', [
     '$timeout', function($timeout) {
       return {
         restrict: 'E',
@@ -22,6 +25,7 @@
         replace: true,
         scope: {
           text: '=',
+          img: '='
         },
         //controller start
         controller: ["$scope", function ($scope) {
@@ -33,13 +37,19 @@
             var inits = matches.join('');
             $scope.initials =  inits.substring(0,2);
           }
-          
+          $scope.$watch('img', function(newValue, oldValue){
+              if(newValue)
+              {
+                  $scope.img = newValue;
+              }
+          });
           $scope.$watch('text', function(newValue, oldValue){
               if(newValue)
               {
                   init();
               }
           });
+
           
           init();
           

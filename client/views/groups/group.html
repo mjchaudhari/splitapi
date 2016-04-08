@@ -1,7 +1,7 @@
 <div  ng-controller="groupController" cg-busy="promices.groupDetail" >
     
     <div layout="column" ng-cloak class="">
-		<md-toolbar class=" md-hue-3"  >
+		<md-toolbar class=""  >
 		  <div class="md-toolbar-tools">
             <img ng-src="{{group.Thumbnail}}" alt="" class="md-avatar avatar-small">
             <span>Group > {{group.Name}}</span>
@@ -17,20 +17,20 @@
 		<md-content class='md-padding transperent-bg' style="height:70vh" >
 		    <span>{{message}}</span>
             
-            <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect md-dynamic-height>
-                <md-tab label="Analysis">
+            <md-tabs md-selected="selectedTab" md-border-bottom md-autoselect md-dynamic-height>
+                <md-tab id="analytics" label="Analysis" md-on-select="tabSelected('analytics')">
                     <div class="" style="">
                         <div >
                             
                         </div>                    
                     </div>
                 </md-tab>
-                <md-tab label="Details">
+                <md-tab id="details" label="Details" md-on-select="tabSelected('details')">
                     <div layout="row" flex>
                         <ng-include src="'./views/groups/group.detail.html'"></ng-include>
                     </div>    
                 </md-tab>
-                <md-tab label="Assets">
+                <md-tab id="assets" label="Assets" md-on-select="tabSelected('assets')">
                     <div class="" style="">
                         <div >
                             <ng-include src="'./views/groups/assetlist.html'"></ng-include>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </md-tab>
-                <md-tab label="settings">
+                <md-tab id="settings" label="settings" md-on-select="tabSelected('settings')">
                     <div class="" style="padding: 25px; text-align: center;">
                         <div >
                             Group settings.

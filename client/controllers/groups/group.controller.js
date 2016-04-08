@@ -12,9 +12,10 @@
         $scope.groupsList = [];
         $scope.promices = {};
         $scope._id = $stateParams.id;
-        $scope.group = null;
-        
         $scope.view = $stateParams.v;
+        $scope.selectedTab = 'analytics';
+        $scope.group = null;
+
         
         function getGroupDetail (){
             $scope.promices.groupDetail = dataService.getGroup($scope._id)
@@ -41,6 +42,32 @@
         var init = function(){
 
         };
+        
+        $scope.tabSelected = function(tab){
+            //set the current tab to route
+            
+        }
+
+        function setView(){
+            switch ($scope.view){
+                case 'analytics' : {
+                    $scope.selectedTab = 'analytics';
+                    break;
+                }
+                case 'details' : {
+                    $scope.selectedTab = 'details';
+                    break;
+                }
+                case 'assets' : {
+                    $scope.selectedTab = 'assets';
+                    break;
+                }
+                case 'settings' : {
+                    $scope.selectedTab = 'settings';
+                    break;
+                }
+            }
+        }
 
         preInit();
 

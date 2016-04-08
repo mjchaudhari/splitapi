@@ -3,14 +3,48 @@
     </div>
     <div class="">
         <md-sub-header>Assets : {{assets.length || '000'}}</md-sub-header>
-        <md-content class="md-padding autocomplete" layout="column">
-            <md-list>
+        <md-content class="autocomplete transperent-bg" layout="column">
+<!--             <md-list>
                 <md-list-item ng-repeat="a in assets" ng-click="openAsset( $event)">
                     <img alt="{{ a.Name }}" ng-src="{{ a.Thumbnail }}" class="md-avatar" />
+                    <span><strong>{{a.}}</stong></span>    
                     <p>{{ a.Name }}</p>
-                    <md-icon md-svg-icon="communication:messenger" ng-click="doSecondaryAction($event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon>
+                    
                 </md-list-item>
-            </md-list>
+            </md-list> -->
+            <md-table-container>
+                <table >
+                    <thead md-head class="md-table-header" >
+                        <tr md-row >
+                            <th md-column ><span></span></th>
+                            <th md-column ><span>Name</span></th>
+                            <th md-column >Category</th>
+                            <th md-column  ><span>Updated On</span></th>
+                            <th md-column >Created By</th>
+                            <th md-column >Responses</th>
+                            <th md-column >Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody md-body>
+                          <tr md-row class="md-table-content" ng-repeat="asset in assets">
+                            <td >
+                                <ez-thumb img="asset.Thumbnail" text="asset.Name"></ez-thumb>
+                            </td>
+                            <td md-cell>{{asset.Name}}</td>
+                            <td md-cell>{{asset.AssetCategory}}</td>
+                            <td md-cell>
+                                <time title="{{ asset.UpdatedOn | amDateFormat: 'dddd, Do MMM YYYY, h:mm a' }}">
+                                    {{ asset.UpdatedOn | amCalendar }}
+                                </time>
+                            </td>
+                            <td md-cell>{{asset.CreatedBy.Name}}</td>
+                            <td md-cell></td>
+                            <td md-cell></td>
+                            
+                          </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
         </md-content>
         <div>
         </div>

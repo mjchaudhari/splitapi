@@ -3,24 +3,24 @@
     layout="column" flex style="height:95vh;" cg-busy="promices.groupsPromice" >
         <!--header-->
         <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
-                <md-toolbar class="md-tall md-hue-2">
-                    <span flex></span>
-                    <div layout="column" class="md-toolbar-tools-bottom inset">
-                        <div layout="row">
-                            <img src ng-src="{{user.Picture}}" class="md-avatar thumbnail-img"  md-click="editProfile()" /> 
-                            <div>{{user.FirstName}} {{user.LastName}}</div>
-                        </div>
-                        <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
-                            <div flex></div>
-                            <md-button class="md-icon-button" aria-label="Menu" ng-click="editProfile()">
-                                <i class="material-icons">settings</i>
-                            </md-button>
-                            <md-button class="md-icon-button" aria-label="Menu" ng-click="logoff($event)">
-                                <i class="material-icons">input</i>
-                            </md-button>
-                        </h2>
+            <md-toolbar class="md-tall " md-scroll-shrink="true">
+                <span flex></span>
+                <div layout="column" class="md-toolbar-tools-bottom inset">
+                    <div layout="row">
+                        <img src ng-src="{{user.Picture}}" class="md-avatar thumbnail-img"  md-click="editProfile()" /> 
+                        <div>{{user.FirstName}} {{user.LastName}}</div>
                     </div>
-                </md-toolbar>
+                    <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
+                        <div flex></div>
+                        <md-button class="md-icon-button" aria-label="Menu" ng-click="editProfile()">
+                            <i class="material-icons">settings</i>
+                        </md-button>
+                        <md-button class="md-icon-button" aria-label="Menu" ng-click="logoff($event)">
+                            <i class="material-icons">input</i>
+                        </md-button>
+                    </h2>
+                </div>
+            </md-toolbar>
        </md-sidenav>
     <!--view for dashbaord, assets, groups-->
 
