@@ -32,10 +32,14 @@
           $scope.initials = "";
 
           var init = function(){
-            
+            if($scope.text == null){
+              $scope.text = "";
+            }
             var matches = $scope.text.match(/\b(\w)/g);
-            var inits = matches.join('');
-            $scope.initials =  inits.substring(0,2);
+            if(matches){
+              var inits = matches.join('');
+              $scope.initials =  inits.substring(0,2);
+            }
           }
           $scope.$watch('img', function(newValue, oldValue){
               if(newValue)

@@ -3,8 +3,19 @@
     <div layout="column" ng-cloak class="">
 		<md-toolbar class=""  >
 		  <div class="md-toolbar-tools">
-            <img ng-src="{{group.Thumbnail}}" alt="" class="md-avatar avatar-small">
-            <span>Group > {{group.Name}}</span>
+            <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
+            <span>{{group.Name}}</span>
+            <div flex></div>
+            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.detail">
+				<i class="material-icons">info</i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.assets">
+				<i class="material-icons">view_list</i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.analytics">
+            	<i class="material-icons">assessment</i>
+            </md-button>
+            
             <div flex></div>
             <md-button class="md-icon-button" aria-label="save" ng-click="save()">
                     <i class="material-icons">save</i>
@@ -16,44 +27,10 @@
 		</md-toolbar>
 		<md-content class='md-padding transperent-bg' style="height:70vh" >
 		    <span>{{message}}</span>
-            
-            <md-tabs md-selected="selectedTab" md-border-bottom md-autoselect md-dynamic-height>
-                <md-tab id="analytics" label="Analysis" md-on-select="tabSelected('analytics')">
-                    <div class="" style="">
-                        <div >
-                            
-                        </div>                    
-                    </div>
-                </md-tab>
-                <md-tab id="details" label="Details" md-on-select="tabSelected('details')">
-                    <div layout="row" flex>
-                        <ng-include src="'./views/groups/group.detail.html'"></ng-include>
-                    </div>    
-                </md-tab>
-                <md-tab id="assets" label="Assets" md-on-select="tabSelected('assets')">
-                    <div class="" style="">
-                        <div >
-                            <ng-include src="'./views/groups/assetlist.html'"></ng-include>
-                        </div>  
-                        <div>                  
-                            <md-button class="md-primary md-raised" ng-click="saveSettings()" >Save</md-button>
-                            <md-button class="md-primary md-raised" ng-click="cancel()" >Cancel</md-button>
-                        </div>
-                    </div>
-                </md-tab>
-                <md-tab id="settings" label="settings" md-on-select="tabSelected('settings')">
-                    <div class="" style="padding: 25px; text-align: center;">
-                        <div >
-                            Group settings.
-                        </div>
-                        <div >                    
-                            <md-button class="md-primary md-raised" ng-click="saveSettings()" >Save</md-button>
-                            <md-button class="md-primary md-raised" ng-click="cancel()" >Cancel</md-button>
-                        </div>
-                    </div>
-                </md-tab>
+            <div ui-view>
                 
-            </md-tabs>
+            </div>
+            
 		</md-content>
     </div>    
 </div>

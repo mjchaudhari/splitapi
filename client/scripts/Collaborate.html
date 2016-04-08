@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Collaborate</title>
+  <link rel="shortcut icon" type="image/png" href="./content/images/cp.png"/>
+  <link rel="stylesheet" href="./content/angular-material-1.0.7.min.css">
+<!--   <link rel="stylesheet" href="./content/angular-material-1.0.4/angular-material.layouts.min.css">   -->
+  <link rel="stylesheet" href="./content/robotodraft.css">
+  <link rel="stylesheet" href="./content/icon.css">
+  <link rel="stylesheet" href="./content/eztree.css">
+  <link rel="stylesheet" href="./content/style.css">
+  <link rel="stylesheet" href="./content/ng-img-crop.css">
+  <link rel="stylesheet" href="./content/angular-busy.css">
+  <link rel="stylesheet" href="./content/md-data-table.css">
+  
+<!--    <link rel="stylesheet" href="./client/styles.css">  -->
+</head>
+<body ng-controller="indexController" >
+    <div ui-view cg-busy="{promise:myPromise,message:'Initializing ... '}">
+    
+    </div>
+    
+
+
+    <script src="./scripts/angular/angular.min.js"></script>
+    <script src="./scripts/angular/angular-animate.min.js"></script>
+    <script src="./scripts/angular/angular-aria.min.js"></script>
+    <script src="./scripts/angular/angular-sanitize.min.js"></script>
+    <script src="./scripts/angular-material-1.0.7.min.js"></script>
+    <script src="./scripts/angular-material-icons.min.js"></script>
+    <script src="./scripts/angular-cache.min.js"></script>  
+    <script src="./scripts/angular-ui-router.js"></script>
+    <script src="./scripts/ng-file-upload.js"></script>  
+    <script src="./scripts/ng-img-crop.min.js"></script>  
+    <script src="./scripts/underscore-min.js"></script>
+    <script src="./scripts/moment.min.js"></script>
+    <script src="./scripts/angular-moment.min.js"></script>
+    <script src="./scripts/ngStorage.min.js"></script>
+    <script src="./scripts/angular-ellipsis.min.js"></script>
+    <script src="./scripts/angular-md-pull-to-refresh.js"></script>
+    <script src="./scripts/angular-busy.min.js"></script>
+    <script src="./scripts/md-data-table.min.js"></script>
+<!--
+    <script src="./app/vendor.js"></script>
+    
+-->
+    
+    <script src="./scripts/ez-directives/ezTree.directive.js"></script>
+    <script src="./scripts/ez-directives/ezImageUpload.directive.js"></script>
+    <script src="./scripts/ez-directives/ezInitials.directive.js"></script>
+    
+<!--     <script src="./client/directives.js"></script> -->
+    
+    <script src="./app.js"></script>
+    <script src="./services/data.service.js"></script>
+    <script src="./services/auth.service.js"></script>
+    <script src="./httpInterceptor.js"></script>
+    <script src="./index.controller.js"></script>
+    <script src="./landing.controller.js"></script>
+
+    
+    <script src="./controllers/home.controller.js"></script>
+    <script src="./controllers/analytics/dashboard.controller.js"></script>
+    <script src="./controllers/accounts/accounts.controller.js"></script>
+    
+    <script src="./controllers/groups/groups.controller.js"></script>
+    <script src="./controllers/groups/group.controller.js"></script>
+    <script src="./controllers/groups/groupDetail.controller.js"></script>
+    <script src="./controllers/groups/assetList.controller.js"></script>
+    
+    
+
+  </body>
+</html>

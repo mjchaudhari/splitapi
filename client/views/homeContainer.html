@@ -81,7 +81,7 @@
                             </md-list-item >
                             <md-divider></md-divider>
                             <md-subheader class="md-no-sticky">Groups</md-subheader>
-                            <md-list-item ui-sref="home.group({'id':item._id})" class="" ng-repeat="item in groupsList">
+                            <md-list-item ui-sref="home.group.detail({'id':item._id})" class="" ng-repeat="item in groupsList">
                               <img ng-src="{{item.Thumbnail}}" class="md-avatar avatar-small" alt="{{item.Name}}"
                                    ng-if="item.Thumbnail"/>
                               <div class="md-list-item-text">

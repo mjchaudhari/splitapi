@@ -247,8 +247,11 @@
    .state("home", {url:"", templateUrl : "/views/homeContainer.html", abstract:true})
    .state("home.dashboard", {url:"/dashboard", templateUrl : "/views/dashboard.html"})
    .state("home.groups", {url:"/groups", templateUrl : "/views/groups/groups.html"})
-   .state("home.group", {url:"/group/:id?", templateUrl : "/views/groups/group.html"})
-   .state("home.groupDetail", {url:"/group/detail/:id?", templateUrl : "/views/groups/group.Detail.html"})
+   
+   .state("home.group", {url:"/group/:id", templateUrl : "/views/groups/group.html"})
+   .state("home.group.detail", {url:"/detail", templateUrl : "/views/groups/group.detail.html"})
+   .state("home.group.analytics", {url:"/analytics", templateUrl : "./views/groups/group.analytics.html"})
+   .state("home.group.assets", {url:"/assets", templateUrl : "./views/groups/assetlist.html"})
    
    .state("home.assets", {url:"/assets", templateUrl : "/views/assets.html"})
       
