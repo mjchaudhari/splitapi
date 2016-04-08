@@ -133,16 +133,16 @@ Show the image as background to display: block;
 }
 
 .bg-orangered{
-    background-color: orangered;
+    background-color: #cc0000;
 }
 .bg-darkorange{
-    background-color: darkorange;
+    background-color: #ff6600;
 }
 .bg-orange{
-    background-color: orange;
+    background-color: #cc6600;
 }   
 .bg-yellow{
-    background-color: yellow;
+    background-color: #ffff66;
 }
 
 .bg-gray-transerent{
