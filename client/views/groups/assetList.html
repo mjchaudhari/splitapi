@@ -1,64 +1,101 @@
 <div cg-busy="promices.assetList" ng-controller="assetLstController" layout-padding cg-busy="promices.groupDetail" >
     <div layout="row" flex layout-align="start start">
     </div>
-    <div class="">
-        <md-sub-header>Assets : {{assets.length || '000'}}</md-sub-header>
-        <md-button class="md-fab md-fab-bottom-right" aria-label="add">
-            <md-icon md-icon="add"></md-icon>
+        <md-button class="md-fab md-fab-bottom-right" aria-label="Add" ng-click="createAsset()">
+            <ng-md-icon icon="add"></ng-md-icon>
         </md-button>
-        <md-content class="autocomplete transperent-bg" layout="column">
-<!--             <md-list>
-                <md-list-item ng-repeat="a in assets" ng-click="openAsset( $event)">
-                    <img alt="{{ a.Name }}" ng-src="{{ a.Thumbnail }}" class="md-avatar" />
-                    <span><strong>{{a.}}</stong></span>    
-                    <p>{{ a.Name }}</p>
-                    
-                </md-list-item>
-            </md-list> -->
-            <md-table-container>
-                <table style="width:100%">
-                    <thead md-head class="md-table-header" >
-                        <tr md-row >
-                            <th md-column style="width:5%">
-                                <md-checkbox aria-label="Select All"
-                                             ng-model="isAllChecked"
-                                             ng-change="selectAllChecked()"
-                                             md-indeterminate>
-                                </md-checkbox>
-                            </th>
-                            <th md-column style="width:10%" ><span></span></th>
-                            <th md-column style="width:30%"><span>Name</span></th>
-                            <th md-column  style="width:10%">Category</th>
-                            <th md-column  style="width:20%">Created By</th>
-                            <th md-column  style="width:10%">Updated On</th>
-                            <th md-column style="width:5%">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody md-body>
-                          <tr md-row class="md-table-content" ng-repeat="asset in assets">
-                            <td>
+         <toolbar  class="md-hue-1" >
+            <!--<table style="width:100%">
+                <thead md-head class="md-table-header" >
+                    <tr md-row >
+                        <th md-column style="width:5%">
+                            <md-checkbox aria-label="Select All"
+                                         ng-model="isAllChecked"
+                                         ng-change="selectAllChecked()"
+                                         md-indeterminate>
+                            </md-checkbox>
+                        </th>
+                        <th md-column style="width:10%" ><span></span></th>
+                        <th md-column style="width:30%"><span>Name</span></th>
+                        <th md-column  style="width:10%">Category</th>
+                        <th md-column  style="width:20%">Created By</th>
+                        <th md-column  style="width:10%">Updated On</th>
+                        <th md-column style="width:5%">Actions</th>
+                    </tr>
+                </thead>
+            </table>-->
+            <div class="table">
+                <div class="table-row" layout="row" >
+                    <div class="table-cell" flex="10">
+                        <md-checkbox aria-label="Select All"
+                                        ng-model="isAllChecked"
+                                        ng-change="selectAllChecked()"
+                                        md-indeterminate>
+                        </md-checkbox>
+                    </div>
+                    <div class="table-cell" flex="10">
+                        <!--thumb-->
+                    </div>
+                    <div class="table-cell" flex="40"><span>Name</span></div>
+                    <div class="table-cell" flex="15">Created By</div>
+                    <div class="table-cell" flex="10">Updated On</div>
+                    <div class="table-cell" flex="15">Actions</div>
+                </div>
+            </div>
+        </toolbar>
+        <md-content class="transperent-bg" flex layout layout-align="center" style="height:55vh;">
+            
+                <!--<table style="width:100%">
+                    <tbody md-body>
+
+                        <tr md-row class="md-table-content" ng-repeat="asset in assets" ">
+                            <td style="width:5%">
+                                {{$index}}
                                 <md-checkbox aria-label="Select" ng-checked="asset.__isSelected" ng-click="toggle(asset)">
-                                 </md-checkbox>
+                                </md-checkbox>
                             </td>
-                            <td >
+                            <td style="width:10%">
                                 <ez-thumb img="asset.Thumbnail" text="asset.Name"></ez-thumb>
                             </td>
-                            <td md-cell>{{asset.Name}}</td>
-                            <td md-cell>{{asset.AssetCategory}}</td>
-                            
-                            <td md-cell>{{asset.CreatedBy.Name}}</td>
-                            <td md-cell>
+                            <td md-cell style="width:30%">{{asset.Name}}</td>
+                            <td md-cell style="width:10%">{{asset.AssetCategory}}</td>
+
+                            <td md-cell style="width:20%">{{asset.CreatedBy.Name}}</td>
+                            <td md-cell style="width:10%">
                                 <time title="{{ asset.UpdatedOn | amDateFormat: 'dddd, Do MMM YYYY, h:mm a' }}">
                                     {{ asset.UpdatedOn | amCalendar }}
                                 </time>
                             </td>
-                            <td md-cell></td>
-                          </tr>
+                            <td md-cell style="width:5%"></td>
+                        </tr>
+                    
                     </tbody>
-                </table>
-            </md-table-container>
+                </table>-->
+            <div layout="column" class="table">
+                <div class="table-row" layout="row" ng-repeat="asset in assets"  >
+                    <div class="table-cell" flex="10">
+                        
+                        <md-checkbox aria-label="Select" ng-checked="asset.__isSelected" ng-click="toggle(asset)">
+                        </md-checkbox>
+                        {{$index}}
+                    </div>
+                    <div class="table-cell" flex="10" layout="row" >
+                        <ez-thumb img="asset.Thumbnail" text="asset.Name"></ez-thumb>
+                        
+                    </div>
+                    <div  class="table-cell" flex="40" layout="row" >
+                        {{category}}
+                        {{asset.Name}}
+                    </div>
+                    <div class="table-cell" flex="15">{{asset.CreatedBy.Name}}</div>
+                    <div class="table-cell" flex="10">
+                        <time title="{{ asset.UpdatedOn | amDateFormat: 'dddd, Do MMM YYYY, h:mm a' }}">
+                            {{ asset.UpdatedOn | amCalendar }}
+                        </time>
+                    </div>
+                    <div class="table-cell" flex="15"></div><!---->
+                </div>
+            </div>
         </md-content>
-        <div>
-        </div>
-    </div>        
+            
 </div>

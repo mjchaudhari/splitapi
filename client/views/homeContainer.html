@@ -24,7 +24,7 @@
        </md-sidenav>
     <!--view for dashbaord, assets, groups-->
 
-        <md-toolbar md-scroll-shrink="true " md-scroll-shrink="0.5" class="" >
+        <md-toolbar md-scroll-shrink="false " md-scroll-shrink="0.5" class="md-hue-1" >
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleSideBar('left')">
                     <ng-md-icon icon="menu"></ng-md-icon> 
@@ -61,7 +61,7 @@
         <div layout="row" flex>
             <md-sidenav class="md-sidenav-left md-whiteframe-z2 " md-component-id="left"
                 md-is-locked-open="$mdMedia('gt-sm')"  >
-                <md-toolbar layout="row" class="md-hue-1">
+                <md-toolbar layout="row" class="">
                   <div class="md-toolbar-tools">
                     <span></span>
                   </div>
@@ -127,10 +127,10 @@
             </md-content>
         </div>
     </div>
-    <footer flex="none" class="bg-gray-transerent" style="height:5vh;">
+<!--     <footer flex="none" class="bg-gray-transerent" style="height:5vh;">
         <div layout="column"  layout-align="center center">
             <span>Colaboration platform v1.5</span>
             <span>copy rights 2016</span>
         </div>
-    </footer>
+    </footer> -->
 </md-content>

@@ -94,7 +94,7 @@
 
     $mdThemingProvider.theme('default')
 	   .primaryPalette('cool-blue')
-	   .accentPalette('red1')
+	   .accentPalette('red')
 	   .warnPalette('deep-orange')
 	   .backgroundPalette('bg-white');
 //--------------------------------White Theme----------------------------------------
@@ -193,17 +193,13 @@
     'contrastDarkColors': '50 100 200 300 400 A100 A200 A400'
     });
 
-    $mdThemingProvider.theme('White-theme')
-	.primaryPalette('primary-gray')
-	.accentPalette('accent-red')
-    .warnPalette('warn-orange')
-    .backgroundPalette('bg-white');
+//     $mdThemingProvider.theme('White-theme')
+// 	.primaryPalette('primary-gray')
+// 	.accentPalette('accent-red')
+//     .warnPalette('warn-orange')
+//     .backgroundPalette('bg-white');
 
     
-   $mdThemingProvider.theme('light-blue')
-    .primaryPalette('light-blue')
-    .accentPalette('red');
-
    $mdThemingProvider.theme('light-blue')
     .primaryPalette('light-blue')
     .accentPalette('red');

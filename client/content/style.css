@@ -273,3 +273,20 @@ Show the image as background to display: block;
 .grey {
   color: grey;
 }
+
+.table{
+    color: #222;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+.table-row{
+    display:  table-row;
+}
+
+.table-cell{
+    border-bottom: 1px solid rgba(0,0,0,0.065);
+    display: table-cell;
+    padding: 2px;
+    vertical-align: middle;
+}
