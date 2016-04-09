@@ -1,44 +1,70 @@
-<div  ng-controller="groupDetailController" layout-padding cg-busy="promices.groupDetail" >
-    <div layout="row" flex layout-align="start start">
-        <ez-image-upload img="group.Thumbnail" ></ez-image-upload>
-        <div layout="column" flex>
-            <div layout-gt-sm="row">
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>What's the group called!</label>
-                    <input ng-model="group.Name">
+<div  ng-controller="groupDetailController"  cg-busy="promices.groupDetail" >
+    <md-toolbar class=""  >
+		  <div class="md-toolbar-tools">
+            <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
+            <span>{{group.Name}}</span>
+            <div flex></div>
+            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.detail">
+				<i class="material-icons">info</i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.assets">
+				<i class="material-icons">view_list</i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.analytics">
+            	<i class="material-icons">assessment</i>
+            </md-button>
+            
+            <div flex></div>
+            <md-button class="md-icon-button" aria-label="save" ng-click="save()">
+                    <i class="material-icons">save</i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Cancel" ng-click="cancel()">
+                    <i class="material-icons">cancel</i>
+            </md-button>
+		  </div>
+    </md-toolbar>
+    <div layout-padding>
+        <div layout="row" flex  layout-align="start start">
+            <ez-image-upload img="group.Thumbnail" ></ez-image-upload>
+            <div layout="column" flex>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>What's the group called!</label>
+                        <input ng-model="group.Name">
+                    </md-input-container>
+                    <div class="hint" ></div>
+                </div>
+                <md-input-container class="md-block">
+                    <label>More about this awesome group</label>
+                    <textarea ng-model="group.Description" columns="1" md-maxlength="150" rows="5"></textarea>
                 </md-input-container>
-                <div class="hint" ></div>
             </div>
-            <md-input-container class="md-block">
-                <label>More about this awesome group</label>
-                <textarea ng-model="group.Description" columns="1" md-maxlength="150" rows="5"></textarea>
-            </md-input-container>
+        </div>
+        <div class="chipsContactChips">
+            <md-sub-header>Group Members : {{group.Members.length || '0'}}</md-sub-header>
+            <md-content class="md-padding autocomplete" layout="column">
+                
+                <md-contact-chips
+                    ng-model="group.Members"
+                    md-contacts="querySearch($query)"
+                    md-contact-name="_name"
+                    md-contact-image="Picture"
+                    md-contact-email="UserName"
+                    md-require-match="true"
+                    md-highlight-flags="i"
+                    filter-selected="true"
+                    md-separator-keys="separatorKeys"
+                    placeholder="+Member">
+                </md-contact-chips>
+            </md-content>
+            <div>
+                <md-button class="md-button md-raised md-primary accent" ng-click="saveGroupDetails()">
+                    Save
+                </md-button>
+                <md-button class="md-button md-raised md-primary accent" ng-click="cancel()">
+                    Cancel
+                </md-button>
+            </div>
         </div>
     </div>
-    <div class="chipsContactChips">
-        <md-sub-header>Group Members : {{group.Members.length || '0'}}</md-sub-header>
-        <md-content class="md-padding autocomplete" layout="column">
-            
-            <md-contact-chips
-                ng-model="group.Members"
-                md-contacts="querySearch($query)"
-                md-contact-name="_name"
-                md-contact-image="Picture"
-                md-contact-email="UserName"
-                md-require-match="true"
-                md-highlight-flags="i"
-                filter-selected="true"
-                md-separator-keys="separatorKeys"
-                placeholder="+Member">
-            </md-contact-chips>
-        </md-content>
-        <div>
-            <md-button class="md-button md-raised md-primary accent" ng-click="saveGroupDetails()">
-                Save
-            </md-button>
-            <md-button class="md-button md-raised md-primary accent" ng-click="cancel()">
-                Cancel
-            </md-button>
-        </div>
-    </div>        
 </div>

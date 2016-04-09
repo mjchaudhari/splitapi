@@ -1,4 +1,22 @@
-<div  layout-padding cg-busy="promices.analytics" >
-      Analytics
+<div cg-busy="promices.analytics" >
+      <md-toolbar class=""  >
+		  <div class="md-toolbar-tools">
+            <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
+            <span>{{group.Name}}</span>
+            <div flex></div>
+            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.detail">
+				<i class="material-icons">info</i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.assets">
+				<i class="material-icons">view_list</i>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.analytics">
+            	<i class="material-icons">assessment</i>
+            </md-button>
+            
+            <div flex></div>
+            
+		  </div>
+    </md-toolbar>
       
 </div>

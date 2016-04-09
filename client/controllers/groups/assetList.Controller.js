@@ -4,9 +4,9 @@
     angular.module("app")
     .controller("assetLstController",assetLstController);
     
-    assetLstController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state", "$stateParams" ,"dataService", "config","authService","$mdConstant","$mdToast"];
+    assetLstController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state", "$stateParams" ,"dataService", "config","authService","$mdConstant","$mdToast","$mdDialog"];
     
-    function assetLstController($scope, $rootScope,  $log, $q, $localStorage, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast ){
+    function assetLstController($scope, $rootScope,  $log, $q, $localStorage, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast, $mdDialog ){
         
         //bindable mumbers
         $scope.title = "Assets Crtl";
@@ -56,7 +56,30 @@
             var status = $scope.isAllChecked;
             _.forEach($scope.assets, function(a){
                 a.__isSelected = status;
-            });        };
+            });        
+        };
+        
+        $scope.createAsset = function($event){
+            var parentEl = angular.element(document.body);
+            var params = {
+                    id: 0,
+                    groupId : $scope.groupId,
+                    parentId:$scope.parentId
+                };
+            $mdDialog.show({
+                parent: parentEl,
+                targetEvent: $event,
+                templateUrl:"./views/groups/asset.edit.html",
+                fullscreen:true,
+                locals: {params},
+                controller: 'assetEditController'
+            })
+            // .resolve(function(d){
+                
+            // })
+            ;
+        }
+        
         function determineSelectAll(){
             var selected = _.where($scope.assets,{"__isSelected":true});
             $scope.isAllChecked = selected.length === $scope.assets.length;
