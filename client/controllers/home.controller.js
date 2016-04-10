@@ -16,11 +16,20 @@
         $scope.user = $localStorage.__splituser;
         //$scope.fabOpen = false;
         $scope.groupsList = [];
+        
+        $scope.options = {
+            idAttrib        : "Id",
+            nameAttrib      :"Name",
+            childrenAttrib  : "Children"
+        };
+        $scope.selectedMenu = null;
+        $scope.menu = null;
         $scope.promices = {};
         
         if($scope.theme == undefined){
             $scope.theme = 0;
         }
+        
         
         $scope.logoff = function(ev){
             //TODO; Ask for confirmation here
@@ -93,13 +102,49 @@
             $scope.promices.groupsPromice = dataService.getGroups()
             .then(function(d){
                 angular.copy(d.data.data, $scope.groupsList);
+                var sectionHeader = {
+                        Id: 'Groups',
+                        Name: 'Groups',
+                        Children: []
+                }
+
+                
+
+                //build menu sections
+                $scope.groupsList.forEach(function(g){
+                   
+                   var section = {
+                       Id:g._id,
+                       Name: g.Name,
+                       Children:[
+                           {
+                                Id:g._id+1,
+                                Name: 'Info'
+                            },
+                            {
+                                Id:g._id + 2,
+                                Name: 'Assets'
+                            },
+                            {
+                                Id:g._id + 3,
+                                Name: 'Analytics'
+                            }
+                            
+                       ] 
+                   };
+                   sectionHeader.Children.push(section);
+                });
+                
+                $scope.menu = sectionHeader;
             },
             function(e){
 
             });
             return $scope.promices.groupsPromice;
         }
-
+        $scope.onMenuSelect = function(node){
+            $log.debug(node);
+        }
         var preInit = function(){
             var tasks = [];
             tasks.push(getGroups());

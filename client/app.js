@@ -4,15 +4,15 @@
  //module = angular.module('ezDirectives', ['ngFileUpload']);
  var app = angular.module('app', ['ngMaterial','ngMdIcons', 'ngAnimate', 'ngSanitize', 'ui.router',
       'ngStorage','ngFileUpload','ngImgCrop', 'ezDirectives','angular-cache','angularMoment',
-      'cgBusy']);
+      'cgBusy','sasrio.angular-material-sidenav']);
  app.constant("config",{
      appTitle:"easy collaborate",
      apiBaseUrl : "",
      themes : ['default','White-theme','light-blue','amber','cyan', 'light-green','lime','cool-blue']
   	
  })
- app.config([ "$httpProvider","$urlRouterProvider", '$stateProvider','$mdThemingProvider', 'CacheFactoryProvider', '$localStorageProvider',
- function($httpProvider, $urlRouterProvider, $stateProvider, $mdThemingProvider, CacheFactoryProvider, $localStorageProvider ){
+ app.config([ "$httpProvider","$urlRouterProvider", '$stateProvider','$mdThemingProvider', 'CacheFactoryProvider', '$localStorageProvider','ssSideNavSectionsProvider',
+ function($httpProvider, $urlRouterProvider, $stateProvider, $mdThemingProvider, CacheFactoryProvider, $localStorageProvider,ssSideNavSectionsProvider ){
    
    
 
@@ -228,7 +228,7 @@
 
          
    $mdThemingProvider.alwaysWatchTheme(true);
-   
+   ssSideNavSectionsProvider.initWithTheme($mdThemingProvider);
    $httpProvider.interceptors.push('httpInterceptor');
    
    $urlRouterProvider.otherwise("/");

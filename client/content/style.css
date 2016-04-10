@@ -106,6 +106,9 @@ Show the image as background to display: block;
     animation: rotating 2s infinite linear;
 }
 
+.icon-blank::before{
+      width: .7em; content: " ";    
+}
 
 .thumbnail-card{
   border: 1px solid silver;
@@ -119,7 +122,7 @@ Show the image as background to display: block;
   height:100px;
   width:100px;
   border-radius: 50px;
-  margin:;
+  margin:0;
 }
 
 .margin5{

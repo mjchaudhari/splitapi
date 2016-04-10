@@ -68,6 +68,13 @@
                 </md-toolbar>
                 <div>
                 <md-content  class="md-hue-1" layout="column" flex>
+                    <div layout="column" flex>
+                        <div ez-tree selected-nodes="selectedMenu" allow-multi-select="false" tree="menu" on-select="onMenuSelect(n)">
+                            tree div
+                        </div>
+                        <!--<ezTree tree="menu" options="options" selected-nodes="selectedMenu"
+                                on-select="onMenuSelect(n)"></ezTree>-->
+                    </div>
                     <div  layout="column" flex style="height:70vh;">
                         <md-list class="md-body-1">
                             <md-list-item  ui-sref="home.dashboard">

@@ -41,7 +41,8 @@
             '<li  class="node" ng-if="!n.__isHidden"',
                 'ng-class=" { \'node-selected\':n.__isSelected, \'node-unselected\': !n.__isSelected}">',
               '<div style="width:100%;">',
-                '<span ng-style="{\'margin-left\': 20*n.__level}" >',
+                '<span ng-style=\"{\'margin-left\':20*n.__level + \'px\'}\" >',
+                  
                   '<span ng-if="!n.__isLeaf && !n.__isExpanded"  >',
                     '<md-button aria-label="More" ng-if="n.__hasChildren" ng-click="toggleNodeVisibility(n,$event)" style="margine-right:2px;" class="handCursor tree-toggler  tree-toggler-right glyphicon glyphicon-chevron-right md-icon-button"><i class="material-icons">play_arrow</i></md-button>',
                     '<span ng-if="!n.__hasChildren" class="handCursor tree-toggler tree-toggler-right  icon-blank"></span>',
@@ -58,7 +59,7 @@
                   '</span>',
                 '</span> ',
                 //'<div style=" background-color:red;" ng-click="toggleSelection(n,$event)"> ',
-                    '<span class="handCursor" ng-click="toggleSelection(n,$event)">{{n[options.nameAttrib]}}</span>',
+                    '<span class="handCursor" ng-click="toggleSelection(n,$event)">{{n[options.nameAttrib]}}-{{20*n.__level}}</span>',
                 //'</div>',  
               '</div>',
             '</li>',
