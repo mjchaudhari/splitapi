@@ -8,7 +8,7 @@
             '<li  class="node" ng-if="!n.__isHidden"',
                 'ng-class=" { \'node-selected\':n.__isSelected, \'node-unselected\': !n.__isSelected}">',
               '<div style="width:100%;">',
-                '<span ng-style="{\'margin-left\': 20*n.__level}" >',
+                '<span ng-style="{\'margin-left\': levelMargin * n.__level}" >',
                   '<span ng-if="!n.__isLeaf && !n.__isExpanded"  >',
                     '<span ng-if="n.__hasChildren" ng-click="toggleNodeVisibility(n,$event)" style="margine-right:2px;" class="handCursor tree-toggler tree-toggler-right glyphicon glyphicon-chevron-right "></span>',
                     '<span ng-if="!n.__hasChildren" class="handCursor tree-toggler tree-toggler-right  icon-blank"></span>',
@@ -36,30 +36,31 @@
     
     this.materialTemplate = [
     '<div>{{title}} ',
-        '<ul style="list-style-type:none;">',
+        '<ul style="list-style-type:none;padding: 10px;">',
           '<div ng-repeat="n in flatTree">',
             '<li  class="node" ng-if="!n.__isHidden"',
                 'ng-class=" { \'node-selected\':n.__isSelected, \'node-unselected\': !n.__isSelected}">',
               '<div style="width:100%;">',
-                '<span ng-style=\"{\'margin-left\':20*n.__level + \'px\'}\" >',
+                '<span ng-style=\"{\'margin-left\':levelMargin * n.__level + \'px\'}\" >',
                   
                   '<span ng-if="!n.__isLeaf && !n.__isExpanded"  >',
-                    '<md-button aria-label="More" ng-if="n.__hasChildren" ng-click="toggleNodeVisibility(n,$event)" style="margine-right:2px;" class="handCursor tree-toggler  tree-toggler-right glyphicon glyphicon-chevron-right md-icon-button"><i class="material-icons">play_arrow</i></md-button>',
+                    
+                    '<span ng-if="n.__hasChildren" ng-click="toggleNodeVisibility(n,$event)" style="margine-right:2px;" class="handCursor tree-toggler  tree-toggler-right glyphicon glyphicon-chevron-right"> <i class="material-icons">play_arrow</i></span>',
                     '<span ng-if="!n.__hasChildren" class="handCursor tree-toggler tree-toggler-right  icon-blank"></span>',
-                    '<span ng-click="toggleSelection(n,$event)" class="handCursor mdi-file-folder mdi-action-view-module glyphicon glyphicon-folder-close"><i class="material-icons">folder</i></span>',
+                    '<span ng-click="toggleSelection(n,$event)" class="handCursor mdi-file-folder mdi-action-view-module glyphicon glyphicon-folder-close"><i class="material-icons">{{n.icon || "folder"}}</i> </span>',
                   '</span>',
                   '<span ng-if="!n.__isLeaf && n.__isExpanded"  >',
-                    '<span  ng-if="n.__hasChildren" ng-click="toggleNodeVisibility(n,$event)" style="margine-right:2px;" class="handCursor tree-toggler tree-toggler-down glyphicon glyphicon-chevron-down"><i class="material-icons">arrow_drop_down</i></span>',
+                    '<span  ng-if="n.__hasChildren" ng-click="toggleNodeVisibility(n,$event)" style="margine-right:2px;" class="handCursor tree-toggler tree-toggler-down glyphicon glyphicon-chevron-down"><i class="material-icons rotate-270">play_arrow</i></span>',
                     '<span ng-if="!n.__hasChildren" style="margin-right:2px;" class="handCursor tree-toggler tree-toggler-right  icon-blank"></span>',
-                    '<span ng-click="toggleSelection(n,$event)" class="handCursor mdi-file-folder-open mdi-action-view-module glyphicon glyphicon-folder-open"><i class="material-icons">folder_open</i></span>',
+                    '<span ng-click="toggleSelection(n,$event)" class="handCursor mdi-file-folder-open mdi-action-view-module glyphicon glyphicon-folder-open"><i class="material-icons">{{n.icon || "folder"}}</i></span>',
                   '</span>',
                   '<span ng-if="n.__isLeaf"  >',
-                    '<span ng-if="!n.__hasChildren" class="handCursor tree-toggler tree-toggler-right icon-blank "></span>',
-                    '<span ng-click="toggleSelection(n,$event)" class="handCursor mdi-file mdi-action-view-module glyphicon glyphicon-file"><i class="material-icons">group</i></span>',
+                    '<span class="handCursor tree-toggler tree-toggler-right icon-blank " ng-style="{\'margin-left\': levelMargin}"></span>',
+                    '<span ng-click="toggleSelection(n,$event)" class="handCursor mdi-file mdi-action-view-module glyphicon glyphicon-file"><i class="material-icons">{{n.icon||"description"}}</i></span>',
                   '</span>',
                 '</span> ',
                 //'<div style=" background-color:red;" ng-click="toggleSelection(n,$event)"> ',
-                    '<span class="handCursor" ng-click="toggleSelection(n,$event)">{{n[options.nameAttrib]}}-{{20*n.__level}}</span>',
+                    '<span class="handCursor" ng-click="toggleSelection(n,$event)">{{n[options.nameAttrib]}}</span>',
                 //'</div>',  
               '</div>',
             '</li>',
@@ -102,6 +103,7 @@
                 else{
                     $scope.options = options;
                 }
+                $scope.levelMargin=25;
                 $scope.flatTree = [];
                 if($scope.tree){
                     var dupNode = angular.copy($scope.tree);

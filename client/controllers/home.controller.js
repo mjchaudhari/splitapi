@@ -20,7 +20,7 @@
         $scope.options = {
             idAttrib        : "Id",
             nameAttrib      :"Name",
-            childrenAttrib  : "Children"
+            childrenAttrib  : "Children",
         };
         $scope.selectedMenu = null;
         $scope.menu = null;
@@ -105,7 +105,8 @@
                 var sectionHeader = {
                         Id: 'Groups',
                         Name: 'Groups',
-                        Children: []
+                        Children: [],
+                        icon:'group'
                 }
 
                 
@@ -116,18 +117,25 @@
                    var section = {
                        Id:g._id,
                        Name: g.Name,
+                       icon:'people_outline',
                        Children:[
                            {
                                 Id:g._id+1,
-                                Name: 'Info'
+                                Name: 'Info',
+                                icon:'info',
+                                parentId:g._id
                             },
                             {
                                 Id:g._id + 2,
-                                Name: 'Assets'
+                                Name: 'Assets',
+                                icon:'list',
+                                parentId:g._id
                             },
                             {
                                 Id:g._id + 3,
-                                Name: 'Analytics'
+                                Name: 'Analytics',
+                                icon:'assessment',
+                                parentId:g._id
                             }
                             
                        ] 
@@ -142,8 +150,23 @@
             });
             return $scope.promices.groupsPromice;
         }
-        $scope.onMenuSelect = function(node){
+        $scope.onSelect = function(node){
             $log.debug(node);
+            switch (node.Name) {
+                case "Info":{
+                    $state.go("home.group.detail", {"id":node.parentId});
+                    break;
+                }
+                case "Assets":{
+                    $state.go("home.group.assets", {"id":node.parentId});
+                    break;
+                }
+                case "Analytics":{
+                    $state.go("home.group.analytics",{"id":node.parentId});
+                    break;
+                }
+            }
+            
         }
         var preInit = function(){
             var tasks = [];

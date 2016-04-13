@@ -69,7 +69,7 @@
                 <div>
                 <md-content  class="md-hue-1" layout="column" flex>
                     <div layout="column" flex>
-                        <div ez-tree selected-nodes="selectedMenu" allow-multi-select="false" tree="menu" on-select="onMenuSelect(n)">
+                        <div ez-tree selected-nodes="selectedMenu" allow-multi-select="false" tree="menu" on-select="onSelect">
                             tree div
                         </div>
                         <!--<ezTree tree="menu" options="options" selected-nodes="selectedMenu"
@@ -87,15 +87,7 @@
                                 </md-list-content>
                             </md-list-item >
                             <md-divider></md-divider>
-                            <md-subheader class="md-no-sticky">Groups</md-subheader>
-                            <md-list-item ui-sref="home.group.detail({'id':item._id})" class="" ng-repeat="item in groupsList">
-                              <img ng-src="{{item.Thumbnail}}" class="md-avatar avatar-small" alt="{{item.Name}}"
-                                   ng-if="item.Thumbnail"/>
-                              <div class="md-list-item-text">
-                                <span> {{ item.Name }} </span>
-                              </div>
-                            </md-list-item>
-                            <md-divider></md-divider>
+                            
                             <md-list-item ui-sref="account.users"  aria-label="goups">
                                 <md-list-content  ng-click="toggleSideBar('left')"  ui-sref="home." md-ink-ripple layout="row" > 
                                     <div class="inset">

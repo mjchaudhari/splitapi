@@ -219,6 +219,44 @@ Show the image as background to display: block;
     vertical-align: middle;
 }
 
+.rotate-90{
+    /* Safari */
+    -webkit-transform: rotate(-90deg);
+    /* Firefox */
+    -moz-transform: rotate(-90deg);
+    /* IE */
+    -ms-transform: rotate(-90deg);
+    /* Opera */
+    -o-transform: rotate(-90deg);
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+.rotate-180{
+    /* Safari */
+    -webkit-transform: rotate(-180deg);
+    /* Firefox */
+    -moz-transform: rotate(-180deg);
+    /* IE */
+    -ms-transform: rotate(-180deg);
+    /* Opera */
+    -o-transform: rotate(-180deg);
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+.rotate-270{
+    /* Safari */
+    -webkit-transform: rotate(-270deg);
+    /* Firefox */
+    -moz-transform:rotate(-270deg);
+    /* IE */
+    -ms-transform: rotate(-270deg);
+    /* Opera */
+    -o-transform: rotate(-270deg);
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
 /*Category styles*/
 .asset{
     
