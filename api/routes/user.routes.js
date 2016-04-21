@@ -101,7 +101,7 @@ module.exports = function(dbConfig, auth, app) {
     */
 	app.post('/v1/authenticate', function(req, res) {
 		console.log("authenticate");
-		console.log(req.body);
+		//console.log(req.body);
 		v1.authenticate(req, function (d){
 			if(d.isError){
 				res.status(401).send(d);

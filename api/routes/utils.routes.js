@@ -5,12 +5,16 @@ var path = require("path");
 var fs = require('fs-extra'); 
 var azureStorage = require("../azureStorageHelper.js")();
 var fileCtrl = require("./../controllers/file.controller.js");
+var utilsCtrl = require("./../controllers/utils.controller.js");
+var models = require("./../response.models.js").models;
 var _dir = process.cwd();
 
 
 
+
 module.exports = function(dbConfig, auth, app) {
-	
+    var utils=new utilsCtrl.v1(dbConfig);
+    
 	var tmpUploadFolder = path.normalize(__dirname + "/../../tmpStore");
 	
 	/**
@@ -107,7 +111,7 @@ module.exports = function(dbConfig, auth, app) {
                 
             });
         });
-	})
+	});
 	
 	app.get('/file/*', function(req, res){
 		var disklocation = tmpUploadFolder + '/' + req.params[0] ;
@@ -196,7 +200,6 @@ module.exports = function(dbConfig, auth, app) {
                 });
             });
         });
-
     }
     
     app.post('/drive/upload', function(req, res){
@@ -206,5 +209,49 @@ module.exports = function(dbConfig, auth, app) {
         
 		
 	});
-    
+    /**
+	 * @apiName /v1/utils/categories/:name?/:categoryGroup Get categories
+	 * @apiDescription Get asset categories
+     * @apiGroup Config
+     *
+     * @apiParam {string} name [optional] of the config
+     * @apiParam {string} categoryGroup [optional] name of the config
+	 * @apiExample {curl} Example usage:
+ 	 *     curl -i http://localhost/v1/utils/categories?name=Ct_Comment&categoryGroup="AssetCategory"
+	 * @apiHeader {String} Authorization the security token
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     }      
+     *
+     * @apiSuccess {String} array of groups matching to the criteria .
+	 *
+	 * @apiSuccessExample {JSON} {
+				"isError": false,
+				"data": [
+					{
+                        "_id":string,
+                        "Name":string,
+                        "Description":string,
+                        "DisplayName":string,
+                        "IsContainer":bool,
+                        "IsStandard":bool,
+                        "ConfigGroup":string					
+				}
+	 */
+	app.get("/v1/config/categories",  function(req, res){
+        var name = "";
+        var categoryGroup = "";
+        if( req.query != null ){
+            name = req.query.name;
+            categoryGroup = req.query.categoryGroup;
+        }
+		utils.getCategories(name, categoryGroup, function (e,d){
+            if(e)
+            {
+                res.json(new models.error(e));
+            }
+            res.json(new models.success(d));
+        });
+	});
 }

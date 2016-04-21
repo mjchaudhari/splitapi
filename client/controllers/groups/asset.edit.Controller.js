@@ -12,6 +12,7 @@
         $scope.id       = params.id;
         $scope.groupId  = params.groupId;
         $scope.parentId = params.pId;
+        $scope.categories = [];
         
         $scope.promices = {};
         $scope.asset = {
@@ -40,6 +41,8 @@
         var preInit = function(){
             var tasks = [];
             tasks.push(getAsset($scope.id));
+            tasks.push(getCategories());
+            
             $q.all([
                 tasks
             ])
@@ -72,7 +75,24 @@
             }
             return $scope.promices.asset;
         }
-
+        function getCategories (){
+            var defer = $q.defer();
+            $scope.promices.categories = dataService.getCategories()
+            .then(function(d){
+                $scope.categories = angular.copy(d.data.data);
+                defer.resolve();    
+            },
+            function(e){
+                defer.reject();
+            });    
+            return $scope.promices.asset;
+        }
+        $scope.hide = function() {
+            $mdDialog.hide();
+        };
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
         preInit();
     }//conroller ends
 })();

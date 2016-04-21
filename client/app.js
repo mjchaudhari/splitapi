@@ -193,11 +193,11 @@
     'contrastDarkColors': '50 100 200 300 400 A100 A200 A400'
     });
 
-//     $mdThemingProvider.theme('White-theme')
-// 	.primaryPalette('primary-gray')
-// 	.accentPalette('accent-red')
-//     .warnPalette('warn-orange')
-//     .backgroundPalette('bg-white');
+    $mdThemingProvider.theme('White-theme')
+	.primaryPalette('primary-gray')
+	.accentPalette('accent-red')
+    .warnPalette('warn-orange')
+    .backgroundPalette('bg-white').dark();
 
     
    $mdThemingProvider.theme('light-blue')
@@ -248,6 +248,7 @@
    .state("home.group.detail", {url:"/detail", templateUrl : "/views/groups/group.detail.html"})
    .state("home.group.analytics", {url:"/analytics", templateUrl : "./views/groups/group.analytics.html"})
    .state("home.group.assets", {url:"/assets", templateUrl : "./views/groups/assetlist.html"})
+   .state("home.group.asset", {url:"/asset/:id?", templateUrl : "./views/groups/asset.edit.html"})
    
    .state("home.assets", {url:"/assets", templateUrl : "/views/assets.html"})
       

@@ -85,34 +85,33 @@ var createConfigIfNew =  function(model, data){
         }       
     });
 }
-    module.exports = function(dbConfig){
-        var _assetConfigModel = dbConfig.conn.model("Configs", assetConfigSchema);
-        var _init = function (){
-            var catTopic = {"_id":"Ct_Topic", "Name":"Ct_Topic", "Description":"Topic", "DisplayName":"Topic", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
-            var catDocument = {"_id":"Ct_Document","Name":"Ct_Document", "Description":"Document", "DisplayName":"Document", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
-            var catComment = {"_id":"Ct_Comment","Name":"Ct_Comment", "Description":"Comment", "DisplayName":"Comment", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
-            var categoryTask = {"_id":"Ct_Task", "Name":"Ct_Task", "Description":"Task", "DisplayName":"Task", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
-            var categoryIssue = {"_id":"Ct_Issue", "Name":"Ct_Issue", "Description":"Issue", "DisplayName":"Issue", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
-            var categoryEvent = {"_id":"Ct_Event", "Name":"Ct_Event", "Description":"Event", "DisplayName":"Event", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
-            var categoryTransaction = {"_id":"Ct_Transaction","Name":"Ct_Transaction", "Description":"Transaction", "DisplayName":"Transaction", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
-            var categoryQuestionnaire = {"_id":"Ct_Questionnaire","Name":"Ct_Questionnaire", "Description":"Questionnaire", "DisplayName":"Questionnaire", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
-            
-            createConfigIfNew(_assetConfigModel, catTopic);
-            createConfigIfNew(_assetConfigModel, catDocument);
-            createConfigIfNew(_assetConfigModel, catComment);
-            createConfigIfNew(_assetConfigModel, categoryTask);
-            createConfigIfNew(_assetConfigModel, categoryIssue);
-            createConfigIfNew(_assetConfigModel, categoryEvent);
-            createConfigIfNew(_assetConfigModel, categoryTransaction);
-            createConfigIfNew(_assetConfigModel, categoryQuestionnaire);
-            
-            
-        };
-       _init();
-       
-        return { 
-            //init:_init,
-            assetConfigModel:_assetConfigModel,
-            
-        };
-    }
+module.exports = function(dbConfig){
+    var _assetConfigModel = dbConfig.conn.model("Configs", assetConfigSchema);
+    var _init = function (){
+        var catTopic = {"_id":"Ct_Topic", "Name":"Ct_Topic", "Description":"Topic", "DisplayName":"Topic", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
+        var catDocument = {"_id":"Ct_Document","Name":"Ct_Document", "Description":"Document", "DisplayName":"Document", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
+        var catComment = {"_id":"Ct_Comment","Name":"Ct_Comment", "Description":"Comment", "DisplayName":"Comment", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
+        var categoryTask = {"_id":"Ct_Task", "Name":"Ct_Task", "Description":"Task", "DisplayName":"Task", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var categoryIssue = {"_id":"Ct_Issue", "Name":"Ct_Issue", "Description":"Issue", "DisplayName":"Issue", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var categoryEvent = {"_id":"Ct_Event", "Name":"Ct_Event", "Description":"Event", "DisplayName":"Event", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var categoryTransaction = {"_id":"Ct_Transaction","Name":"Ct_Transaction", "Description":"Transaction", "DisplayName":"Transaction", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var categoryQuestionnaire = {"_id":"Ct_Questionnaire","Name":"Ct_Questionnaire", "Description":"Questionnaire", "DisplayName":"Questionnaire", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        
+        createConfigIfNew(_assetConfigModel, catTopic);
+        createConfigIfNew(_assetConfigModel, catDocument);
+        createConfigIfNew(_assetConfigModel, catComment);
+        createConfigIfNew(_assetConfigModel, categoryTask);
+        createConfigIfNew(_assetConfigModel, categoryIssue);
+        createConfigIfNew(_assetConfigModel, categoryEvent);
+        createConfigIfNew(_assetConfigModel, categoryTransaction);
+        createConfigIfNew(_assetConfigModel, categoryQuestionnaire);
+        
+    };
+    _init();
+    
+    return { 
+        //init:_init,
+        assetConfigModel:_assetConfigModel,
+        
+    };
+}

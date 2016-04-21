@@ -19,7 +19,19 @@ function($http,$q, $log, config, $timeout, CacheFactory){
     getUser : function( ){
       
     },
-    
+    getCategories : function(name,categoryGroup){
+      var querystring = [];
+      if(name != null){
+          querystring.push( "name=" + name);
+      }
+      if(categoryGroup != null){
+          querystring.push( "categoryGroup=" + categoryGroup);
+      }
+      var q = "?" + querystring.join("&");
+      
+      var url = config.apiBaseUrl + "v1/config/categories" + q;
+      return $http.get(url, requestOpts);
+    },
     /**
     Register yourself
     */

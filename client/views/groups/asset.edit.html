@@ -1,13 +1,51 @@
 <md-dialog aria-label="Edit Asset"  flex="80" >
-    <h1>Edit Asset</h1>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Mango (Fruit)</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon class="material-icon" aria-label="Close dialog">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
     <form >
-        <md-dialog-content>
+        <md-dialog-content layout-padding>
             <div layout="row" flex>
                 <div layout="row" flex="50">
                     preview
                 </div>
-                <div layout="row" fex="50">
-                    Metadata
+                <div layout="column" flex="50" >
+                    <!--category-->                    
+                    <md-input-container>
+                        <md-select ng-model="asset.Category" placeholder="Select a Category">
+                            <md-option ng-value="c" ng-repeat="c in categories">{{ c.DisplayName }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex>
+                        <label>Title</label>
+                        <input ng-model="asset.Name">
+                    </md-input-container>
+                    <md-input-container class="">
+                        <label>Description</label>
+                        <textarea ng-model="asset.Description" md-maxlength="2000" rows="3" ></textarea>
+                    </md-input-container>
+                    <div layout="row" layout-align="start center">
+                        <span for="activateOn"> Activate on</span>
+                        <md-datepicker name="activateOn" ng-model="asset.ActivateOn" md-placeholder="Activate on" flex></md-datepicker>
+                        <md-switch ng-model="asset.neverExpire" aria-label="Switch 1" flex>
+                            Never expire
+                        </md-switch>
+                    </div>
+                    <div layout="row" layout-align="start center">
+                        <div ng-if="!asset.neverExpire" >
+                            <label > Exire on</label>
+                            <md-datepicker name="expireOn" ng-model="asset.ExireOn" md-placeholder="Expire on"></md-datepicker>    
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="start center">
+                        
+                    </div>
+                    
                 </div>
             </div>
         </md-dialog-content>
