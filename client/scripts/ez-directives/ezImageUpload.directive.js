@@ -11,9 +11,9 @@
   
   this.ezImageUploadTemplate = [
       '<div layout="column" layout-align="center center" ng-click="openThumbnailDialog($event)">',
-      '  <div class="thumbnail-card" >',
+      '  <div class="thumbnail-card"  ng-class="thumbnailClass"  >',
       //'    <img ng-hide="{{img!=null}}" src ng-src="{{defaultImage}}" class="md-avatar thumbnail-img"  md-click="openThumbnailDialog($event)" /> ',
-      '    <img   src ng-src="{{img||defaultImage}}" class="md-avatar thumbnail-img"  md-click="openThumbnailDialog($event)" /> ',
+      '    <img   src ng-src="{{img||defaultImage}}" class="md-avatar thumbnail-img" ng-class="thumbnailClass"  md-click="openThumbnailDialog($event)" /> ',
       '  </div>',
 //       '  <md-button ng-hide class="md-icon-button" ng-click="openThumbnailDialog($event)">',
 //       '     <i class="material-icons">edit</i>',
@@ -70,7 +70,8 @@
         replace: true,
         scope: {
           img: '=',
-          defaultImage: "=?"
+          defaultImage: "=?",
+          thumbnailClass:"=?"
         },
         //controller start
         controller: ["$scope","Upload",'$mdDialog', function ($scope, Upload,$mdDialog) {
@@ -78,13 +79,12 @@
           var thumb = {
               croppedDataUrl:'',
               sourceFile:'',
-              croppedDataUrl:'',
               cropperMinSize : 80,
               resultSize : 100,
               cropperGuide : 'circle'
           }
           $scope.defaultImage = "./content/images/group-default3.png";
-          
+          $scope.thumnailClass="";
           var init = function(){
             
           }
@@ -137,6 +137,16 @@
               }
               else{
                 $scope.defaultImage = "https://placehold.it/100x100";
+              }
+          });
+          
+          $scope.$watch('thumbnailClass', function(newValue, oldValue){
+              if(newValue)
+              {
+                  $scope.thumbnailClass = newValue;
+              }
+              else{
+                $scope.thumbnailClass = "";
               }
           });
           

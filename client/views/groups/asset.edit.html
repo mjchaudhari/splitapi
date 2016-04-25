@@ -21,7 +21,19 @@
                             <md-option ng-value="c" ng-repeat="c in categories track by c._id">{{ c.DisplayName }}</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-button class="md-raised md-primary" ngf-select ng-model="file" >Upload file</md-button>
+                    <div layout="row" layout-align="center center">
+                        <md-button class="md-raised  md-primary md-icon-button" ngf-select ng-model="file" >
+                            <i class="material-icons">file_upload</i>
+                        </md-button>
+                        <md-button ng-if="asset.Urls!=null && asset.Urls.length > 0" class="md-raised  md-primary md-icon-button">
+                            <i class="material-icons">remove_red_eye</i>
+                        </md-button>
+                    </div>
+                    <span>{{file.name||asset.Urls[0]}}</span>
+                    <ez-image-upload img="asset.Thumbnail" thumbnail-class="'square'"></ez-image-upload>
+                    
+                    
+                    
                 </div>
                 <div layout="column" flex layout-padding>
                     <!--category-->    

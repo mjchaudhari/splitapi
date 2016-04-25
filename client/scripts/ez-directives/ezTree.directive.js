@@ -1,6 +1,11 @@
 (function() {
+  var module = null;
+  try {
+        module = angular.module('ezDirectives');
+    } catch (e) {
+        module = angular.module('ezDirectives', []);
+    }
   
-  var module = angular.module('ezDirectives', []);
   this.template = [
     '<div>{{title}} ',
         '<ul style="list-style-type:none;">',

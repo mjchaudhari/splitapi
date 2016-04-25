@@ -113,10 +113,14 @@ Show the image as background to display: block;
 .thumbnail-card{
   border: 1px solid silver;
   height: 110px;
-  width: 110px;
+  width: 130px;
   padding:5px;
   border-radius: 50%;
 }
+.thumbnail-card.square{
+  border-radius: 0%;
+}
+
 
 .thumbnail-img{
   height:100px;
@@ -124,7 +128,12 @@ Show the image as background to display: block;
   border-radius: 50px;
   margin:0;
 }
+.thumbnail-img.square{
+  border-radius: 0px;
+    height:100px;
+    width:120px;
 
+}
 .margin5{
   margin:5px !important;
 }
