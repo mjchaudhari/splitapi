@@ -21,7 +21,10 @@ var assetSchema = new Schema({
     Locale : {
         type:String,
         default:"en-us"
-    }, 
+    },
+    Publish : {type:Boolean, default: true}, 
+    AllowComment : {type:Boolean, default: true},
+    AllowLike : {type:Boolean, default: true}, 
     Status : {type:String},
     Thumbnail:{type:String},
     Urls:[{type:String}],

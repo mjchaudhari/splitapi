@@ -37,7 +37,6 @@ exports.v1 = function(dbConfig){
                 return cb(g);
             });//get single user based on username
     }
-    
     /** Gets the assets of given group if the current user is member of this group
      * 
     */     
@@ -127,18 +126,81 @@ exports.v1 = function(dbConfig){
                     //transform and then resolve the promice the data
                     result = new models.success(d);
                     return cb(result);
-                }, function (err) {
-                    var err = new models.error(err);
+                }, function (e) {
+                    var err = new models.error(e);
                     //reject the Promise
                     return cb(err);
-                })
-                
-                
+                });
             });
+    }
+    /** Gets the assets of given group if the current user is member of this group
+     * 
+    */     
+    this.getAsset =function(req, cb)
+    {
+        var u = req.user.User;         
+        
+        var result = {
+            
+        }
+        
+        assetModel.findOne({"_id":req.query.id})
+            .populate("AssetCategory")
+            .populate("AuditTrail.UpdatedBy")
+            .exec()
+            .then(function (d) {
+                //Check if this group is accessible for this user
+                var groupId = d.GroupId;
+                var p = grpModel.find({"_id":groupId,  "Members" : {$in: [u._id]}})
+                    .exec()
+                    .then(function(e){
+                            if( e.length > 0){
+                                //transform and then resolve the promice the data
+                                result = new models.success(d);                
+                                return cb(result);    
+                            }
+                            else{
+                                //transform and then resolve the promice the data
+                                var err = new models.error(null,"This asset is not accessible to user");     
+                                return cb(result);
+                            }
+                            
+                        },
+                        function (e) {
+                            var err = new models.error(e);
+                            return cb(err);
+                    });
+                
+            }, function (e) {
+                var err = new models.error(e);
+                //reject the Promise
+                return cb(err);
+            });
+        
             
 
     }
-    
+    /**
+     * Create the new asset based on data. This can be used to create empty asset.
+     * 
+     */
+    this.create = function(req,cb){
+        console.log("controller : create artifact");
+        var currentUser = req.user.User
+        //mandatory checks
+        if(req.body.GroupId == null){
+            return cb(new models.error("group required"));
+        }
+
+        if(req.body.Name == null){
+            return cb(new models.error("Name required"));
+        }
+
+        var data = getAssetDataFromBody(req);
+        createEmptyAsset(data,currentUser,function(r){
+            return cb(r);
+        });
+    }
         //Create new User User
     this.save = function (req, cb) {
         console.log("controller : post artifact");
@@ -246,9 +308,45 @@ exports.v1 = function(dbConfig){
                 data.TopicId 
             ]
         }
+        
+        data.AllowLike = param.AllowLike
+        data.AllowComment = param.AllowComment
+        data.Publish = param.Publish
+        
         data.UpdatedBy = currentUser;
         return data;  
     };
+    
+    var createEmptyAsset = function(data, currentUser, callback){
+        
+        var ast = assetModel(data);
+        var audit = {
+                    AssetId : ast._id,
+                    Action: "Create",
+                    UpdatedBy : currentUser,
+                    UpdatedOn : new Date(),
+                    Description : "",
+                    Notify : true,
+                }
+                if(ast.auditTrail == null){
+                    ast.AuditTrail = [];    
+                }
+        ast.AuditTrail = [audit];
+        ast.save( function(err, data){
+            if(err){
+                console.error(err);
+                return callback(new models.error(err));
+            }
+            
+            assetModel.findOne({"_id" : data._id})
+            .populate("AssetCategory")
+            .populate("AuditTrail.UpdatedBy")
+            .exec(function(e,g){
+                var result = setReturnAsset(g);
+                return callback(new models.success(result));
+            });
+        });
+    }
     var saveAssetData = function(data, currentUser, callback){
         var ast = assetModel(data);
         
@@ -337,12 +435,14 @@ exports.v1 = function(dbConfig){
             , Thumbnail: a.Thumbnail
             , Urls : a.Urls 
             , Paths:a.Paths
-            
+            , AllowComment:a.AllowComment
+            , AllowLike : a.AllowLike
             , GroupId: a.GroupId
             , ActivateOn : a.ActivateOn
             , ExpireOn : a.ExpireOn
             , AuditTrail : a.AuditTrail
             , AssetCategory : a.AssetCategory
+            , Publish : a.Publish
         }
         
         as.CreatedBy = null;

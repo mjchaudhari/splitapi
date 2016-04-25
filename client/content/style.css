@@ -60,19 +60,19 @@ Show the image as background to display: block;
   /*  Select User item template Ends */
 .circle
 {
-  border-radius:50%;
+  /* border-radius:50%; */
   color:#fff;
   width:40px;
   height:40px;
-  line-height:40px;
+  line-height: 35px;
   text-align:center;
   background: dimgrey;
-  border-radius: 20% !important;
-  border-bottom-right-radius: 0 !important;
+  border-radius: 50% !important;
+  /* border-bottom-right-radius: 0 !important; */
 }
  
 .transperent-bg{
-  background-color: transparent !important;
+  /*background-color: transparent !important;*/
 }
 
 

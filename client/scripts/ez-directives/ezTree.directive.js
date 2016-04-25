@@ -35,12 +35,12 @@
     ].join('\n');
     
     this.materialTemplate = [
-    '<div>{{title}} ',
+    '<div >{{title}} ',
         '<ul style="list-style-type:none;padding: 10px;">',
           '<div ng-repeat="n in flatTree">',
             '<li  class="node" ng-if="!n.__isHidden"',
                 'ng-class=" { \'node-selected\':n.__isSelected, \'node-unselected\': !n.__isSelected}">',
-              '<div style="width:100%;">',
+              '<div style="width:100%;"  layout="row" layout-align="left center ">',
                 '<span ng-style=\"{\'margin-left\':levelMargin * n.__level + \'px\'}\" >',
                   
                   '<span ng-if="!n.__isLeaf && !n.__isExpanded"  >',
@@ -79,7 +79,8 @@
           onSelect: '=',
           selectedNodes: '=',
           allowMultiSelect: '=',
-          options:'='
+          options:'=',
+          parentTrail:"="
         },
         //controller start
         controller: ["$scope", function ($scope) {
@@ -216,6 +217,9 @@
 
             //angular.copy(selected, $scope.selectedNodes);
             $scope.selectedNodes = selected;
+            var trail = getParentTrail(selected[0]);
+            $scope.parentTrail = trail.reverse();
+            $scope.parentTrail.push(selected[0]);
             if($scope.onSelect)
             {
                 $scope.onSelect(node);
@@ -335,8 +339,13 @@
                   init();
               }
           });
-          
-          $scope.$watch("selectedNodes", function (newValue, oldValue) {
+          $scope.$watch('parentTrail', function(newValue, oldValue){
+              if(newValue == oldValue)
+              {
+                  
+              }
+          });
+          $scope.$watchCollection("selectedNodes", function (newValue, oldValue) {
             if (newValue) 
             {
                     //alert('selected changed');

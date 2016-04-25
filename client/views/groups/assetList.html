@@ -30,17 +30,17 @@
     <div layout-padding>
         <div class="table">
             <div class="table-row" layout="row" >
-                <div class="table-cell" flex="10">
+                <div class="table-cell" flex="5">
                     <md-checkbox aria-label="Select All"
                                     ng-model="isAllChecked"
                                     ng-change="selectAllChecked()"
                                     md-indeterminate>
                     </md-checkbox>
                 </div>
-                <div class="table-cell" flex="10">
+                <div class="table-cell" flex="5">
                     <!--thumb-->
                 </div>
-                <div class="table-cell" flex="40"><span>Name</span></div>
+                <div class="table-cell" flex="50"><span>Name</span></div>
                 <div class="table-cell" flex="15">Created By</div>
                 <div class="table-cell" flex="10">Updated On</div>
                 <div class="table-cell" flex="15">Actions</div>
@@ -50,17 +50,16 @@
         <md-content class="transperent-bg" flex layout layout-align="center" style="height:60vh;">
             <div layout="column" class="table">
                 <div class="table-row" layout="row" ng-repeat="asset in assets"  >
-                    <div class="table-cell" flex="10">
-                        
+                    <div class="table-cell" flex="5">
                         <md-checkbox aria-label="Select" ng-checked="asset.__isSelected" ng-click="toggle(asset)">
                         </md-checkbox>
                         {{$index + 1}}
                     </div>
-                    <div class="table-cell" flex="10" layout="row" >
+                    <div class="table-cell" flex="5" layout="row" >
                         <ez-thumb img="asset.Thumbnail" text="asset.Name"></ez-thumb>
                         
                     </div>
-                    <div  class="table-cell" flex="40" layout="row" >
+                    <div  class="table-cell" flex="50" layout="row" >
                         {{category}}
                         {{asset.Name}}
                     </div>
@@ -70,7 +69,14 @@
                             {{ asset.UpdatedOn | amCalendar }}
                         </time>
                     </div>
-                    <div class="table-cell" flex="15"></div><!---->
+                    <div class="table-cell" flex="15">
+                        <md-button class="md-icon-button" aria-label="view" ng-click="view(asset)">
+                                <i class="material-icons">view</i>
+                        </md-button>
+                        <md-button class="md-icon-button" aria-label="edit" ng-click="edit(asset)">
+                                <i class="material-icons">edit</i>
+                        </md-button>
+                    </div>
                 </div>
             </div>
         </md-content>

@@ -1,26 +1,31 @@
-<md-dialog aria-label="Edit Asset"  flex="80" >
+<div md-dialog ng-controller="assetEditController">
+<!--<md-dialog aria-label="Edit Asset"  flex="80" >-->
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Mango (Fruit)</h2>
+            <h2></h2>
             <span flex></span>
+            <md-switch ng-model="asset.Publish" aria-label="Publish now" flex>
+                Publish now
+            </md-switch>
             <md-button class="md-icon-button" ng-click="cancel()">
-                <md-icon class="material-icon" aria-label="Close dialog">close</md-icon>
+                <i class="material-icons">close</i>
             </md-button>
         </div>
     </md-toolbar>
     <form >
-        <md-dialog-content layout-padding>
+        <div >
             <div layout="row" flex>
-                <div layout="row" flex="50">
-                    preview
-                </div>
-                <div layout="column" flex="50" >
-                    <!--category-->                    
+                <div layout="column" flex="33" layout-padding>
                     <md-input-container>
-                        <md-select ng-model="asset.Category" placeholder="Select a Category">
-                            <md-option ng-value="c" ng-repeat="c in categories">{{ c.DisplayName }}</md-option>
+                        <md-select ng-model="asset.AssetCategory" placeholder="Select a Category" >
+                            <md-option ng-value="c" ng-repeat="c in categories track by c._id">{{ c.DisplayName }}</md-option>
                         </md-select>
                     </md-input-container>
+                    <md-button class="md-raised md-primary" ngf-select ng-model="file" >Upload file</md-button>
+                </div>
+                <div layout="column" flex layout-padding>
+                    <!--category-->    
+                                
                     <md-input-container class="md-block" flex>
                         <label>Title</label>
                         <input ng-model="asset.Name">
@@ -29,34 +34,42 @@
                         <label>Description</label>
                         <textarea ng-model="asset.Description" md-maxlength="2000" rows="3" ></textarea>
                     </md-input-container>
-                    <div layout="row" layout-align="start center">
-                        <span for="activateOn"> Activate on</span>
-                        <md-datepicker name="activateOn" ng-model="asset.ActivateOn" md-placeholder="Activate on" flex></md-datepicker>
-                        <md-switch ng-model="asset.neverExpire" aria-label="Switch 1" flex>
-                            Never expire
+                
+                    <div layout="row" layout-align="left center">
+                        <span flex="20">Activate On</span>
+                        <md-datepicker class="transperent-bg" name="activateOn" ng-model="asset.ActivateOn" md-placeholder="Activate on" flex="40" ></md-datepicker>
+                        
+                        <md-switch ng-model="asset.neverExpire" aria-label="Switch 1" flex="20">
+                        <span ng-if="asset.neverExpire"> Expire On</span>
+                            <span ng-if="!asset.neverExpire"> Never expire</span>
                         </md-switch>
+                         
                     </div>
-                    <div layout="row" layout-align="start center">
-                        <div ng-if="!asset.neverExpire" >
-                            <label > Exire on</label>
-                            <md-datepicker name="expireOn" ng-model="asset.ExireOn" md-placeholder="Expire on"></md-datepicker>    
-                        </div>
-                    </div>
-                    <div layout="row" layout-align="start center">
+                    <div layout="row" layout-align="left center" ng-if="!asset.neverExpire">
+                        <span  flex="20">Expire On</span>
+                         <md-datepicker ng-if="!asset.neverExpire" class="transperent-bg"  name="expireOn" ng-model="asset.ExireOn" md-placeholder="Expire on" flex="40"></md-datepicker>
                         
                     </div>
-                    
+                    <div layout="row" layout-align="left center">                
+                        <md-switch ng-model="asset.AllowComment" aria-label="Switch 1" flex>
+                            Allow Comments
+                        </md-switch>
+                        <md-switch ng-model="asset.AllowLike" aria-label="Switch 1" flex>
+                            Allow Likes
+                        </md-switch>
+                    </div>
                 </div>
             </div>
-        </md-dialog-content>
-        <md-dialog-actions layout="row">
+        </div>
+        <div layout="row">
             <span flex></span>
-            <md-button ng-click="save()" >
+            <md-button ng-click="saveAsset()" >
                 Save
             </md-button>
             <md-button ng-click="cancel()">
                 Cancel
             </md-button>
-        </md-dialog-actions>  
+        </div>  
     </form>
-</md-dialog>
+<!--</md-dialog>-->
+</div>

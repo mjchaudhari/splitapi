@@ -60,24 +60,30 @@
         };
         
         $scope.createAsset = function($event){
-            var parentEl = angular.element(document.body);
-            var params = {
-                    id: 0,
-                    groupId : $scope.groupId,
-                    parentId:$scope.parentId
-                };
-            $mdDialog.show({
-                parent: parentEl,
-                targetEvent: $event,
-                templateUrl:"./views/groups/asset.edit.html",
-                fullscreen:true,
-                locals: {params},
-                controller: 'assetEditController'
-            })
-            // .resolve(function(d){
-                
+            // var parentEl = angular.element(document.body);
+            // var params = {
+            //         id: 0,
+            //         groupId : $scope.groupId,
+            //         parentId:$scope.parentId
+            //     };
+            // $mdDialog.show({
+            //     parent: parentEl,
+            //     targetEvent: $event,
+            //     templateUrl:"./views/groups/asset.edit.html",
+            //     fullscreen:true,
+            //     locals: {params},
+            //     controller: 'assetEditController'
             // })
-            ;
+            
+            $state.go("home.asset",{"groupId":$scope.groupId,"action":"edit"});
+        }
+        
+        $scope.view = function(a){
+            
+        }
+        
+        $scope.edit = function(a){
+            $state.go("home.asset",{"assetId":a._id,"groupId":$scope.groupId,"action":"edit"});
         }
         
         function determineSelectAll(){

@@ -13,7 +13,7 @@
 //         '</span> ',
         '<span>',
           '<img ng-if="img!=null" src="{{img}}" class="md-avatar avatar-small" /> ',
-          '<div ng-if="img==null" class="circle accent  md-title">{{initials}}</div>',
+          '<div ng-if="img==null" class="circle ">{{initials}}</div>',
         '</span>',
     ].join('\n');
     

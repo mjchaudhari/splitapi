@@ -1,9 +1,10 @@
-<md-content class="transperent-bg" layout="column" flex >
+<md-content class="transperent-bg md-caption" layout="column" flex >
     <div  class="body-bg"  ng-controller="homeController" md-theme="{{themes[theme]}}" md-theme-watch="true"  
     layout="column" flex style="height:95vh;" cg-busy="promices.groupsPromice" >
         <!--header-->
         <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
-            <md-toolbar class="md-tall " md-scroll-shrink="true">
+            <md-toolbar class="md-tall " md-scroll-shrink="true" class="md-hue-2">
+                
                 <span flex></span>
                 <div layout="column" class="md-toolbar-tools-bottom inset">
                     <div layout="row">
@@ -24,12 +25,16 @@
        </md-sidenav>
     <!--view for dashbaord, assets, groups-->
 
-        <md-toolbar md-scroll-shrink="false " md-scroll-shrink="0.5" class="md-hue-1" >
+        <md-toolbar md-scroll-shrink="false " md-scroll-shrink="0.5"  class="md-hue-2">
             <div class="md-toolbar-tools">
-                <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleSideBar('left')">
-                    <ng-md-icon icon="menu"></ng-md-icon> 
+                <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleSideBar('left')"> 
+                    <i class="material-icons">menu</i>
                 </md-button>
-                <span >Collaboration</span>
+                <span >: Collaboration : </span>
+                <div layout="row">
+                    
+                    <span ng-repeat="n in nodeParentTrail">{{n.Name}} <span ng-if="!$last"> > </span> </span>
+                </div>
                 <span flex></span>
 
                 <md-fab-speed-dial md-direction="left" md-open="false" class="md-scale">
@@ -59,7 +64,7 @@
         </md-toolbar>
 
         <div layout="row" flex>
-            <md-sidenav class="md-sidenav-left md-whiteframe-z2 " md-component-id="left"
+            <md-sidenav class="md-sidenav-left  " md-component-id="left"
                 md-is-locked-open="$mdMedia('gt-sm')"  >
                 <md-toolbar layout="row" class="">
                   <div class="md-toolbar-tools">
@@ -69,7 +74,9 @@
                 <div>
                 <md-content  class="md-hue-1" layout="column" flex>
                     <div layout="column" flex>
-                        <div ez-tree selected-nodes="selectedMenu" allow-multi-select="false" tree="menu" on-select="onSelect">
+                        <div ez-tree selected-nodes="selectedMenu" 
+                            parent-trail="nodeParentTrail"
+                            allow-multi-select="false" tree="menu" on-select="onSelect">
                             tree div
                         </div>
                         <!--<ezTree tree="menu" options="options" selected-nodes="selectedMenu"

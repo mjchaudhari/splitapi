@@ -22,6 +22,7 @@
             nameAttrib      :"Name",
             childrenAttrib  : "Children",
         };
+        $scope.nodeParentTrail=[];
         $scope.selectedMenu = null;
         $scope.menu = null;
         $scope.promices = {};
@@ -152,6 +153,8 @@
         }
         $scope.onSelect = function(node){
             $log.debug(node);
+            $scope.selectedMenu = node;
+
             switch (node.Name) {
                 case "Info":{
                     $state.go("home.group.detail", {"id":node.parentId});
@@ -167,6 +170,9 @@
                 }
             }
             
+        }
+        function getParentHierarchy(node){
+
         }
         var preInit = function(){
             var tasks = [];

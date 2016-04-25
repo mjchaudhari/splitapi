@@ -128,7 +128,18 @@ function($http,$q, $log, config, $timeout, CacheFactory){
       }
       return $http.get(url);
     },
-
+    /**
+    * @param data : {groupId: 1, members:"1,2,3" }
+    **/
+    getAsset : function(id){
+      var url = config.apiBaseUrl + "/v1/asset?id="+id;
+      
+      return $http.get(url);
+    },
+    createAsset : function(data){
+      var url = config.apiBaseUrl + "/v1/asset/create";
+      return $http.post(url,data);
+    },
     saveAsset : function(data){
       var url = config.apiBaseUrl + "/v1/asset";
       return $http.post(url,data);
