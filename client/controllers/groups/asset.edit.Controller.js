@@ -102,11 +102,9 @@
             });    
             return $scope.promises.asset;
         }
-        $scope.hide = function() {
-            $mdDialog.hide();
-        };
+        
         $scope.cancel = function() {
-            $mdDialog.cancel();
+            navigator.back();
         };
         $scope.toggleComentSetting = function(){
             $scope.asset.AllowComment = !$scope.asset.AllowComment; 

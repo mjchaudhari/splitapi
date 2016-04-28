@@ -64,11 +64,37 @@
         </md-toolbar>
 
         <div layout="row" flex>
-            <md-sidenav class="md-sidenav-left  " md-component-id="left"
+             <md-sidenav class="md-sidenav-left  " md-component-id="left"
                 md-is-locked-open="$mdMedia('gt-sm')"  >
                 <md-toolbar layout="row" class="">
                   <div class="md-toolbar-tools">
                     <span></span>
+                    <md-menu-bar>
+                        <md-menu>
+                            <md-button class="md-raised md-accent" ng-click="$mdOpenMenu()">Create...</md-button>
+                            <md-menu-content>
+                                <md-menu-item>
+                                    <md-button ng-click="ctrl.sampleAction('share', $event)">
+                                        Group
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-divider></md-menu-divider>
+                                <md-menu-item>
+                                    <md-menu>
+                                    <md-button ng-click="$mdOpenMenu()">New...</md-button>
+                                    <md-menu-content>
+                                        <md-menu-item><md-button ng-click="createTopic( $event)">Topic</md-button></md-menu-item>
+                                        <md-menu-item><md-button ng-click="createPost($event)">Message/Document</md-button></md-menu-item>
+                                        <md-menu-item><md-button ng-click="CreateIssue($event)">Issue</md-button></md-menu-item>
+                                        <md-menu-item><md-button ng-click="createQuestionnaire( $event)">Form</md-button></md-menu-item>
+                                        <md-menu-item><md-button ng-click="createEvent( $event)">Event</md-button></md-menu-item>
+                                        <md-menu-item><md-button ng-click="createTask( $event)">Task</md-button></md-menu-item>
+                                    </md-menu-content>
+                                    </md-menu>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    <md-menu-bar>
                   </div>
                 </md-toolbar>
                 <div>
