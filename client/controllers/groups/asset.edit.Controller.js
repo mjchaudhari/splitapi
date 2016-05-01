@@ -49,12 +49,13 @@
         };
         
         var preInit = function(){
+            
             var tasks = [];
-            tasks.push(getAsset($scope.assetId));
-            tasks.push(getCategories());
+            var assetPromise = getAsset($scope.assetId);
+            var categoryPromise = getCategories();
             
             $q.all([
-                tasks
+                assetPromise,categoryPromise
             ])
             .then(function(){
                 init()
@@ -62,7 +63,7 @@
         }
     
         var init = function(){
-        
+            $log.debug("Init executed")
         };
         
         function getAsset (id){
@@ -70,6 +71,7 @@
             
             if(id == null || id== 0){
                 $timeout(function(){
+                    $log.debug("getAsset resolved");
                     defer.resolve();
                 },100)
             }
@@ -98,6 +100,7 @@
             $scope.promises.categories = dataService.getCategories()
             .then(function(d){
                 $scope.categories = angular.copy(d.data.data);
+                $log.debug("getategories resolved");
                 defer.resolve(d.data.data);    
             },
             function(e){

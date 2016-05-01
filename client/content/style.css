@@ -275,31 +275,7 @@ Show the image as background to display: block;
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
-/*Category styles*/
-.asset{
-    
-}
-.asset .topic{
-    
-}
-.asset .announcement{
-    
-}
-.asset .comment{
-    
-}
-.asset .event{
-    
-}
-.asset .update{
-    
-}
-.asset .task{
-    
-}
-.asset .transaction{
-    
-}
-.asset .issue{
-    
+/* Form style */
+md-input-container {
+  margin: 5px 0;
 }

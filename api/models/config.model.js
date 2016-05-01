@@ -91,6 +91,7 @@ module.exports = function(dbConfig){
         var catTopic = {"_id":"ct_topic", "Name":"ct_topic", "Description":"Topic", "DisplayName":"Topic", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
         var catDocument = {"_id":"ct_post","Name":"ct_post", "Description":"Document", "DisplayName":"Document", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
         var catComment = {"_id":"ct_comment","Name":"ct_comment", "Description":"Comment", "DisplayName":"Comment", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
+        var catAnnouncement = {"_id":"ct_announcement","Name":"ct_announcement", "Description":"Announcement", "DisplayName":"Announcement", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
         var categoryTask = {"_id":"ct_task", "Name":"ct_task", "Description":"Task", "DisplayName":"Task", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
         var categoryIssue = {"_id":"ct_issue", "Name":"ct_issue", "Description":"Issue", "DisplayName":"Issue", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
         var categoryEvent = {"_id":"ct_event", "Name":"ct_event", "Description":"Event", "DisplayName":"Event", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
@@ -101,6 +102,7 @@ module.exports = function(dbConfig){
         createConfigIfNew(_assetConfigModel, catTopic);
         createConfigIfNew(_assetConfigModel, catDocument);
         createConfigIfNew(_assetConfigModel, catComment);
+        createConfigIfNew(_assetConfigModel, catAnnouncement);
         createConfigIfNew(_assetConfigModel, categoryTask);
         createConfigIfNew(_assetConfigModel, categoryIssue);
         createConfigIfNew(_assetConfigModel, categoryEvent);

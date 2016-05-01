@@ -17,10 +17,8 @@
             <div layout="row" flex>
                 <div layout="column" flex="33" layout-padding>
                     <md-input-container>
-                        
-                        <md-select ng-model="asset.AssetCategory" placeholder="Select a Category" >
-                            <md-option ng-repeat=" c in categories track by c._id"
-                                >{{ c.DisplayName }}</md-option>
+                        <md-select ng-model="asset.AssetCategory" ng-model-options="{trackBy: '$value.Name'}">
+                            <md-option ng-value="c" ng-repeat="c in categories">{{c.DisplayName}}</md-option>
                         </md-select>
                     </md-input-container>
                     <div layout="row" layout-align="center center">
@@ -49,8 +47,20 @@
                         <textarea ng-model="asset.Description" md-maxlength="2000" rows="3" ></textarea>
                     </md-input-container>
                 
-                    <div layout="row" layout-align="left center">
-                        <span flex="20">Activate On</span>
+                    <div >
+                        <span flex="20" class="">Expiry</span>
+                        <div layout="row" layout-align="left center">
+                            
+                            <md-datepicker class="transperent-bg" name="activateOn" ng-model="asset.ActivateOn" md-placeholder="Activate on" flex="40" ></md-datepicker>
+                            <md-switch ng-model="asset.neverExpire" aria-label="Switch 1" flex="20">
+                                <span ng-if="asset.neverExpire"> Never Expire</span>
+                                <span ng-if="!asset.neverExpire"> Expire On</span>
+                            </md-switch>
+                            <md-datepicker ng-if="!asset.neverExpire" class="transperent-bg"  name="expireOn" ng-model="asset.ExireOn" md-placeholder="Expire on" flex="40"></md-datepicker>
+                        </div>
+                    </div>
+                    <!--<div layout="row" layout-align="left center">
+                        <span flex="20" class="">Activate On</span>
                         <md-datepicker class="transperent-bg" name="activateOn" ng-model="asset.ActivateOn" md-placeholder="Activate on" flex="40" ></md-datepicker>
                         
                         <md-switch ng-model="asset.neverExpire" aria-label="Switch 1" flex="20">
@@ -63,7 +73,7 @@
                         <span  flex="20">Expire On</span>
                          <md-datepicker ng-if="!asset.neverExpire" class="transperent-bg"  name="expireOn" ng-model="asset.ExireOn" md-placeholder="Expire on" flex="40"></md-datepicker>
                         
-                    </div>
+                    </div>-->
                     <div layout="row" layout-align="left center">                
                         <md-switch ng-model="asset.AllowComment" aria-label="Switch 1" flex>
                             Allow Comments

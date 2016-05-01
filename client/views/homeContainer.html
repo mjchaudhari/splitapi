@@ -75,7 +75,10 @@
                             <md-menu-content>
                                 <md-menu-item>
                                     <md-button ng-click="createGroup( $event)">
-                                        Group
+                                        <div layout="row" layout-align="left center">
+                                            <i class="material-icons">collections_bookmark</i>
+                                            Topic
+                                        </div>
                                     </md-button>
                                 </md-menu-item>
                                 <md-menu-divider></md-menu-divider>
@@ -83,12 +86,52 @@
                                     <md-menu>
                                             <md-button ng-click="$mdOpenMenu()">New...</md-button>
                                             <md-menu-content>
-                                                <md-menu-item><md-button ng-click="createNewAsset('ct_topic', $event)">Topic</md-button></md-menu-item>
-                                                <md-menu-item><md-button ng-click="createNewAsset('ct_post',$event)">Message/Document</md-button></md-menu-item>
-                                                <md-menu-item><md-button ng-click="createNewAsset('ct_issue', $event)">Issue</md-button></md-menu-item>
-                                                <md-menu-item><md-button ng-click="createNewAsset('ct_questionnaire' ,$event)">Form</md-button></md-menu-item>
-                                                <md-menu-item><md-button ng-click="createNewAsset('ct_event', $event)">Event</md-button></md-menu-item>
-                                                <md-menu-item><md-button ng-click="createNewAsset('ct_task', $event)">Task</md-button></md-menu-item>
+                                                <md-button ng-click="createNewAsset('ct_topic', $event)">
+                                                    <div layout="row" layout-align="left center">
+                                                        <i class="material-icons">collections_bookmark</i>
+                                                        Topic
+                                                    </div>
+                                                </md-button>
+                                                <md-menu-item>
+                                                    <md-button ng-click="createNewAsset('ct_post',$event)">
+                                                        <div layout="row" layout-align="left center">
+                                                            <i class="material-icons">message</i>
+                                                                Message/Document
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item>
+                                                    <md-button ng-click="createNewAsset('ct_issue', $event)">
+                                                        <div layout="row" layout-align="left center">
+                                                            <i class="material-icons">notifications_active</i>
+                                                                Issue
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item>
+                                                    <md-button ng-click="createNewAsset('ct_questionnaire' ,$event)">
+                                                        <div layout="row" layout-align="left center">
+                                                            <i class="material-icons">assignment</i>
+                                                                Form
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item>
+                                                    <md-button ng-click="createNewAsset('ct_event', $event)">
+                                                        <div layout="row" layout-align="left center">
+                                                            <i class="material-icons">event</i>
+                                                                Event
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item>
+                                                    <md-button ng-click="createNewAsset('ct_task', $event)">
+                                                        <div layout="row" layout-align="left center">
+                                                            <i class="material-icons">assignment_turned_in</i>
+                                                                Task
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
                                             </md-menu-content>
                                     </md-menu>
                                 </md-menu-item>
