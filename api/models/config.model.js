@@ -88,14 +88,15 @@ var createConfigIfNew =  function(model, data){
 module.exports = function(dbConfig){
     var _assetConfigModel = dbConfig.conn.model("Configs", assetConfigSchema);
     var _init = function (){
-        var catTopic = {"_id":"Ct_Topic", "Name":"Ct_Topic", "Description":"Topic", "DisplayName":"Topic", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
-        var catDocument = {"_id":"Ct_Document","Name":"Ct_Document", "Description":"Document", "DisplayName":"Document", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
-        var catComment = {"_id":"Ct_Comment","Name":"Ct_Comment", "Description":"Comment", "DisplayName":"Comment", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
-        var categoryTask = {"_id":"Ct_Task", "Name":"Ct_Task", "Description":"Task", "DisplayName":"Task", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
-        var categoryIssue = {"_id":"Ct_Issue", "Name":"Ct_Issue", "Description":"Issue", "DisplayName":"Issue", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
-        var categoryEvent = {"_id":"Ct_Event", "Name":"Ct_Event", "Description":"Event", "DisplayName":"Event", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
-        var categoryTransaction = {"_id":"Ct_Transaction","Name":"Ct_Transaction", "Description":"Transaction", "DisplayName":"Transaction", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
-        var categoryQuestionnaire = {"_id":"Ct_Questionnaire","Name":"Ct_Questionnaire", "Description":"Questionnaire", "DisplayName":"Questionnaire", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var catTopic = {"_id":"ct_topic", "Name":"ct_topic", "Description":"Topic", "DisplayName":"Topic", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
+        var catDocument = {"_id":"ct_post","Name":"ct_post", "Description":"Document", "DisplayName":"Document", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
+        var catComment = {"_id":"ct_comment","Name":"ct_comment", "Description":"Comment", "DisplayName":"Comment", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
+        var categoryTask = {"_id":"ct_task", "Name":"ct_task", "Description":"Task", "DisplayName":"Task", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var categoryIssue = {"_id":"ct_issue", "Name":"ct_issue", "Description":"Issue", "DisplayName":"Issue", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var categoryEvent = {"_id":"ct_event", "Name":"ct_event", "Description":"Event", "DisplayName":"Event", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var categoryDemand = {"_id":"ct_demand","Name":"ct_demand", "Description":"Demand for resource (help/money)", "DisplayName":"Demand", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var categoryTransaction = {"_id":"ct_transaction","Name":"ct_transaction", "Description":"Transaction", "DisplayName":"Transaction", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
+        var categoryQuestionnaire = {"_id":"ct_questionnaire","Name":"ct_questionnaire", "Description":"Questionnaire", "DisplayName":"Questionnaire", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":false};
         
         createConfigIfNew(_assetConfigModel, catTopic);
         createConfigIfNew(_assetConfigModel, catDocument);
@@ -105,6 +106,7 @@ module.exports = function(dbConfig){
         createConfigIfNew(_assetConfigModel, categoryEvent);
         createConfigIfNew(_assetConfigModel, categoryTransaction);
         createConfigIfNew(_assetConfigModel, categoryQuestionnaire);
+        createConfigIfNew(_assetConfigModel, categoryDemand);
         
     };
     _init();

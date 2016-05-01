@@ -12,7 +12,7 @@
 //             '<span style="color: whitesmoke;margin:0;">{{initials}}</span>',
 //         '</span> ',
         '<span>',
-          '<img ng-if="img!=null" src="{{img}}" class="md-avatar avatar-small" /> ',
+          '<img ng-if="img!=null" src="{{img}}" class="md-avatar avatar-small" ng-class="thumbnailClass" /> ',
           '<div ng-if="img==null" class="circle ">{{initials}}</div>',
         '</span>',
     ].join('\n');
@@ -25,12 +25,13 @@
         replace: true,
         scope: {
           text: '=',
-          img: '='
+          img: '=',
+          thumbnailClass:"=?"
         },
         //controller start
         controller: ["$scope", function ($scope) {
           $scope.initials = "";
-
+          $scope.thumnailClass="";
           var init = function(){
             if($scope.text == null){
               $scope.text = "";
@@ -53,7 +54,15 @@
                   init();
               }
           });
-
+          $scope.$watch('thumbnailClass', function(newValue, oldValue){
+              if(newValue)
+              {
+                  $scope.thumbnailClass = newValue;
+              }
+              else{
+                $scope.thumbnailClass = "";
+              }
+          });
           
           init();
           

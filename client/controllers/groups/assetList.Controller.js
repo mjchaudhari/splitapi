@@ -4,9 +4,9 @@
     angular.module("app")
     .controller("assetLstController",assetLstController);
     
-    assetLstController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state", "$stateParams" ,"dataService", "config","authService","$mdConstant","$mdToast","$mdDialog"];
+    assetLstController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state", "$stateParams" ,"dataService", "config","authService","$mdConstant","$mdToast", "$mdBottomSheet"];
     
-    function assetLstController($scope, $rootScope,  $log, $q, $localStorage, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast, $mdDialog ){
+    function assetLstController($scope, $rootScope,  $log, $q, $localStorage, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast, $mdBottomSheet ){
         
         //bindable mumbers
         $scope.title = "Assets Crtl";
@@ -75,17 +75,36 @@
             //     controller: 'assetEditController'
             // })
             
-            $state.go("home.asset",{"groupId":$scope.groupId,"action":"edit"});
         }
         
         $scope.view = function(a){
-            
+            $mdBottomSheet.hide();    
         }
         
         $scope.edit = function(a){
-            $state.go("home.asset",{"assetId":a._id,"groupId":$scope.groupId,"action":"edit"});
+            var params = {
+                    assetId: a._id,
+                    groupId : a.GroupId,
+                    parentId:a.ParentId
+                };
+            $mdBottomSheet.show({
+                templateUrl: './views/groups/asset.edit.html',
+                controller: 'assetEditController',
+                clickOutsideToClose: false,
+                locals  : {params}
+                })
+                .then(function(result) {
+                    $mdToast.show(
+                            $mdToast.simple()
+                            .textContent("Done")
+                            .position('top right')
+                            .hideDelay(1500)
+                        );
+                    });
         }
         
+
+
         function determineSelectAll(){
             var selected = _.where($scope.assets,{"__isSelected":true});
             $scope.isAllChecked = selected.length === $scope.assets.length;

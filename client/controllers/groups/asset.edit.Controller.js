@@ -3,15 +3,18 @@
     angular.module("app")
     .controller("assetEditController",assetEditController);
     
-    assetEditController.$inject = ["$scope", "$rootScope", "$log", "$q", "$timeout",  "$state", "$stateParams", "dataService", "config","authService","$mdConstant","$mdToast", "Upload"];
+    assetEditController.$inject = ["$scope", "$rootScope", "$log", "$q", "$timeout",  "$state", "$stateParams", "dataService", "config","authService","$mdConstant","$mdToast", "Upload","$mdBottomSheet","params"];
     
-    function assetEditController($scope, $rootScope,  $log, $q,$timeout, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast, Upload ){
+    function assetEditController($scope, $rootScope,  $log, $q,$timeout, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast, Upload,$mdBottomSheet,params ){
         
         //bindable mumbers
         $scope.title    = "Edit Assets";
-        $scope.assetId       = $stateParams.assetId;
-        $scope.groupId  = $stateParams.groupId;
-        $scope.parentId = $stateParams.pId;
+        if(params == null){
+            params = {};
+        }
+        $scope.assetId  = params.assetId;
+        $scope.groupId  = params.groupId;
+        $scope.parentId = params.parentId;
         $scope.categories = [];
         
         $scope.errorMessage=[];
@@ -82,29 +85,29 @@
                     else{
                         $scope.asset.neverExpire = true;
                     }
-                    defer.resolve();    
+                    defer.resolve(d.data.data);    
                 },
                 function(e){
                     defer.reject();
                 });    
             }
-            return $scope.promises.asset;
+            return defer.promise;
         }
         function getCategories (){
             var defer = $q.defer();
             $scope.promises.categories = dataService.getCategories()
             .then(function(d){
                 $scope.categories = angular.copy(d.data.data);
-                defer.resolve();    
+                defer.resolve(d.data.data);    
             },
             function(e){
                 defer.reject();
             });    
-            return $scope.promises.asset;
+            return defer.promise;
         }
         
         $scope.cancel = function() {
-            navigator.back();
+            $mdBottomSheet.hide();
         };
         $scope.toggleComentSetting = function(){
             $scope.asset.AllowComment = !$scope.asset.AllowComment; 
@@ -154,10 +157,10 @@
         function _saveAssetData(){
             return dataService.saveAsset($scope.asset).then(
                 function(d){
-                    
+                    $mdBottomSheet.hide(d);
                 },
                 function(e){
-                    
+                    showToast(e.message);
                 }
             )
         }
@@ -199,13 +202,24 @@
                 
             }
         }
-        $scope.showToast = function(msg) {
-            $mdToast.show(
-            $mdToast.simple()
-                .textContent(msg)
-                .position('left')
-                .hideDelay(3000)
-            );
+        var showToast = function(msg,type) {
+            if(type && type=="error"){
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent(msg)
+                    .position('left')
+                    .hideDelay(3000)
+                );    
+            }
+            else{
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent(msg)
+                    .position('left')
+                    .hideDelay(3000)
+                );
+            }
+            
         };
         
         preInit();

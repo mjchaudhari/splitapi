@@ -2,11 +2,11 @@
     angular.module("app")
     .controller("homeController",homeController);
     
-    homeController.$inject = ["$scope", "$log", "$q", "$localStorage", "$state" ,"dataService", 
-        "config","$mdSidenav","authService","$mdDialog"];
+    homeController.$inject = ["$scope", "$log", "$q", "$localStorage", "$state","$stateParams" ,"dataService", 
+        "config","$mdSidenav","authService","$mdDialog","$mdBottomSheet"];
     
-    function homeController($scope, $log, $q, $localStorage, $state, dataService, 
-        config, $mdSidenav, authService, $mdDialog){
+    function homeController($scope, $log, $q, $localStorage, $state, $stateParams, dataService, 
+        config, $mdSidenav, authService, $mdDialog,$mdBottomSheet){
         
         //bindable mumbers
         $scope.title  = "index";
@@ -171,9 +171,29 @@
             }
             
         }
-        function getParentHierarchy(node){
-
+        
+        $scope.createNewAsset = function(type,$event){
+            var params = {
+                    //assetId: a._id,
+                    groupId : $stateParams.id,
+                    parentId: $stateParams.Id
+            };
+            $mdBottomSheet.show({
+                templateUrl: './views/groups/asset.edit.html',
+                controller: 'assetEditController',
+                clickOutsideToClose: false,
+                locals: {params}
+            })
+            .then(function(clickedItem) {
+                $mdToast.show(
+                        $mdToast.simple()
+                        .textContent(' clicked!')
+                        .position('top right')
+                        .hideDelay(1500)
+                    );
+                });
         }
+        
         var preInit = function(){
             var tasks = [];
             tasks.push(getGroups());

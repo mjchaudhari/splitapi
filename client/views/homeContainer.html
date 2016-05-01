@@ -68,34 +68,34 @@
                 md-is-locked-open="$mdMedia('gt-sm')"  >
                 <md-toolbar layout="row" class="">
                   <div class="md-toolbar-tools">
-                    <span></span>
-                    <md-menu-bar>
+                        
+                    
                         <md-menu>
-                            <md-button class="md-raised md-accent" ng-click="$mdOpenMenu()">Create...</md-button>
+                            <md-button class="md-raised md-accent" ng-click="$mdOpenMenu($event)">Create...</md-button>
                             <md-menu-content>
                                 <md-menu-item>
-                                    <md-button ng-click="ctrl.sampleAction('share', $event)">
+                                    <md-button ng-click="createGroup( $event)">
                                         Group
                                     </md-button>
                                 </md-menu-item>
                                 <md-menu-divider></md-menu-divider>
                                 <md-menu-item>
                                     <md-menu>
-                                    <md-button ng-click="$mdOpenMenu()">New...</md-button>
-                                    <md-menu-content>
-                                        <md-menu-item><md-button ng-click="createTopic( $event)">Topic</md-button></md-menu-item>
-                                        <md-menu-item><md-button ng-click="createPost($event)">Message/Document</md-button></md-menu-item>
-                                        <md-menu-item><md-button ng-click="CreateIssue($event)">Issue</md-button></md-menu-item>
-                                        <md-menu-item><md-button ng-click="createQuestionnaire( $event)">Form</md-button></md-menu-item>
-                                        <md-menu-item><md-button ng-click="createEvent( $event)">Event</md-button></md-menu-item>
-                                        <md-menu-item><md-button ng-click="createTask( $event)">Task</md-button></md-menu-item>
-                                    </md-menu-content>
+                                            <md-button ng-click="$mdOpenMenu()">New...</md-button>
+                                            <md-menu-content>
+                                                <md-menu-item><md-button ng-click="createNewAsset('ct_topic', $event)">Topic</md-button></md-menu-item>
+                                                <md-menu-item><md-button ng-click="createNewAsset('ct_post',$event)">Message/Document</md-button></md-menu-item>
+                                                <md-menu-item><md-button ng-click="createNewAsset('ct_issue', $event)">Issue</md-button></md-menu-item>
+                                                <md-menu-item><md-button ng-click="createNewAsset('ct_questionnaire' ,$event)">Form</md-button></md-menu-item>
+                                                <md-menu-item><md-button ng-click="createNewAsset('ct_event', $event)">Event</md-button></md-menu-item>
+                                                <md-menu-item><md-button ng-click="createNewAsset('ct_task', $event)">Task</md-button></md-menu-item>
+                                            </md-menu-content>
                                     </md-menu>
                                 </md-menu-item>
                             </md-menu-content>
                         </md-menu>
-                    <md-menu-bar>
-                  </div>
+                        <span flex></span>
+                </div>
                 </md-toolbar>
                 <div>
                 <md-content  class="md-hue-1" layout="column" flex>

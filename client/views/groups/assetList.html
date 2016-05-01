@@ -40,10 +40,10 @@
                 <div class="table-cell" flex="5">
                     <!--thumb-->
                 </div>
-                <div class="table-cell" flex="50"><span>Name</span></div>
-                <div class="table-cell" flex="15">Created By</div>
-                <div class="table-cell" flex="10">Updated On</div>
-                <div class="table-cell" flex="15">Actions</div>
+                <div class="table-cell" flex="50"><h4>Name</h4></div>
+                <div class="table-cell" flex="15"><h4>Created By</h4></div>
+                <div class="table-cell" flex="10"><h4>Updated On</h4></div>
+                <div class="table-cell" flex="15"><h4>Actions</h4></div>
             </div>
         </div>
 
@@ -53,20 +53,20 @@
                     <div class="table-cell" flex="5">
                         <md-checkbox aria-label="Select" ng-checked="asset.__isSelected" ng-click="toggle(asset)">
                         </md-checkbox>
-                        {{$index + 1}}
+                        <span>{{$index + 1}}</span>
                     </div>
                     <div class="table-cell" flex="5" layout="row" >
                         <ez-thumb img="asset.Thumbnail" text="asset.Name"></ez-thumb>
                         
                     </div>
                     <div  class="table-cell" flex="50" layout="row" >
-                        {{category}}
-                        {{asset.Name}}
+                        <span>{{category}}
+                        {{asset.Name}}</span>
                     </div>
                     <div class="table-cell" flex="15">{{asset.CreatedBy.Name}}</div>
                     <div class="table-cell" flex="10">
                         <time title="{{ asset.UpdatedOn | amDateFormat: 'dddd, Do MMM YYYY, h:mm a' }}">
-                            {{ asset.UpdatedOn | amCalendar }}
+                            <span>{{ asset.UpdatedOn | amCalendar }}</span>
                         </time>
                     </div>
                     <div class="table-cell" flex="15">

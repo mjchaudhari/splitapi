@@ -1,4 +1,4 @@
-<div md-dialog ng-controller="assetEditController">
+<md-bottom-sheet class="height-100">
 <!--<md-dialog aria-label="Edit Asset"  flex="80" >-->
     <md-toolbar>
         <div class="md-toolbar-tools">
@@ -17,12 +17,14 @@
             <div layout="row" flex>
                 <div layout="column" flex="33" layout-padding>
                     <md-input-container>
+                        
                         <md-select ng-model="asset.AssetCategory" placeholder="Select a Category" >
-                            <md-option ng-value="c" ng-repeat="c in categories track by c._id">{{ c.DisplayName }}</md-option>
+                            <md-option ng-repeat=" c in categories track by c._id"
+                                >{{ c.DisplayName }}</md-option>
                         </md-select>
                     </md-input-container>
                     <div layout="row" layout-align="center center">
-                        <md-button class="md-raised  md-primary md-icon-button" ngf-select ng-model="file" >
+                        <md-button class="md-raised  md-primary md-icon-button" ngf-select ng-model="file" ngf-pattern="'.png,.jpg,.gif,.jpeg,.mov,.pdf,.mp4,.mp3'">
                             <i class="material-icons">file_upload</i>
                         </md-button>
                         <md-button ng-if="asset.Urls!=null && asset.Urls.length > 0" class="md-raised  md-primary md-icon-button">
@@ -84,4 +86,4 @@
         </div>  
     </form>
 <!--</md-dialog>-->
-</div>
+</md-bottom-sheet>

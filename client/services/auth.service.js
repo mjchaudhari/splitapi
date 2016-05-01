@@ -5,11 +5,16 @@ angular.module('app').factory('authService', ['$http', '$log','$q','config' ,'$l
     var authServiceFactory = {
         get isLoggedIn () {
             return _isLoggedIn;
-        }
+        },
+        get userDetail () {
+            return _userDetail;
+        },
+        
+        
 
     };
     var _isLoggedIn = false;
-    var _UserDetail = {
+    var _userDetail = {
     };
 	/**
     Register yourself
@@ -36,7 +41,7 @@ angular.module('app').factory('authService', ['$http', '$log','$q','config' ,'$l
         	dataService.clearCache();
             $localStorage.__splituser = d.data.data;
             $localStorage.__splituserat = d.data.data.AccessToken;
-            _UserDetail = d.data.data;
+            _userDetail = d.data.data;
             _isLoggedIn = true;
             deferred.resolve(d.data.data);
         },
@@ -65,6 +70,9 @@ angular.module('app').factory('authService', ['$http', '$log','$q','config' ,'$l
         var url = config.apiBaseUrl + "/v1/isAuthenticated";
         return $http.post(url).then(function(f){
             _isLoggedIn = !f.data.isError;
+            if($localStorage.__splituser){
+            	_userDetail = $localStorage.__splituser;
+            }
         })
     };
     
@@ -73,7 +81,7 @@ angular.module('app').factory('authService', ['$http', '$log','$q','config' ,'$l
     authServiceFactory.logOut = _logOut;
     authServiceFactory.isAuthenticated = _isAuthenticated;
     
-    authServiceFactory.UserDetail = _UserDetail;
+    
     authServiceFactory.resendPin = _resendPin;
     authServiceFactory.register = _register;
     
