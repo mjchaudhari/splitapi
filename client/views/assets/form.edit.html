@@ -1,0 +1,105 @@
+<md-bottom-sheet class="height-100">
+<!--<md-dialog aria-label="Edit Asset"  flex="80" >-->
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2></h2>
+            <span flex></span>
+            <md-switch ng-model="asset.Publish" aria-label="Publish now" flex>
+                Publish now
+            </md-switch>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <i class="material-icons">close</i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-container>
+        <form >
+            <div layout="column">
+                <div layout="row" flex>
+                    <div layout="column" flex="33" layout-padding>
+                        <md-input-container>
+                            <md-select ng-model="asset.AssetCategory" ng-model-options="{trackBy: '$value.Name'}">
+                                <md-option ng-value="c" ng-repeat="c in categories">{{c.DisplayName}}</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <div layout="row" layout-align="center center">
+                            <md-button class="md-raised  md-primary md-icon-button" ngf-select ng-model="file" ngf-pattern="'.png,.jpg,.gif,.jpeg,.mov,.pdf,.mp4,.mp3'">
+                                <i class="material-icons">file_upload</i>
+                            </md-button>
+                            <md-button ng-if="asset.Urls!=null && asset.Urls.length > 0" class="md-raised  md-primary md-icon-button">
+                                <i class="material-icons">remove_red_eye</i>
+                            </md-button>
+                        </div>
+                        <span>{{file.name||asset.Urls[0]}}</span>
+                        <ez-image-upload img="asset.Thumbnail" thumbnail-class="'square'"></ez-image-upload>
+                        
+                        
+                        
+                    </div>
+                    <div layout="column" flex layout-padding>
+                        <!--category-->    
+                                    
+                        <md-input-container class="md-block" flex>
+                            <label>Title</label>
+                            <input ng-model="asset.Name">
+                        </md-input-container>
+                        <md-input-container class="">
+                            <label>Description</label>
+                            <textarea ng-model="asset.Description" md-maxlength="2000" rows="3" ></textarea>
+                        </md-input-container>
+                    
+                        <div >
+                            <span flex="20" class="">Expiry</span>
+                            <div layout="row" layout-align="left center">
+                                
+                                <md-datepicker class="transperent-bg" name="activateOn" ng-model="asset.ActivateOn" md-placeholder="Activate on" flex="40" ></md-datepicker>
+                                <md-switch ng-model="asset.neverExpire" aria-label="Switch 1" flex="20">
+                                    <span ng-if="asset.neverExpire"> Never Expire</span>
+                                    <span ng-if="!asset.neverExpire"> Expire On</span>
+                                </md-switch>
+                                <md-datepicker ng-if="!asset.neverExpire" class="transperent-bg"  name="expireOn" ng-model="asset.ExireOn" md-placeholder="Expire on" flex="40"></md-datepicker>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="left center">                
+                            <md-switch ng-model="asset.AllowComment" aria-label="Switch 1" flex>
+                                Allow Comments
+                            </md-switch>
+                            <md-switch ng-model="asset.AllowLike" aria-label="Switch 1" flex>
+                                Allow Likes
+                            </md-switch>
+                        </div>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <pre>{{asset.AssetCategory.Name}}</pre>
+                <div ng-switch="asset.AssetCategory.Name">
+                    <div ng-switch-when="ct_event">
+                        <h2>Event</h2>    
+                    </div>
+                    <div ng-switch-when="ct_task">
+                        <h2>Task</h2>    
+                    </div>
+                    <div ng-switch-when="ct_demand">
+                        <h2>demand</h2>    
+                    </div>
+                    <div ng-switch-when="ct_transaction">
+                        <h2>transaction</h2>    
+                    </div>
+                    <div ng-switch-when="ct_questionnaire">
+                        <h2>Form</h2>    
+                    </div>
+                </div>
+            </div>
+            <div layout="row">
+                <span flex></span>
+                <md-button ng-click="saveAsset()" >
+                    Save
+                </md-button>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+            </div>  
+        </form>
+    <md-container>
+<!--</md-dialog>-->
+</md-bottom-sheet>

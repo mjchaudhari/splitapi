@@ -179,7 +179,7 @@
                     parentId: $stateParams.Id
             };
             $mdBottomSheet.show({
-                templateUrl: './views/groups/asset.edit.html',
+                templateUrl: './views/assets/asset.edit.html',
                 controller: 'assetEditController',
                 clickOutsideToClose: false,
                 locals: {params}
