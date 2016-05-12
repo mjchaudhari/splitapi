@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var shortId     =require("shortid");
+var extend = require('mongoose-schema-extend');
 var Schema = mongoose.Schema;
+
+var options = {discriminatorKey: 'kind'};
 
 var assetSchema = new Schema({
     //_id:{type:Number, unique:true, required:true,},//This id will be used as public facing Id
@@ -13,24 +16,24 @@ var assetSchema = new Schema({
 	    type: String,  
 	},
     AssetCategory:{
-        type:String, 
+        type : String, 
         ref:'Configs'
     },
-    Name:{type:String, required:true},
-    Description:{type:String},
+    Name:{type : String, required:true},
+    Description:{type : String},
     Locale : {
-        type:String,
+        type : String,
         default:"en-us"
     },
     Publish : {type:Boolean, default: true}, 
     AllowComment : {type:Boolean, default: true},
     AllowLike : {type:Boolean, default: true}, 
-    Status : {type:String},
-    Thumbnail:{type:String},
-    Urls:[{type:String}],
+    Status : {type : String},
+    Thumbnail:{type : String},
+    Urls:[{type : String}],
     Moderators : [{
         _id: false,
-        type:String, 
+        type : String, 
         ref:'Profiles'
     }],
     ActivateOn : {type:Date, default:Date.now()   },
@@ -38,97 +41,228 @@ var assetSchema = new Schema({
     
     UpdatedOn : {type:Date, default:Date.now()},
     UpdatedBy:{
-                type:String, 
+                type : String, 
                 ref:'Profiles'
     },
     AuditTrail : [
         {
             _id:false,
-            Action:{type:String},
+            Action:{type : String},
             UpdatedBy:{
-                type:String, 
+                type : String, 
                 ref:'Profiles'
             },        
-            UpdatedOn:{type:Date},
-            Description: {type:String},
+            UpdatedOn:{type:Date, default:Date.now()},
+            Description: {type : String},
             Notify:{type:Boolean}
         }
     ],
     GroupId:
     {
-        type:String, 
+        type : String, 
         ref:'Groups'
     },
     Paths:[
-        {type:String}
+        {type : String}
     ],
-});
+    
+}, options);
 
-var createConfigIfNew =  function(model, data){
-    var query = {
-        "Name":data.Name
-        ,"Category":data.Category
+/**   topic Type */
+var topicSchema = new Schema({
+    _id: {
+	    type: String,
+	    unique: true,
+	    default: shortId.generate
+	},
+    isContainer:{
+        type:Boolean, 
+        default:true
     },
-    update = { data},
-    options = { upsert: true, new: true, setDefaultsOnInsert: true };
+    allowedTypes : [{
+        
+        type : String, 
+        ref:'Configs'
+    }],
+}, options);
+
+
+
+/**   topic Type ends */
+
+/**   post Type */
+var postSchema = new Schema({
+    _id: {
+	    type: String,
+	    unique: true,
+	    default: shortId.generate
+	},
+    postType:{type : String,  default:'Document'}
+}, options);
+
+/**   post Type ends */
+
+/**   event Type */
+var eventSchema = new Schema({
+    _id: {
+	    type: String,
+	    unique: true,
+	    default: shortId.generate
+	},
+    startDate:{type:Date, default : Date.now()},
+    endDate:{type:Date},
+    venue:{type : String},
+    venueAddress:{type : String},
+    venueMapLocation:{type : String},
+    contact:[{
+                name: { type : String },
+                phone: { type : String },
+                email: { type : String },
+                description: { type : String }
+            }],
     
-    
-    // Find the document
-    model.findOneAndUpdate(query, update, options, function(error, result) {
-        if (error) {
-            console.info("Err :" + error.toString());
-            return};
-        if(result.isNew){
-            console.info("Creted document: " + result.Name);
-        }else{
-            console.info("Updated document: " + result.Name);    
+    allowedTypes : [{
+        _id: false,
+        type : String, 
+        ref:'Configs'
+    }],
+}, options);
+/**   event Type ends */
+
+/**   action Type */
+var activitySchema = new Schema({
+    _id: {
+	    type: String,
+	    unique: true,
+	    default: shortId.generate
+	},
+    activityType:{type : String, enum:['Task','Concern', 'Incident']},
+    status:{type : String},
+    isClosed:{type:Boolean, default:false},
+    closedOn:{type:Date },
+    owners:[
+        {type : String, 
+        ref:'Profiles'}
+    ],
+    updates:[{
+        update:{type: String},
+        updateOn:{type:Date, default: Date.now()},
+        updateBy:{
+            type : String, 
+            ref:'Profiles'}
+    }],
+}, options);
+/**   issue Type ends */
+
+/**   demand Type */
+var demandSchema = new Schema({
+    _id: {
+	    type: String,
+	    unique: true,
+	    default: shortId.generate
+	},
+    description:{type : String},
+    tranType:{type : String},
+    closedDate:{type:Date, default: Date.now()},
+    tranDetails:{type : String}, //cash payment, debit card, credit card, cheque no etc
+    tranRef:{type : String},  //transaction no, chque no, cash
+    tranStatus:{type : String, default:'complete'},
+    fulfillments:[
+        {
+            isAccepted:{type:Boolean, default:false},
+            acceptedOn:{type:Date},
+            status:{type : String},
+            isFulfilled:{type:Boolean, default:false},
+            fulfilledOn:{type:Date},
+            fulfilledByName:{type : String},
+            fulfilledBy: {type : String, 
+                ref:'Profiles'},
+            artifactRef:{
+                type : String,
+                ref:"Artifacts"}
         }
-        
-                
-    });
+    ],
+    approvedBy:[
+        {type : String, 
+        ref:'Profiles'}
+    ]
+}, options);
+
+/**   demand Type ends */
+/**   transaction Type */
+var transactionSchema = new Schema({
+    _id: {
+	    type: String,
+	    unique: true,
+	    default: shortId.generate
+	},
+    description:{type : String},
+    tranType:{type : String},
+    tranDate:{type:Date, default:new Date()},
+    tranDetails:{type : String}, //cash payment, debit card, credit card, cheque no etc
+    tranRef:{type : String},  //transaction no, chque no, cash
+    tranStatus:{type : String, default:'complete'},
+    demandRef:{
+        _id:false,
+        type: String,
+        ref:'Assets'
+    },
+    approvedBy:[
+        {type : String, 
+        ref:'Profiles'}
+    ]
+}, options);
+/**   transaction Type ends */
+
+/**   auestionnaire Type */
+var questionnaireSchema = new Schema({
+    _id: {
+	    type: String,
+	    unique: true,
+	    default: shortId.generate
+	},
+    description:{type : String},
+    questionaireType:{type : String, enum: ['Survey', 'Poll','Quiz','Feedback'], default:'Survey'},
+    startDate:{type:Date, default: Date.now()},
+    endDate:{type:Date},
+    questions:[
+        {
+            //_id:true,
+            isOptional:{type:Boolean, default:false},
+            questionText:{type : String},
+            questionType:{type : String, enum: ['sc', 'mcq','text'], default:'sc'},
+            options:[{
+                //_id:true,
+                answer:{type : String},
+                isCorrectAnswer:{type:Boolean, default:false},
+                answeredBy:[{
+                    type : String, 
+                    ref:'Profiles'
+                }]
+            }]
+        }
+    ],
+}, options);
+
+/**   questionnaire Type ends */
+
+module.exports = function(dbConfig){
+    var _assetModel = dbConfig.conn.model("Assets", assetSchema);
+    //Add descriminitors
+     var topic = _assetModel.discriminator('Topic', topicSchema);
+    var post = _assetModel.discriminator('Post', postSchema);
+    var event = _assetModel.discriminator('Event', eventSchema);
+    var activity = _assetModel.discriminator('activity', activitySchema);
+    var demand = _assetModel.discriminator('Demand', demandSchema);
+    var transaction = _assetModel.discriminator('Transaction', transactionSchema);
+    var questionnaire = _assetModel.discriminator('Questionnaire', questionnaireSchema);
+
+    var init = function (){
+    };
     
-     // Find the document
-    // model.findOne(query, function(error, result) {
-    //     if (error) {
-    //         console.error(error);
-    //         return;}
+    init();
+    return { 
+        assetModel: _assetModel,
         
-    //     if(result){
-    //         data._id = result._id;
-    //         var m = model(data);
-    //         m.save(function(e,d){
-    //             if(e){
-    //                 console.info("Updated document: " + e.toString());
-    //             }
-    //             else{
-    //                 console.info("Updated document: " + d.Name);
-    //             }     
-    //         });
-    //     } 
-    //     else if(result == null){
-    //         var m = model(data);
-    //         m.save(function(e,d){
-    //             if(e){
-    //                 console.info("Created document: " + e.toString());
-    //             }
-    //             else{
-    //                 console.info("Created document: " + d.Name);
-    //             }
-                    
-    //         });
-    //     }       
-    // });
+    };
 }
-    module.exports = function(dbConfig){
-        var _assetModel = dbConfig.conn.model("Assets", assetSchema);
-        
-        
-        var init = function (){
-        };
-       
-        init();
-        return { 
-            assetModel: _assetModel,
-            
-        };
-    }

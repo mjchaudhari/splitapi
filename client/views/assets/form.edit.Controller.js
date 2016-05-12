@@ -95,6 +95,7 @@
             }
             return defer.promise;
         }
+        
         function getCategories (){
             var defer = $q.defer();
             $scope.promises.categories = dataService.getCategories()
