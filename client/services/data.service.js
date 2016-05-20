@@ -19,7 +19,7 @@ function($http,$q, $log, config, $timeout, CacheFactory){
     getUser : function( ){
       
     },
-    getCategories : function(name,categoryGroup){
+    getConfigCategories : function(name,categoryGroup){
       var querystring = [];
       if(name != null){
           querystring.push( "name=" + name);

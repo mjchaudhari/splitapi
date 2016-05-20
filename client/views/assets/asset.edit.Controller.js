@@ -15,7 +15,7 @@
         $scope.assetId  = params.assetId;
         $scope.groupId  = params.groupId;
         $scope.parentId = params.parentId;
-        $scope.categories = [];
+        $scope.types = [];
         
         $scope.errorMessage=[];
         $scope.file=null;
@@ -33,7 +33,8 @@
             "AllowComment":true,
             "Publish":true,
             "ActivateOn":new Date(),
-            "AssetCategory":null
+            "AssetCategory":null,
+            "AssetType" : null
         }
         
         $scope.uploadedFiles=null;
@@ -52,10 +53,10 @@
             
             var tasks = [];
             var assetPromise = getAsset($scope.assetId);
-            var categoryPromise = getCategories();
+            var typePromise = getTypes();
             
             $q.all([
-                assetPromise,categoryPromise
+                assetPromise,typePromise
             ])
             .then(function(){
                 init()
@@ -95,12 +96,12 @@
             }
             return defer.promise;
         }
-        function getCategories (){
+        function getTypes (){
             var defer = $q.defer();
-            $scope.promises.categories = dataService.getCategories()
+            $scope.promises.types = dataService.getConfigCategories(null,"AssetType")
             .then(function(d){
-                $scope.categories = angular.copy(d.data.data);
-                $log.debug("getategories resolved");
+                $scope.types = angular.copy(d.data.data);
+                $log.debug("getCategories resolved");
                 defer.resolve(d.data.data);    
             },
             function(e){

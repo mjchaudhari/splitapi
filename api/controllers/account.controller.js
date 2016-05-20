@@ -3,14 +3,23 @@ Manage user account
 */
 var _dir = process.cwd();
 var models = require("./../response.models.js").models;
+var shortId     =require("shortid");
+var dbConfig =  require("../db.connection.js");
+var _hlp =  require("../utils.js");
+var _ = require("underscore-node");
+var async = require ("async");
+var path = require("path");
+var mongodb = require('mongodb');
+var mongo = mongodb.MongoClient;
+
 var userModels = require("./../models/user.model.js");
 
 
-exports.v1 = function(dbConfig){
-    var m =  userModels(dbConfig);
-    var userModel = m.userModel;
-    var accountModel = m.accountModel;
-
+exports.v1 = function(){
+    //var m =  userModels(dbConfig);
+    // var userModel = m.userModel;
+    // var accountModel = m.accountModel;
+    
     this.searchUsers = function(req,callback){
         var param = req.params.term;
         if(!param){
@@ -18,110 +27,89 @@ exports.v1 = function(dbConfig){
         }
         
         var re = new RegExp( param , 'gi');
-        userModel.find()
-        .or([{ 'FirstName': { $regex: re }}, 
-            { 'LastName': { $regex: re }},
-            { 'UserName': { $regex: re }},
-            { 'EmailId': { $regex: re }}])
-        .exec(
-            function (e, data){
+        mongo.connect( dbConfig.mongoURI,function(err, db){
+            var filter = {$or: [
+                { 'FirstName': { $regex: re }}, 
+                { 'LastName': { $regex: re }},
+                { 'UserName': { $regex: re }},
+                { 'EmailId': { $regex: re }}]
+            };
+            
+            db.collection("profiles").find(filter).toArray(function(e, data){
                 if(e){
+                    db.close();
                     return callback(new models.error(e));
                 }
-                var ret = [];
-                data.forEach(function(u){
-                    var udata = {
-                        "_id": u._id
-                        , "FirstName":u.FirstName
-                        , "LastName": u.LastName
-                        , "UserName":u.UserName
-                        , "Status":u.Status
-                        ,"CreatedOn":u.CreatedOn
-                        ,"EmailId" : u.EmailId
-                        ,"Picture" : u.Picture
-                        ,"City" : u.City
-                        ,"Country" : u.Country
-                        ,"ZipCode" : u.ZipCode
-                    }
-                    ret.push(udata);
-                });
-                return callback(new models.success(ret));
+                if(data){
+                    db.close();
+                    return callback(new models.success(data));
+                };
             });
+        });//Mongo connect end
     };
     
     //Register User
     this.createUser = function (req, cb) {
         console.log("controller : post user");
         var r = req.body;
-    
-        var options = {"UserName":r.UserName};
-        userModel.find(options, function   (e, data)
-        {
-            if(e != null)
-            {
-                var e = new models.error(e, req.params.userName + " already registered.");
-                return cb(e);
-            }
-            var randomPin = getRandomPin();
-            var u = userModel    ({
+        mongo.connect( dbConfig.mongoURI,function(err, db){
+            var filter = {"UserName":r.UserName};
+        
+            db.collection("profiles").find(filter).toArray(function(e, data){
+                if(e){
+                    db.close();
+                    return callback(new models.error(e));
+                }
+                if(data){
+                    db.close();
+                    var e = new models.error(e, req.params.userName + " already registered.");
+                    return cb(e);
+                };
                 
-                UserName: r.UserName,
-                FirstName: r.FirstName,
-                LastName: r.LastName,
+                var u = {
+                    _id : shortId.generate(),
+                    UserName: r.UserName,
+                    FirstName: r.FirstName,
+                    LastName: r.LastName,
+                    
+                    Status:"REQUESTED",
+                    AlternateEmail : r.AlternateEmail,
+                    EmailId : r.EmailId,
+                    Picture : r.Picture,
+                    CreatedOn : new Date(),
+                    Address : r.Address,
+                    City : r.City,
+                    Country : r.Country,
+                    ZipCode : r.ZipCode
+                };
                 
-                Status:"REQUESTED",
-                AlternateEmail : r.AlternateEmail,
-                EmailId : r.EmailId,
-                Picture : r.Picture,
-                CreatedOn : new Date(),
-                Address : r.Address,
-                City : r.City,
-                Country : r.Country,
-                ZipCode : r.ZipCode
+                db.collection("profiles").insert(u, {"forceServerObjectId":false, "upsert":true,  "fullResult":true}, function(e, data){
+                    if(e){
+                        db.close();
+                        return callback(new models.error(e));
+                    }   
                 
+                    var randomPin = getRandomPin();
+                    var acct = {
+                        UserId : u._id,
+                        Secret :randomPin,
+                        ForceReset: false,
+                        SecretsUsed : [randomPin]        
+                    };
+                    
+                    db.collection("accounts").insert(acct, {"forceServerObjectId":false},  function(e, data){
+                        if(e){
+                            db.close();
+                            return callback(new models.error(e));
+                        }
+                        db.close();
+                        return callback(new models.success(u));
+                    });
+                }); //PRofile save end               
             });
-            
-            u.save(function(err, u){
-                if(err){
-                    console.error(err);
-                    return cb(new models.error(err));
-                }   
-                console.log(u);
-                
-                var pwd = getRandomPin();
-                
-                var acct = accountModel({
-                    User : u,
-                    Secret :pwd,
-                    ForceReset: false,
-                    SecretsUsed : [pwd],
-                        
-                });
-                acct.save(function(e,a)
-                {
-                    //since user is registering, we need to send the limited registration information
-                    var retUser = {
-                        "_id": u._id
-                        ,"FirstName":u.FirstName
-                        , "LastName": u.LastName
-                        , "UserName":u.UserName
-                        , "Status":u.Status
-                        , "CreatedOn":u.CreatedOn
-                        , "Secret":a.Secret
-                        , "EmailId" : u.EmailId
-                        , "Picture" : u.Picture
-                        , "Address" : r.Address
-                        , "City" : r.City
-                        , "Country" : r.Country
-                        , "ZipCode" : r.ZipCode
-                    }
-                    var m = new models.success(retUser);
-                    //Send email or SMS with pin
-                    return cb(m);
-                });
-            });
-        });
+        });//Mongo connect end
     };
+    
     //save User
     this.saveUser = function (req, cb) {
         console.log("controller : post user");

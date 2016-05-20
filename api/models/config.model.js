@@ -88,6 +88,23 @@ var createConfigIfNew =  function(model, data){
 module.exports = function(dbConfig){
     var _assetConfigModel = dbConfig.conn.model("Configs", assetConfigSchema);
     var _init = function (){
+        var type_collection = {"_id":"type_collection", "Name":"type_collection", "Description":"Topic", "DisplayName":"Topic", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
+        var type_document = {"_id":"type_document","Name":"type_document", "Description":"Document", "DisplayName":"Document", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
+        var type_calendar = {"_id":"type_calendar","Name":"type_calendar", "Description":"Comment", "DisplayName":"Comment", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
+        var type_demand = {"_id":"type_demand", "Name":"type_demand", "Description":"Issue", "DisplayName":"Issue", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
+        var type_transacton = {"_id":"type_transacton","Name":"type_transacton", "Description":"Announcement", "DisplayName":"Announcement", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
+        var type_form = {"_id":"type_form", "Name":"type_form", "Description":"Task", "DisplayName":"Task", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
+        var type_task = {"_id":"type_task", "Name":"type_task", "Description":"Task", "DisplayName":"Task", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
+        
+        createConfigIfNew(_assetConfigModel, type_collection);
+        createConfigIfNew(_assetConfigModel, type_document);
+        createConfigIfNew(_assetConfigModel, type_calendar);
+        createConfigIfNew(_assetConfigModel, type_demand);
+        createConfigIfNew(_assetConfigModel, type_transacton);
+        createConfigIfNew(_assetConfigModel, type_task);
+        createConfigIfNew(_assetConfigModel, type_form);
+        
+        
         var catTopic = {"_id":"ct_topic", "Name":"ct_topic", "Description":"Topic", "DisplayName":"Topic", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
         var catDocument = {"_id":"ct_post","Name":"ct_post", "Description":"Document", "DisplayName":"Document", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};
         var catComment = {"_id":"ct_comment","Name":"ct_comment", "Description":"Comment", "DisplayName":"Comment", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetCategory","IsActive":true};

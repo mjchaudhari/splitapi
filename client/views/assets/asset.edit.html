@@ -18,8 +18,8 @@
                 <div layout="row" flex>
                     <div layout="column" flex="33" layout-padding>
                         <md-input-container>
-                            <md-select ng-model="asset.AssetCategory" ng-model-options="{trackBy: '$value.Name'}">
-                                <md-option ng-value="c" ng-repeat="c in categories">{{c.DisplayName}}</md-option>
+                            <md-select ng-model="asset.AssetType" ng-model-options="{trackBy: '$value.Name'}">
+                                <md-option ng-value="c" ng-repeat="c in types">{{c.DisplayName}}</md-option>
                             </md-select>
                         </md-input-container>
                         <div layout="row" layout-align="center center">

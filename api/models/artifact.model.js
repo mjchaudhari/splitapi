@@ -15,6 +15,10 @@ var assetSchema = new Schema({
     _uid: {
 	    type: String,  
 	},
+    AssetType:{
+        type : String, 
+        ref:'Configs'
+    },
     AssetCategory:{
         type : String, 
         ref:'Configs'
@@ -44,19 +48,19 @@ var assetSchema = new Schema({
                 type : String, 
                 ref:'Profiles'
     },
-    AuditTrail : [
-        {
-            _id:false,
-            Action:{type : String},
-            UpdatedBy:{
-                type : String, 
-                ref:'Profiles'
-            },        
-            UpdatedOn:{type:Date, default:Date.now()},
-            Description: {type : String},
-            Notify:{type:Boolean}
-        }
-    ],
+    // AuditTrail : [
+    //     {
+    //         _id:false,
+    //         Action:{type : String},
+    //         UpdatedBy:{
+    //             type : String, 
+    //             ref:'Profiles'
+    //         },        
+    //         UpdatedOn:{type:Date, default:Date.now()},
+    //         Description: {type : String},
+    //         Notify:{type:Boolean}
+    //     }
+    // ],
     GroupId:
     {
         type : String, 
@@ -65,50 +69,43 @@ var assetSchema = new Schema({
     Paths:[
         {type : String}
     ],
-    
-}, options);
-
-/**   topic Type */
-var topicSchema = new Schema({
-    _id: {
-	    type: String,
-	    unique: true,
-	    default: shortId.generate
-	},
-    isContainer:{
-        type:Boolean, 
-        default:true
-    },
-    allowedTypes : [{
+    AllowedTypes : [{
         
         type : String, 
         ref:'Configs'
     }],
-}, options);
+    Tags:[
+        {type : String}
+    ],
+    
+}, {collection : "Assets", discriminatorKey: 'kind'});
+
+// var PersonSchema = new Schema({
+//   name : String
+// }, { collection : 'users' });
+
+// var EmployeeSchema = assetSchema.extend({
+//   department : String
+// });
+/**   collection Type */
+var collectionSchema = assetSchema.extend({
+    contentCount: String
+    
+});
 
 
 
-/**   topic Type ends */
+/**   collection Type ends */
 
-/**   post Type */
-var postSchema = new Schema({
-    _id: {
-	    type: String,
-	    unique: true,
-	    default: shortId.generate
-	},
-    postType:{type : String,  default:'Document'}
-}, options);
+/**   document Type */
+var documentSchema = assetSchema.extend({
+    
+});
 
-/**   post Type ends */
+/**   document Type ends */
 
-/**   event Type */
-var eventSchema = new Schema({
-    _id: {
-	    type: String,
-	    unique: true,
-	    default: shortId.generate
-	},
+/**   calendar Type */
+var calendarSchema = assetSchema.extend({
     startDate:{type:Date, default : Date.now()},
     endDate:{type:Date},
     venue:{type : String},
@@ -119,24 +116,15 @@ var eventSchema = new Schema({
                 phone: { type : String },
                 email: { type : String },
                 description: { type : String }
-            }],
+            }]
     
-    allowedTypes : [{
-        _id: false,
-        type : String, 
-        ref:'Configs'
-    }],
-}, options);
-/**   event Type ends */
+});
+/**   calendar Type ends */
 
 /**   action Type */
-var activitySchema = new Schema({
-    _id: {
-	    type: String,
-	    unique: true,
-	    default: shortId.generate
-	},
-    activityType:{type : String, enum:['Task','Concern', 'Incident']},
+var taskSchema =  assetSchema.extend({
+    
+    taskType:{type : String, enum:['Task','Concern', 'Incident']},
     status:{type : String},
     isClosed:{type:Boolean, default:false},
     closedOn:{type:Date },
@@ -151,17 +139,11 @@ var activitySchema = new Schema({
             type : String, 
             ref:'Profiles'}
     }],
-}, options);
+});
 /**   issue Type ends */
 
 /**   demand Type */
-var demandSchema = new Schema({
-    _id: {
-	    type: String,
-	    unique: true,
-	    default: shortId.generate
-	},
-    description:{type : String},
+var demandSchema = assetSchema.extend({
     tranType:{type : String},
     closedDate:{type:Date, default: Date.now()},
     tranDetails:{type : String}, //cash payment, debit card, credit card, cheque no etc
@@ -186,17 +168,11 @@ var demandSchema = new Schema({
         {type : String, 
         ref:'Profiles'}
     ]
-}, options);
+});
 
 /**   demand Type ends */
 /**   transaction Type */
-var transactionSchema = new Schema({
-    _id: {
-	    type: String,
-	    unique: true,
-	    default: shortId.generate
-	},
-    description:{type : String},
+var transactionSchema = assetSchema.extend({
     tranType:{type : String},
     tranDate:{type:Date, default:new Date()},
     tranDetails:{type : String}, //cash payment, debit card, credit card, cheque no etc
@@ -214,15 +190,9 @@ var transactionSchema = new Schema({
 }, options);
 /**   transaction Type ends */
 
-/**   auestionnaire Type */
-var questionnaireSchema = new Schema({
-    _id: {
-	    type: String,
-	    unique: true,
-	    default: shortId.generate
-	},
-    description:{type : String},
-    questionaireType:{type : String, enum: ['Survey', 'Poll','Quiz','Feedback'], default:'Survey'},
+/**   form Type */
+var formSchema = assetSchema.extend({
+    formType:{type : String, enum: ['Survey', 'Poll','Quiz','Feedback'], default:'Survey'},
     startDate:{type:Date, default: Date.now()},
     endDate:{type:Date},
     questions:[
@@ -244,25 +214,29 @@ var questionnaireSchema = new Schema({
     ],
 }, options);
 
-/**   questionnaire Type ends */
-
 module.exports = function(dbConfig){
     var _assetModel = dbConfig.conn.model("Assets", assetSchema);
     //Add descriminitors
-     var topic = _assetModel.discriminator('Topic', topicSchema);
-    var post = _assetModel.discriminator('Post', postSchema);
-    var event = _assetModel.discriminator('Event', eventSchema);
-    var activity = _assetModel.discriminator('activity', activitySchema);
-    var demand = _assetModel.discriminator('Demand', demandSchema);
-    var transaction = _assetModel.discriminator('Transaction', transactionSchema);
-    var questionnaire = _assetModel.discriminator('Questionnaire', questionnaireSchema);
-
+    var collection = mongoose.model('Collection', collectionSchema);
+    var document = mongoose.model('Document', documentSchema);
+    var calendar = mongoose.model('Calendar', calendarSchema);
+    var task = mongoose.model('Task', taskSchema);
+    var demand = mongoose.model('Demand', demandSchema);
+    var transaction = mongoose.model('Transaction', transactionSchema);
+    var form = mongoose.model('Form', formSchema);
+    
     var init = function (){
     };
     
     init();
     return { 
         assetModel: _assetModel,
-        
+        documentModel : document,
+        collectionModel : collection,
+        calendarModel : calendar,
+         taskModel : task,
+         demandModel : demand,
+         transactionModel : transaction,
+         formModel : form 
     };
 }

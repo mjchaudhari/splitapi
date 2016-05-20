@@ -13,8 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // 
-var azureCommon = require('./../../common/common');
-var HeaderConstants = azureCommon.Constants.HeaderConstants;
 
 // Expose 'BlobUtilities'.
 exports = module.exports;
@@ -31,27 +29,11 @@ var BlobUtilities = {
   * @enum {string}
   */
   SharedAccessPermissions: {
+    ADD: 'a',
     READ: 'r',
     WRITE: 'w',
     DELETE: 'd',
     LIST: 'l'
-  },
-
-  /**
-  * Blob access conditions.
-  *
-  * @const
-  * @enum {string}
-  */
-  AccessConditions: {
-    /** If the blob has been modified since the specified date */
-    DATE_MODIFIED_SINCE: HeaderConstants.IF_MODIFIED_SINCE,
-    /** If the blob has not been modified since the specified date */
-    DATE_UNMODIFIED_SINCE: HeaderConstants.IF_UNMODIFIED_SINCE,
-    /** If the ETag for the blob matches the specified ETag */
-    ETAG_MATCH: HeaderConstants.IF_MATCH,
-    /** If the ETag for the blob does not match the specified ETag */
-    ETAG_NONE_MATCH: HeaderConstants.IF_NONE_MATCH
   },
 
   /**
@@ -63,7 +45,8 @@ var BlobUtilities = {
   BlobListingDetails: {
     SNAPSHOTS: 'snapshots',
     METADATA: 'metadata',
-    UNCOMMITTED_BLOBS: 'uncommittedblobs'
+    UNCOMMITTED_BLOBS: 'uncommittedblobs',
+    COPY: 'copy'
   },
 
   /**

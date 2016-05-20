@@ -50,9 +50,9 @@ function readFile(filename, encoding, callback) {
     // read from stdin
     var chunks = [];
 
-    process.stdin.on('data', function(chunk) { chunks.push(chunk); });
+    process.stdin.on('data', function (chunk) { chunks.push(chunk); });
 
-    process.stdin.on('end', function() {
+    process.stdin.on('end', function () {
       return callback(null, Buffer.concat(chunks).toString(encoding));
     });
   } else {
@@ -100,6 +100,4 @@ readFile(options.file, 'utf8', function (err, input) {
   }
 
   process.stdout.write(output);
-
-  process.exit(0);
 });
