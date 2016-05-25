@@ -2,10 +2,10 @@
     angular.module("app")
     .controller("homeController",homeController);
     
-    homeController.$inject = ["$scope", "$log", "$q", "$localStorage", "$state","$stateParams" ,"dataService", 
+    homeController.$inject = ["$scope", "$log", "$q", "$localStorage", "$mdToast",  "$state","$stateParams" ,"dataService", 
         "config","$mdSidenav","authService","$mdDialog","$mdBottomSheet"];
     
-    function homeController($scope, $log, $q, $localStorage, $state, $stateParams, dataService, 
+    function homeController($scope, $log, $q, $localStorage, $mdToast, $state, $stateParams, dataService, 
         config, $mdSidenav, authService, $mdDialog,$mdBottomSheet){
         
         //bindable mumbers
@@ -176,7 +176,9 @@
             var params = {
                     //assetId: a._id,
                     groupId : $stateParams.id,
-                    parentId: $stateParams.Id
+                    parentId: $stateParams.parentId,
+                    assetType: type
+
             };
             $mdBottomSheet.show({
                 templateUrl: './views/assets/asset.edit.html',

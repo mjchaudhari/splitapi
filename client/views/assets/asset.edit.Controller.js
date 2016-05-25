@@ -5,7 +5,8 @@
     
     assetEditController.$inject = ["$scope", "$rootScope", "$log", "$q", "$timeout",  "$state", "$stateParams", "dataService", "config","authService","$mdConstant","$mdToast", "Upload","$mdBottomSheet","params"];
     
-    function assetEditController($scope, $rootScope,  $log, $q,$timeout, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast, Upload,$mdBottomSheet,params ){
+    function assetEditController($scope, $rootScope,  $log, $q,$timeout, $state, $stateParams, dataService, 
+            config, authService, $mdConstant, $mdToast, Upload,$mdBottomSheet,params ){
         
         //bindable mumbers
         $scope.title    = "Edit Assets";
@@ -15,6 +16,8 @@
         $scope.assetId  = params.assetId;
         $scope.groupId  = params.groupId;
         $scope.parentId = params.parentId;
+        $scope.assetType = params.assetTypeId;
+        
         $scope.types = [];
         
         $scope.errorMessage=[];
@@ -22,7 +25,8 @@
         $scope.promises = {};
         $scope.asset = {
             "_id":$scope.assetId,
-            //"CategoryId" : $scope.selectedCategory._id,
+            "AssetType" : $scope.assetType,
+            "AssetTypeId" : $scope.assetType != null ? $scope.assetType._id : null,
             "Name":"",
             "Description":"",
             "Thumbnail":"",
@@ -35,7 +39,7 @@
             "ActivateOn":new Date(),
             "AssetCategory":null,
             "AssetType" : null
-        }
+        };
         
         $scope.uploadedFiles=null;
         
@@ -59,12 +63,17 @@
                 assetPromise,typePromise
             ])
             .then(function(){
-                init()
+                init();
             });
         }
     
         var init = function(){
             $log.debug("Init executed")
+            
+                var assetType = _.find($scope.types,{ "_id": params.assetType});
+                $scope.asset.AssetType = assetType;
+            
+            
         };
         
         function getAsset (id){
@@ -149,7 +158,7 @@
             
         }
         function _createAsset(){
-            return dataService.createAsset($scope.asset).then(
+            return dataService.saveAsset($scope.asset).then(
                 function(d){
                     $scope.asset._id = d.data.data._id;       
                 },

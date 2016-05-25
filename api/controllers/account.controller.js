@@ -12,13 +12,7 @@ var path = require("path");
 var mongodb = require('mongodb');
 var mongo = mongodb.MongoClient;
 
-var userModels = require("./../models/user.model.js");
-
-
 exports.v1 = function(){
-    //var m =  userModels(dbConfig);
-    // var userModel = m.userModel;
-    // var accountModel = m.accountModel;
     
     this.searchUsers = function(req,callback){
         var param = req.params.term;
@@ -49,7 +43,7 @@ exports.v1 = function(){
     };
     
     //Register User
-    this.createUser = function (req, cb) {
+    this.createUser = function (req, callback) {
         console.log("controller : post user");
         var r = req.body;
         mongo.connect( dbConfig.mongoURI,function(err, db){
@@ -60,10 +54,10 @@ exports.v1 = function(){
                     db.close();
                     return callback(new models.error(e));
                 }
-                if(data){
+                if(data.length > 0){
                     db.close();
-                    var e = new models.error(e, req.params.userName + " already registered.");
-                    return cb(e);
+                    var e = new models.error(e, r.UserName + " already registered.");
+                    return callback(e);
                 };
                 
                 var u = {
@@ -115,126 +109,118 @@ exports.v1 = function(){
         console.log("controller : post user");
         var r = req.body;
         var id = r._id;
-        var usr = {
+        var usr = {};
             //UserName: r.UserName,
-            //FirstName: r.FirstName,
-            //LastName: r.LastName,
+        if(r.FirstName){ u.FirstName = r.FirstName;}
+        if(r.LastName){ u.LastName = r.LastName}
             
-            //Status:"REQUESTED",
-            AlternateEmail : r.AlternateEmail,
-            EmailId : r.EmailId,
-            Picture : r.Picture,
-            //CreatedOn : new Date(),
-            Address : r.Address,
-            City : r.City,
-            Country : r.Country,
-            ZipCode : r.ZipCode
-        }
-        userModel.findOneAndUpdate({"_id":id},{$set: usr},{new:true}, function(err,u){
-            if(err){
-                console.error(err);
-                return cb(new models.error(e));
-            }   
-            cb(new models.success(u));
-            return;
+            
+        if(r.AlternateEmail) { u.AlternateEmail = r.AlternateEmail;}
+        if(r.EmailId){ u.EmailId = r.EmailId;}
+        if(r.Picture){ u.Picture = r.Picture;}
+        if(r.Address){ u.Address = r.Address;}
+        if(r.Citye) { u.City = r.City;}
+        if(r.Country){ u.Country = r.Country}
+        if(r.ZipCode){ u.ZipCode = r.ZipCode}
+        
+        mongo.connect( dbConfig.mongoURI,function(err, db){
+            userModel.findOneAndUpdate({"_id":id},{$set: usr}, function(err,u){
+                if(err){
+                    console.error(err);
+                    db.close();
+                    return cb(new models.error(e));
+                }   
+                db.close();
+                return cb(new models.success(u));
+            });
         });
     };
     
-    this.authenticate = function(req, callback){
+    this.authenticate = function(req, cb){
         console.log("controller : verifySecret");
         var r = req.body;
-        var secret = r.Secret;
-        getAccount(r.UserName,function(e,acct){
+        var secret = r.Secret;    
+        getAccount(r.UserName, function(e,a){
             if(e){
-                return callback(new models.error(e));
+                
+                return cb(new models.error("invalid credentials")); 
             }
-            if(!acct)
-            {
-                return callback(new models.error("Invalid credentials"));
+            if(a == null){
+                return cb(new models.error("invalid credentials"));
             }
-            
-            if(acct.Secret != secret){
-                return callback(
-                        new models.error("Credentials invalid"))
+            if(a.Secret != secret){
+                return cb(new models.error("invalid credentials"));
             }
-            //else authentication success
-            //TODO: generate token
-            var token =  getRandomPin();
-             token = r.UserName;
-            accountModel.findOneAndUpdate(
-                {_id:acct._id},
-                {$set: {AccessToken:token}},
-                {new:false}, 
-                function(err,a)
-                {
-                    if(err){
-                        return callback(new models.error(err));
-                    }
-                    var ret = {
-                        _id : acct.User._id,
-                        AccessToken:a.AccessToken,
-                        UserName: acct.User.UserName,
-                        FirstName: acct.User.FirstName,
-                        LastName: acct.User.LastName,
-                        Picture : acct.User.Picture,
-                        EmailId: acct.User.EmailId,
-                        Address : acct.User.Address,
-                        City : acct.User.City,
-                        Country : acct.User.Country,
-                        ZipCode : acct.User.ZipCode}
-                    var m =  new models.success(ret);
-                    return callback(m);      
-                });
+            generateToken(a._id, function(e, t){
+                if(e){
+                    console.error(e);
+                    db.close();
+                    return cb(new models.error("Internal error"));
+                }
+                var u = a.User;
+                var ret = {
+                        _id : u._id,
+                        AccessToken:t.AccessToken,
+                        UserName: u.UserName,
+                        FirstName: u.FirstName,
+                        LastName: u.LastName,
+                        Picture : u.Picture,
+                        EmailId: u.EmailId,
+                        Address : u.Address,
+                        City : u.City,
+                        Country : u.Country,
+                        ZipCode : u.ZipCode
+                }
+                var m =  new models.success(ret);
+                return cb(m); 
+            })
         });
     }
+    
     this.resetPasword = function(req, callback){
         console.log("controller : verifySecret");
         var r = req.body;
         getAccount(r.UserName, function(err, acct){
-           if(err){
-               return callback(new models.error(err));
-           } 
-           if(!acct){
-               return callback("User account not found");
-           } 
-           //Update new random password
-           //User exist ..now change the password
-            var pwd = getRandomPin();
+            if(err){
+                return callback(new models.error(err));
+            } 
+            if(!acct){
+                return callback("User account not found");
+            } 
+            //Update new random password
+            //User exist ..now change the password
+            var pwd = r.NewSecret;
+            if(r.NewSecret == null){
+                    pwd = getRandomPin();
+            }
+                
             var secretsUsed = [];
             if(acct && acct.SecretsUsed)
             {
                 secretsUsed = acct.SecretsUsed
             }
             
-            accountModel.findOneAndUpdate(
+            db.collection("accounts").findAndModify(
                 {_id:acct._id},
                 {$set: {
                     Secret :pwd,
-                    SecretsUsed : secretsUsed.push(pwd)}},
-                {new:false}, 
-            function(err, a)
-            {
-                if(err) { return callback(new models.error(err));}
-                //since user is registering, we need to send the limited registration information
-                var retUser = {
-                    "_id" : acct.User._id
-                    ,"FirstName":acct.User.FirstName
-                    , "LastName": acct.User.LastName
-                    , "UserName":acct.User.UserName
-                    , "Status":acct.User.Status
-                    ,"CreatedOn":acct.User.CreatedOn
-                    ,"Secret":a.Secret
-                    ,"EmailId" : acct.User.EmailId
-                    ,"Picture" : acct.User.Picture
-                    , "Address" : r.Address
-                    , "City" : r.City
-                    , "Country" : r.Country
-                    , "ZipCode" : r.ZipCode
-                }
-                var m = new models.success(retUser);
-                //Send email or SMS with pin
-                return callback(m);
-            });
+                    SecretsUsed : secretsUsed.push(pwd)}
+                },
+                {new:true}, 
+                function(err, a)
+                {
+                    if(err) { 
+                        db.close();
+                        return callback(new models.error(err));
+                    }
+                    
+                    var m = new models.success({"secret":pwd});
+                    
+                    // send SMS on acct.User.MobileNo
+                    
+                    //Send email or SMS with pin
+                    return callback(m);
+                });
             
         });
         
@@ -246,33 +232,42 @@ exports.v1 = function(){
         randomPin = 654321;
         return randomPin;
     };
-
-    //GEt user account from user name
-    var getAccount = function(userName, callback){
+    var generateToken = function(accountId, callback){
         
-        
-        var options = {"UserName":userName};
-        
-        //get the user id first and then find the account
-        userModel.findOne(options, function   (err, data)
-        {
-            if(err || data == undefined){
-                var e = models.error(err, "");
-                return callback(e);
-            }       
-            //Find the matching account
-            accountModel.findOne({"User":data._id})
-            .populate("User")
-            .exec(function(err,acct){
-                if(err){
-                    var e = models.error(err, "");
-                    return callback(e);
-                }   
-                 //Send email or SMS with pin
-                return callback(null,acct);        
-            });     
+        var token =  getRandomPin();
+        token = accountId;
+        mongo.connect( dbConfig.mongoURI,function(err, db){
+            db.collection("accounts").update({"_id":accountId},{$set:{"AccessToken":token}},function(e,d){
+                if(e){
+                    return callback(e, d);    
+                }                
+                return callback(null, {"AccessToken":token});
+            });
         });
-        
-        
-    };
+    }
+    //GEt user account from user name
+    var getAccount = function(userName, cb){
+        console.log("controller : verifySecret");
+        mongo.connect( dbConfig.mongoURI,function(err, db){
+            db.collection("profiles").findOne({"UserName":userName}, function(err,u){
+                if(err){
+                    db.close();
+                    return cb(err,u);
+                }   
+                if(u == null){
+                    console.error("user credentials mismatch");
+                    db.close();
+                    return cb("Not found");
+                }
+
+                db.collection("accounts").findOne({"User":u._id}, function(err,a){
+                    db.close();
+                    a.User = u;
+                    return cb(null, a);                 
+                });  
+                
+            });
+    
+        });
+    }
 }

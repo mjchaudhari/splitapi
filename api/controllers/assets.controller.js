@@ -171,12 +171,12 @@ exports.v1 = function(){
                 if(e){return models.error(e);}
                 
                 if(r == null){
-                    return cb(models.error("Record not saved"));
+                    return cb(new models.error("Record not saved"));
                 }
-                if(r.result.upserted == null){
-                    return cb(models.error("Record not saved"));
+                if(r.result.ok == 0){
+                    return cb(new models.error("Record not saved"));
                 }
-                getFullAsset(_id, function(e, resul){
+                getFullAsset(data._id, function(e, result){
                     if(e){
                         return cb(new models.error(e));
                     }
@@ -286,21 +286,22 @@ exports.v1 = function(){
         
         a._uid = data._uid ? "" : a._id
         
-        if(data.TopicId ){
-            a.TopicId = {
-                "$ref":"assets",
-                "$id" : data.TopicId
-            }
-        }
         a.GroupId = data.GroupId;
+        if(data.TopicId ){
+            a.TopicId = data.TopicId
+        }
+        else{
+            a.TopicId = data.GroupId
+        }
         if(data.Paths ){
             a.Paths = data.Paths
         }
         else{
             a.Paths = [
-                data.TopicId 
+                a.TopicId 
             ]
         }
+        
         a.Name          = data.Name;
         a.Description   = data.Description;
         a.Locale        = data.Locale;
@@ -416,6 +417,7 @@ exports.v1 = function(){
                 var retAsset = result;
                 //populate other referenced documents parallelly
                 async.parallel({
+                    
                     assetType: function(cb){
                         db.collection("configs").findOne({"_id":result.AssetTypeId}, function(err, group){
                             cb(null, group);
@@ -434,7 +436,7 @@ exports.v1 = function(){
                     
                 },
                 function(err, results) {
-                    // results is now equals to: {one: 1, two: 2}
+                    retAsset.AssetType = results.assetType;
                     retAsset.Group = results.group;
                     retAsset.UpdatedBy = results.updatedBy;
                     return callback(err, retAsset);

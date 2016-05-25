@@ -11,6 +11,7 @@ var bodyParser      = require('body-parser');
 var dbConfig        = require("./api/db.connection.js");
 var auth            = require("./api/auth.js");
 var busboy          = require('connect-busboy');
+var utilsCtrl = require("./api/controllers/utils.controller.js");
 //app.use(bodyParser.urlencoded());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}));
@@ -37,8 +38,6 @@ app.get('/', function (req, res, next) {
   res.sendFile('./index.html');
 });
 
-
-
 // routes ======================================================================
 //require('./api/routes/auth.routes.js')(dbConfig, app, authController); // load our routes and pass in our app and fully configured passport
 //require('./api/routes/oauth.routes.js')(dbConfig, app); // load our routes and pass in our app and fully configured passport
@@ -48,7 +47,9 @@ require('./api/routes/utils.routes.js')(dbConfig, auth, app); // load our routes
 require('./api/routes/asset.routes.js')(dbConfig, auth, app); // load our routes and pass in our app and fully configured passport
 
 
-// launch =====ss=================================================================
+// launch ======================================================================
  
 app.listen(port);
 console.log('Start on port ' + port);
+var utils = new utilsCtrl.v1();
+utils.initConfig();

@@ -17,11 +17,12 @@
             <div layout="column">
                 <div layout="row" flex>
                     <div layout="column" flex="33" layout-padding>
-                        <md-input-container>
+                        <!--<md-input-container>
                             <md-select ng-model="asset.AssetType" ng-model-options="{trackBy: '$value.Name'}">
                                 <md-option ng-value="c" ng-repeat="c in types">{{c.DisplayName}}</md-option>
                             </md-select>
-                        </md-input-container>
+                        </md-input-container>-->
+                        {{asset.AssetType.DisplayName}}
                         <div layout="row" layout-align="center center">
                             <md-button class="md-raised  md-primary md-icon-button" ngf-select ng-model="file" ngf-pattern="'.png,.jpg,.gif,.jpeg,.mov,.pdf,.mp4,.mp3'">
                                 <i class="material-icons">file_upload</i>
@@ -32,9 +33,6 @@
                         </div>
                         <span>{{file.name||asset.Urls[0]}}</span>
                         <ez-image-upload img="asset.Thumbnail" thumbnail-class="'square'"></ez-image-upload>
-                        
-                        
-                        
                     </div>
                     <div layout="column" flex layout-padding>
                         <!--category-->    
