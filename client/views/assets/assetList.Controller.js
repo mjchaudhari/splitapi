@@ -81,11 +81,12 @@
             $mdBottomSheet.hide();    
         }
         
-        $scope.edit = function(a){
+        $scope.edit = function(a,assetType){
             var params = {
                     assetId: a._id,
                     groupId : a.GroupId,
-                    parentId:a.ParentId
+                    parentId:a.ParentId,
+                    assetType : assetType
                 };
             $mdBottomSheet.show({
                 templateUrl: './views/assets/asset.edit.html',

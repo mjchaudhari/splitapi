@@ -44,7 +44,8 @@ exports.v1 = function(){
         
     };
     this.initConfig = function (){
-        var type_collection = {"_id":"type_collection", "Name":"type_collection", "Description":"Topic", "DisplayName":"Topic", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
+        var type_collection = {"_id":"type_collection", "Name":"type_collection", "Description":"Collection", "DisplayName":"Collection", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
+        var type_topic = {"_id":"type_topic", "Name":"type_topic", "Description":"Topic", "DisplayName":"Topic", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
         var type_document = {"_id":"type_document","Name":"type_document", "Description":"Document", "DisplayName":"Document", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
         var type_calendar = {"_id":"type_calendar","Name":"type_calendar", "Description":"Comment", "DisplayName":"Comment", "IsContainer":false,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
         var type_demand = {"_id":"type_demand", "Name":"type_demand", "Description":"Issue", "DisplayName":"Issue", "IsContainer":true,"IsStandard":true, "ConfigGroup":"AssetType","IsActive":true};
@@ -55,7 +56,9 @@ exports.v1 = function(){
         async.parallel([
             function(callback){
                 _self.createOrUpdateConfig( type_collection, callback)
-                    
+            },
+            function(callback){
+                _self.createOrUpdateConfig( type_topic, callback)
             },
             function(callback){    
                 _self.createOrUpdateConfig( type_document, callback)

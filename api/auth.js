@@ -24,21 +24,21 @@ var mongo = mongodb.MongoClient;
     ));
     passport.use(new BearerStrategy( function(accessToken, done) {
         
-            //get account basid on acess token
+            //get user basid on acess token
         mongo.connect(dbConfig.mongoURI,function(err, db){  
-            db.collection("accounts")
-            .findOne({"AccessToken": accessToken}, function (err, acct) {
+            db.collection("users")
+            .findOne({"AccessToken": accessToken}, function (err, user) {
                 if (err) { 
 	            	return done(err); 
 	            }
-	            if (!acct) { 
+	            if (!user) { 
 	            	return done(null, false); 
 	            }
                 
-                db.collection("profiles").findOne({"_id":acct.User},function(e,p){
+                db.collection("profiles").findOne({"_id":user.ProfileId},function(e,p){
                     var info = { scope: '*' };
-                    acct.User = p;
-                    return done(null, acct, info);                    
+                    user.User = p;
+                    return done(null, user, info);                    
                 });
                 
 

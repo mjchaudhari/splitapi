@@ -14,7 +14,21 @@
 .node-selected{
   border-left:2px Red solid;
   background-color:lightgray;
+             /* Go big on the size, and let overflow hide */
+  content: " ";
+  display: block;
+  /* width: 0; */
+  /* height: 0; */
+  /* border-top: 50px solid transparent; */           /* Go big on the size, and let overflow hide */
+  /* border-bottom: 50px solid transparent; */
+  border-right: 30px solid red;
+  /* position: absolute; */
+  top: 50%;
+  /* margin-top: -50px; */
+  /* left: 100%; */
+  /* z-index: 2; */
 }
+
 .handCursor{
 
   cursor: pointer; cursor: hand;

@@ -74,9 +74,9 @@ exports.v1 = function(){
                     return cb(new models.error(e));
                 }
                 var result = [];
-                async.eachSeries(g, function(grp, callback){
+                async.eachSeries(g, function(g, callback){
                     //{"_id":  {$in: ["VJvggm7ug","VJ0esDQ_e","41yeBrY_l","NJ6PJdKFe","EyfRUZB5x"]} }
-                    var members = grp.Members;
+                    var members = g.Members;
                     mongo.connect(dbConfig.mongoURI, function(e, conn){
                         conn.collection("profiles")
                         .find({"_id" : {$in: members}}).toArray(function (e, members) {
@@ -85,8 +85,8 @@ exports.v1 = function(){
                                 return callback();
                             }
                             else{
-                                grp.Members=members;
-                                result.push(grp);
+                                g.Members=members;
+                                result.push(g);
                                 conn.close();
                                 return callback();
                             }
@@ -290,7 +290,7 @@ exports.v1 = function(){
             
             db.collection("groups").findOneAndUpdate({"_id":data._id},{$set: data}, {"upsert":true, "forceServerObjectId":false, "returnOriginal":false}, function (err, data) {
                 db.close();
-                return cb(err,data); 
+                return cb(err,data.value); 
             });
         });
     }

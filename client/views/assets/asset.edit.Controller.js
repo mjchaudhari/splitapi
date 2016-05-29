@@ -16,7 +16,7 @@
         $scope.assetId  = params.assetId;
         $scope.groupId  = params.groupId;
         $scope.parentId = params.parentId;
-        $scope.assetType = params.assetTypeId;
+        $scope.assetType = params.assetType;
         
         $scope.types = [];
         
@@ -26,7 +26,7 @@
         $scope.asset = {
             "_id":$scope.assetId,
             "AssetType" : $scope.assetType,
-            "AssetTypeId" : $scope.assetType != null ? $scope.assetType._id : null,
+            "AssetTypeId" : $scope.assetType != null ? $scope.assetType : null,
             "Name":"",
             "Description":"",
             "Thumbnail":"",
