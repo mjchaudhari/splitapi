@@ -79,7 +79,67 @@ exports.v1 = function(){
             });
         });
     }
+    
     /** Gets the assets of given group if the current user is member of this group
+     * 
+    */     
+    this.getAssetHierarchy =function(req, cb)
+    {
+        var u = req.user.User;         
+        var q = req.query;
+        var g = req.params.groupId;
+		var options = {
+            parentId : q.parentId,
+		    groupId:g,
+			count:100,
+            from : q.from
+		};
+        
+        if(options.from == null ){
+            options.from = new Date("01-01-01");
+        }
+        
+        mongo.connect( mongoURI,function(err, db){
+            
+            //find the groups of this user
+            var filter = { "_id": options.groupId,  "Members": { $in: [u._id] } }
+            db.collection("groups").find(filter).toArray(function(err, data){
+                if(err){
+                    db.close();  
+                    return cb(err);
+                }
+                if(data.length <= 0 ){
+                    db.close();
+                    //This user has no access to the assets of this group.
+                    return cb(new models.error("Unauthorize access","User is not authorized to access group."));
+                }
+                
+                var parentId = options.parentId;
+                if(options.parentId == null){
+                    parentId = options.groupId;
+                }
+                
+                var filter = {
+                    "GroupId": options.groupId,
+                    "AuditTrail.UpdatedOn" : {"$gte": options.from},
+                }
+                
+                //return assetsas per criteria
+                //var parentMatch = "/" + parentId + "/$";
+                //var filter = {'Path': {'$regex': '/' + parentMatch + '/'}};
+                //{"name": /.*m.*/})
+                var parentMatch =  parentId ;
+                filter.Paths = {$in: [parentMatch] };
+                
+                db.collection("assets").find(filter).toArray(function(err, data){
+                    db.close();
+                    return cb(new models.success(data));
+                });
+            });
+        });
+    }
+    
+    /** Gets the asset detail if the current user is member of this group
      * 
     */     
     this.getAsset =function(req, cb)

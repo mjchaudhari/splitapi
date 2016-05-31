@@ -52,4 +52,4 @@ require('./api/routes/asset.routes.js')(dbConfig, auth, app); // load our routes
 app.listen(port);
 console.log('Start on port ' + port);
 var utils = new utilsCtrl.v1();
-utils.initConfig();
+//utils.initConfig();
