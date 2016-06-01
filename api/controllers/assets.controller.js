@@ -69,8 +69,7 @@ exports.v1 = function(){
                 //return assetsas per criteria
                 //var parentMatch = "/" + parentId + "/$";
                 //var filter = {'Path': {'$regex': '/' + parentMatch + '/'}};
-                var parentMatch =  parentId ;
-                filter.Paths = {$in: [parentMatch] };
+                filter._paths = {$in : [new RegExp('/' + parentId + '/'), new RegExp('/' + parentId + '$')]};
                 
                 db.collection("assets").find(filter).toArray(function(err, data){
                     db.close();
@@ -127,9 +126,8 @@ exports.v1 = function(){
                 //return assetsas per criteria
                 //var parentMatch = "/" + parentId + "/$";
                 //var filter = {'Path': {'$regex': '/' + parentMatch + '/'}};
-                //{"name": /.*m.*/})
-                var parentMatch =  parentId ;
-                filter.Paths = {$in: [parentMatch] };
+                //{Paths: {$in : [/V1WC-H7_e/,/V1WC-H7_e$/,]}}
+                filter._paths = {$in : [new RegExp('/' + parentId + '/'), new RegExp('/' + parentId + '$')]};
                 
                 db.collection("assets").find(filter).toArray(function(err, data){
                     db.close();
@@ -175,42 +173,6 @@ exports.v1 = function(){
     }
     
     /**
-     * Create the new asset based on data. This can be used to create empty asset.
-     * 
-     */
-    this.create = function(req,cb){
-        console.log("controller : create artifact");
-        var currentUser = req.user.User
-        //mandatory checks
-        if(req.body.GroupId == null){
-            return cb(new models.error("group required"));
-        }
-        if(req.body.Name == null){
-            return cb(new models.error("Name required"));
-        }
-        
-        var data = buildAssetModel(req.body);
-        
-        var audit = {
-            AssetId : data._id,
-            Action: data.auditTrail == null ? "Create" : "Update",
-            UpdatedBy : currentUser,
-            UpdatedOn : new Date(),
-            Description : "",
-            Notify : true,
-        }
-        if(data.auditTrail == null){
-            data.AuditTrail = [];    
-        } 
-        data.AuditTrail.push(audit)
-        mongo.connect( mongoURI,function(err, db){
-            db.collection('assets').insert(data,function(e, r){
-                
-                return cb(e, r);
-            });
-        });
-    }
-    /**
      * Save the assets
      */
     this.createOrUpdate = function(req,cb){
@@ -225,22 +187,24 @@ exports.v1 = function(){
         }
         
         var data = buildAssetModel(req.body, currentUser);
-        
-        mongo.connect( mongoURI,function(err, db){
-            db.collection('assets').update({"_id" : data._id},data,{"forceServerObjectId":false, "upsert":true,  "fullResult":true},function(e, r){
-                if(e){return models.error(e);}
-                
-                if(r == null){
-                    return cb(new models.error("Record not saved"));
-                }
-                if(r.result.ok == 0){
-                    return cb(new models.error("Record not saved"));
-                }
-                getFullAsset(data._id, function(e, result){
-                    if(e){
-                        return cb(new models.error(e));
+        determinePath(data.ParentIds, function (paths) {
+            data._paths = paths;
+            mongo.connect( mongoURI,function(err, db){
+                db.collection('assets').update({"_id" : data._id},data,{"forceServerObjectId":false, "upsert":true,  "fullResult":true},function(e, r){
+                    if(e){return models.error(e);}
+                    
+                    if(r == null){
+                        return cb(new models.error("Record not saved"));
                     }
-                    return cb(new models.success(result));    
+                    if(r.result.ok == 0){
+                        return cb(new models.error("Record not saved"));
+                    }
+                    getFullAsset(data._id, function(e, result){
+                        if(e){
+                            return cb(new models.error(e));
+                        }
+                        return cb(new models.success(result));    
+                    });
                 });
             });
         });
@@ -271,63 +235,6 @@ exports.v1 = function(){
         });
     };
     
-    /**
-     * Get asset data from body
-     */
-    var getAssetDataFromBody = function(req){
-      var param = req.body;
-        var currentUser = req.user.User; //req.userIsAcount and user.User is actual user profile
-
-        var data = {}
-        if(param._id)
-            data._id = param._id;
-        if(param._uid)
-            data._uid = param._uid;
-        if(param.Name)
-            data.Name=param.Name;
-            
-        if(param.AssetCategory){
-            data.AssetCategory=param.AssetCategory;
-        }
-        if(param.Description)
-            data.Description=param.Description;
-        if(param.Status)
-            data.Status = param.Status;
-        if(param.Locale)
-            data.Locale = param.Locale;
-        if(param.Thumbnail)
-            data.Thumbnail= param.Thumbnail;
-        if(param.Urls)
-            data.Urls= param.Urls;
-        if(param.Moderators)
-            data.Moderators = param.Moderators;
-        if(param.ActivateOn)
-            data.ActivateOn = param.ActivateOn;
-        if(param.ExpireOn)
-            data.ExpireOn = param.ExpireOn
-        data.GroupId = param.GroupId;
-        if(param.TopicId ){
-            data.TopicId = param.TopicId
-        }
-        else{
-            data.TopicId = data.GroupId
-        }
-        if(param.Paths ){
-            data.Paths = param.Paths
-        }
-        else{
-            data.Paths = [
-                data.TopicId 
-            ]
-        }
-        
-        data.AllowLike = param.AllowLike
-        data.AllowComment = param.AllowComment
-        data.Publish = param.Publish
-        data.UpdatedBy = currentUser;
-        return data;  
-    };
-    
     function buildAssetModel(data, currentUser, createId) {
         if(createId == undefined){
             createId = true;
@@ -353,13 +260,13 @@ exports.v1 = function(){
         else{
             a.TopicId = data.GroupId
         }
-        if(data.Paths ){
-            a.Paths = data.Paths
+        
+        //We do not consider the paths those are sent with data as we want to determine it ourself.
+        if(data.Parents){
+            a.ParentIds = data.ParentIds;
         }
         else{
-            a.Paths = [
-                a.TopicId 
-            ]
+            a.ParentIds = [data.GroupId];
         }
         
         a.Name          = data.Name;
@@ -376,7 +283,7 @@ exports.v1 = function(){
         a.ExpireOn      = data.ExpireOn;
         a.AlloudTypes   = data.AllowedTypes;
         a.UpdatedOn     = new Date();
-        a.UpdatedById  = currentUser._id; 
+        a.UpdatedById   = currentUser._id; 
         
         if (data.AssetType != null){
             a.AssetTypeId = data.AssetType._id
@@ -405,7 +312,7 @@ exports.v1 = function(){
         
         a.CustomData = data.CustomData;
          
-        switch (data.AssetType.Name) {
+        switch (data.AssetTypeId) {
             case "type_collection":
             {
                 a.AllowComment  = false;
@@ -493,16 +400,79 @@ exports.v1 = function(){
                             cb(null, updatedBy);
                         });
                     },
+                    parents: function(cb){
+                        db.collection("assets").findOne({"_id": {$in : result.ParentIds } }, function(err, parents){
+                            if(parents != null){
+                                var pArray = [];
+                                parents.forEach(function(p){
+                                    var prnt = {
+                                        "_id" : o._id,
+                                        "_uid" : p._uid,
+                                        "AssetTypeId" : p.AssetTypeId,
+                                        "Name" : p.Name,
+                                        "ParentIds" : p.ParentIds,
+                                    }
+                                    pArray.push(prnt);
+                                });
+                                
+                                cb(null, pArray);        
+                            }
+                            else{
+                                cb(null, null);    
+                            }
+                            
+                        });
+                    },
                     
                 },
                 function(err, results) {
                     retAsset.AssetType = results.assetType;
                     retAsset.Group = results.group;
                     retAsset.UpdatedBy = results.updatedBy;
+                    retAsset.Parents = results.parents;
                     return callback(err, retAsset);
                 });
             });
         });
     }
-    
+    /**
+     * DEtermine the path for given parentId.
+     */
+    function determinePath(parentIds, callback){
+        mongo.connect( mongoURI,function(err, db){
+            db.collection("assets").findOne({"_id":{$in: parentIds }}, function(err, result){
+                if(err){
+                    return callback(err,result);
+                }
+                
+                var paths = [];
+                if(result == null){
+                    //if the result is null, it means the parent is root element itself.
+                    //consider parentId itself as result.
+                    parentIds.forEach(function (parentId) {
+                        paths.push( "/" + parentId);
+                    }); 
+                }
+                else{
+                    parentIds.forEach(function (parentId) {
+                        result.forEach(function(a){
+                            if(a.Paths == null){
+                                var newPath = p._id;
+                                paths.push( "/" + p._id + "/" + parentId) ;
+                            }
+                            else{
+                                a.Paths.forEach(function(p){
+                                    var newPath = p + "/" + parentId;
+                                    paths.push(newPath);    
+                                });    
+                            }
+                            
+                        });
+                    });    
+                }
+                
+                callback(paths);
+            });
+        });
+    }
 };

@@ -15,7 +15,7 @@
         }
         $scope.assetId  = params.assetId;
         $scope.groupId  = params.groupId;
-        $scope.parentId = params.parentId;
+        $scope.parentId = params.parentId == undefined ? params.groupId : params.parentId;
         $scope.assetType = params.assetType;
         
         $scope.types = [];
@@ -32,7 +32,7 @@
             "Thumbnail":"",
             "Urls":"",
             "GroupId":$scope.groupId,
-            "ParentId":$scope.parentId,
+            "ParentIds":[$scope.parentId],
             "AllowLike":true,
             "AllowComment":true,
             "Publish":true,
@@ -129,45 +129,28 @@
             $scope.asset.AllowLike = !$scope.asset.AllowLike; 
         }
         $scope.saveAsset = function(){
-            if($scope.asset._id == null){
-                _createAsset().then(
-                    function (d) {
-                        if($scope.file){
-                            _uploadAssetFile().then(function (f) {
-                                //get file names and add to the asset
-                                $scope.asset.Urls = f.fileName;
-                                return _saveAssetData()
-                            });
-                        }
-                    }
-                );
+
+            if($scope.file){
+                _uploadAssetFile().then(function (f) {
+                    //get file names and add to the asset
+                    $scope.asset.Urls = f.fileName;
+                    return _saveAssetData()
+                });
             }
             else{
-                if($scope.file){
-                    _uploadAssetFile().then(function (f) {
-                        //get file names and add to the asset
-                        $scope.asset.Urls = f.fileName;
-                        return _saveAssetData()
-                    });
-                }
-                else{
-                    return _saveAssetData()
-                }
+                return _saveAssetData()
             }
             
-            
         }
-        function _createAsset(){
-            return dataService.saveAsset($scope.asset).then(
-                function(d){
-                    $scope.asset._id = d.data.data._id;       
-                },
-                function(e){
-                    
-                }
-            )
-        }
+        
         function _saveAssetData(){
+            if($scope.asset.ParentIds == undefined ){
+                $scope.asset.ParentIds = [$scope.parentId];
+            } 
+            else if($scope.asset.ParentIds.length == 0){
+                $scope.asset.ParentIds = [$scope.parentId];
+            }
+
             return dataService.saveAsset($scope.asset).then(
                 function(d){
                     $mdBottomSheet.hide(d);
