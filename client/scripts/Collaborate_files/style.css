@@ -275,10 +275,6 @@ Show the image as background to display: block;
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
-.hover-on-select:hover{
-  background-color:bisque;
-}
-
 /* Form style */
 .md-input-container {
   margin: 5px 0;

@@ -76,10 +76,10 @@
    .state("home.dashboard", {url:"/dashboard", templateUrl : "/views/dashboard.html"})
    .state("home.groups", {url:"/groups", templateUrl : "/views/groups/groups.html"})
    
-   .state("home.group", {url:"/:g", templateUrl : "/views/groups/group.html"})
+   .state("home.group", {url:"/:id", templateUrl : "/views/groups/group.html"})
    .state("home.group.detail", {url:"/detail", templateUrl : "/views/groups/group.detail.html"})
    .state("home.group.analytics", {url:"/analytics", templateUrl : "./views/groups/group.analytics.html"})
-   .state("home.group.assets", {url:"/assets?p", templateUrl : "./views/assets/assetlist.html"})
+   .state("home.group.assets", {url:"/assets", templateUrl : "./views/assets/assetlist.html"})
    //.state("home.group.asset", {url:"/asset?assetid&action&parentId", templateUrl : "./views/groups/asset.edit.html"})
    
    .state("home.asset", {url:"/:groupId/asset?assetId&action", templateUrl : "./views/groups/asset.edit.html"})

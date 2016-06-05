@@ -157,15 +157,15 @@
 
             switch (node.Name) {
                 case "Info":{
-                    $state.go("home.group.detail", {"g":node.parentId});
+                    $state.go("home.group.detail", {"id":node.parentId});
                     break;
                 }
                 case "Assets":{
-                    $state.go("home.group.assets", {"g":node.parentId});
+                    $state.go("home.group.assets", {"id":node.parentId});
                     break;
                 }
                 case "Analytics":{
-                    $state.go("home.group.analytics",{"g":node.parentId});
+                    $state.go("home.group.analytics",{"id":node.parentId});
                     break;
                 }
             }
@@ -175,8 +175,8 @@
         $scope.createNewAsset = function(type,$event){
             var params = {
                     //assetId: a._id,
-                    groupId : $stateParams.g,
-                    parentId: $stateParams.p,
+                    groupId : $stateParams.id,
+                    parentId: $stateParams.parentId,
                     assetType: type
 
             };

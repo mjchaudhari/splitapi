@@ -31,13 +31,15 @@
                     <i class="material-icons">menu</i>
                 </md-button>
                 <span >: Collaboration : </span>
+
                 <div layout="row">
                     
                     <span ng-repeat="n in nodeParentTrail">{{n.Name}} <span ng-if="!$last"> > </span> </span>
                 </div>
                 <span flex></span>
-
+                
                 <md-fab-speed-dial md-direction="left" md-open="false" class="md-scale">
+
                     <md-fab-trigger>
                       <md-button aria-label="menu" class="md-icon-button " >
                         <i class="material-icons">more_vert</i>
@@ -51,14 +53,15 @@
                         <i class="material-icons">format_color_fill</i>    
                       </md-button>
                       <md-button aria-label="settings" class="md-fab md-raised md-mini" ng-clik="settings()">
-                        <i class="material-icons">settings</i>    
+                        <i class="material-icons">settings</i> 
+                        
                       </md-button>
                     </md-fab-actions>
                 </md-fab-speed-dial>
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="openNotification()">
                     <i class="material-icons">add_alert</i>
                 </md-button>
-
+                
                 <img src ng-src="{{user.Picture}}" class="md-avatar avatar-small"  md-click="editProfile()" />
             </div>
         </md-toolbar>

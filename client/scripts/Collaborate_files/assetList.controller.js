@@ -10,8 +10,8 @@
         
         //bindable mumbers
         $scope.title = "Assets Crtl";
-        $scope.groupId = $stateParams.g;
-        $scope.parentId = $stateParams.p;
+        $scope.groupId = $stateParams.id;
+        $scope.parentId = $stateParams.pId;
 
         $scope.promices = {};
         $scope.assets = [];
@@ -104,23 +104,7 @@
                     });
         }
         
-        $scope.onRowSelected = function (asset){
-            
-            $log.debug("dbl clicked!" + asset._id);
-            
-            if(asset.AssetTypeId == "type_collection"){
-                //open folder
-                $scope.parentId = asset._id;
-                $scope.filter.parentId = asset._id;
-                init();
-                
-                $state.transitionTo("home.group.assets",{"g":$scope.groupId, "p" : $scope.parentId}, {"notify":false});
-            }
-            else{
-                //openInviewer(asset._id);
-                $log.debug('open in viewer');
-            }
-        }
+
 
         function determineSelectAll(){
             var selected = _.where($scope.assets,{"__isSelected":true});
@@ -136,18 +120,18 @@
         }
         var preInit = function(){
 
-            init();
-        }
-    
-        var init = function(){
             var tasks = [];
             tasks.push(getAssets());
             $q.all([
                 tasks
             ])
             .then(function(){
-                
+                init()
             });
+        }
+    
+        var init = function(){
+        
         };
         function getAssets (){
             

@@ -4,23 +4,6 @@
             <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
             <span>{{group.Name}}</span>
             <div flex></div>
-            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.detail">
-				<i class="material-icons">info</i>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.assets">
-				<i class="material-icons">view_list</i>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.analytics">
-            	<i class="material-icons">assessment</i>
-            </md-button>
-            <md-divider ></md-divider>
-            <md-button class="md-icon-button" aria-label="save" ng-click="save()">
-                    <i class="material-icons">save</i>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Cancel" ng-click="cancel()">
-                    <i class="material-icons">cancel</i>
-            </md-button>
-            <div flex></div>
             
 		  </div>
     </md-toolbar>
@@ -49,19 +32,20 @@
 
         <md-content class="transperent-bg" flex layout layout-align="center" style="height:60vh;">
             <div layout="column" class="table">
-                <div class="table-row" layout="row" ng-repeat="asset in assets"  >
+                <div ng-dblclick="onRowSelected(asset)" class="table-row hover-on-select" layout="row" ng-repeat="asset in assets"  >
                     <div class="table-cell" flex="5">
                         <md-checkbox aria-label="Select" ng-checked="asset.__isSelected" ng-click="toggle(asset)">
                         </md-checkbox>
                         <span>{{$index + 1}}</span>
-                    </div>
-                    <div class="table-cell" flex="5" layout="row" >
-                        <ez-thumb img="asset.Thumbnail" text="asset.Name"></ez-thumb>
                         
                     </div>
+                    <div class="table-cell" flex="5" layout="row" >
+                        <!--<ez-thumb img="asset.Thumbnail" text="asset.Name"></ez-thumb>-->
+                        <span ng-click="onRowSelected(asset)" class="material-icons-lg" data-ng-class="asset.AssetTypeId"></span>
+                    </div>
                     
-                    <div  class="table-cell" flex="50" layout="row" >
-                        <span>{{asset.AssetType.DisplayName}}
+                    <div  class="table-cell" flex="50" layout="column" >
+                        <span>
                         {{asset.Name}}</span>
                     </div>
                     <div class="table-cell" flex="15">{{asset.CreatedBy.Name}}</div>

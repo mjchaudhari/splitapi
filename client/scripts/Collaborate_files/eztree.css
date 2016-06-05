@@ -1,0 +1,30 @@
+/* Styles go here */
+
+.node{
+  border-left:2px transperent solid;
+  mouse-pointer:hand; 
+}
+.node-toggler{
+  mouse-pointer:cursor;
+}
+.node:hover{
+  background-color:lightgray;
+}
+
+.node-selected{
+  border-left: 2px Red solid;
+  background-color:lightgray;
+  border-top: 50px;
+}
+
+.handCursor{
+
+  cursor: pointer; cursor: hand;
+}
+
+.tree-toggler {
+  
+}
+.tree-toggler-right{
+  
+}

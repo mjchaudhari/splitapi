@@ -10,7 +10,7 @@
         //bindable mumbers
         $scope.title = "Group Details";
         $scope.promices = {};
-        $scope._id = $stateParams.g;
+        $scope._id = $stateParams.id;
         $scope.group = null;
         $scope.groupCopy = null;
 

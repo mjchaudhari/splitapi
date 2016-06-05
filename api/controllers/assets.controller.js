@@ -67,13 +67,11 @@ exports.v1 = function(){
                 }
                 
                 //return assetsas per criteria
-                //var parentMatch = "/" + parentId + "/$";
-                //var filter = {'Path': {'$regex': '/' + parentMatch + '/'}};
-                filter._paths = {$in : [new RegExp('/' + parentId + '/'), new RegExp('/' + parentId + '$')]};
+                filter._paths = {$in : [new RegExp('/' + parentId + '$')]};
                 
                 db.collection("assets").find(filter).toArray(function(err, data){
                     db.close();
-                    return cb(new models.success(data));
+                        return cb(new models.success(data));
                 });
             });
         });
@@ -131,6 +129,7 @@ exports.v1 = function(){
                 
                 db.collection("assets").find(filter).toArray(function(err, data){
                     db.close();
+                    var hierarchy = buildTree(data);
                     return cb(new models.success(data));
                 });
             });
@@ -262,7 +261,7 @@ exports.v1 = function(){
         }
         
         //We do not consider the paths those are sent with data as we want to determine it ourself.
-        if(data.Parents){
+        if(data.ParentIds){
             a.ParentIds = data.ParentIds;
         }
         else{
@@ -286,11 +285,17 @@ exports.v1 = function(){
         a.UpdatedById   = currentUser._id; 
         
         if (data.AssetType != null){
-            a.AssetTypeId = data.AssetType._id
+            a.AssetTypeId = data.AssetType._id;
+        }
+        else if (data.AssetTypeId != null){
+            a.AssetTypeId = data.AssetTypeId;
         }
         
         if (data.AssetCategory != null){
-            a.AssetCategory = data.AssetCategory._id
+            a.AssetCategoryId = data.AssetCategory._id
+        }
+        else if (data.AssetCategoryId != null){
+            a.AssetCategoryId = data.AssetCategoryId
         }
         
         if(isNew){
@@ -401,16 +406,17 @@ exports.v1 = function(){
                         });
                     },
                     parents: function(cb){
-                        db.collection("assets").findOne({"_id": {$in : result.ParentIds } }, function(err, parents){
+                        db.collection("assets").find({"_id": {$in : result.ParentIds } }).toArray(function(err, parents){
                             if(parents != null){
                                 var pArray = [];
                                 parents.forEach(function(p){
                                     var prnt = {
-                                        "_id" : o._id,
+                                        "_id" : p._id,
                                         "_uid" : p._uid,
                                         "AssetTypeId" : p.AssetTypeId,
                                         "Name" : p.Name,
                                         "ParentIds" : p.ParentIds,
+                                        "_paths" : p._paths
                                     }
                                     pArray.push(prnt);
                                 });
@@ -439,8 +445,10 @@ exports.v1 = function(){
      * DEtermine the path for given parentId.
      */
     function determinePath(parentIds, callback){
+        var parentIds = parentIds;
         mongo.connect( mongoURI,function(err, db){
-            db.collection("assets").findOne({"_id":{$in: parentIds }}, function(err, result){
+            db.collection("assets").find({"_id":{$in: parentIds }}).toArray(function(err, data){
+                var result = data;
                 if(err){
                     return callback(err,result);
                 }
@@ -456,12 +464,12 @@ exports.v1 = function(){
                 else{
                     parentIds.forEach(function (parentId) {
                         result.forEach(function(a){
-                            if(a.Paths == null){
-                                var newPath = p._id;
-                                paths.push( "/" + p._id + "/" + parentId) ;
+                            if(a._paths == null){
+                               
+                                paths.push( "/" + parentId) ;
                             }
                             else{
-                                a.Paths.forEach(function(p){
+                                a._paths.forEach(function(p){
                                     var newPath = p + "/" + parentId;
                                     paths.push(newPath);    
                                 });    
@@ -475,4 +483,29 @@ exports.v1 = function(){
             });
         });
     }
+    
+    function buildTree(data, rootId) {
+        //find the root
+        //find the record with root id
+        
+        var root = _.findWhere(data, {"_id": rootId});
+        if(root == null){
+            root = {
+                _id:rootId
+            }
+        }    
+        
+        
+        
+        
+        function findChildren (data, parentId){
+            var children = _(data).chain()
+                        .pluck('ParentIds')
+                        .flatten()
+                        .findWhere(parentId);
+            return children;
+        }
+        
+    }
+    
 };
