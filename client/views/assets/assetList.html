@@ -3,13 +3,16 @@
 		  <div class="md-toolbar-tools">
             <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
             <span>{{group.Name}}</span>
-            <div flex></div>
             
+            <a ng-click="goBack()">
+                <div class="left-triangle"></div>
+            </a>
+            <div flex></div>
 		  </div>
     </md-toolbar>
-    <md-button class="md-fab md-fab-top-right" aria-label="Add" ng-click="createAsset()">
+    <!--<md-button class="md-fab md-fab-top-right" aria-label="Add" ng-click="createAsset()">
         <ng-md-icon icon="add"></ng-md-icon>
-    </md-button>
+    </md-button>-->
     <div layout-padding>
         <div class="table">
             <div class="table-row" layout="row" >

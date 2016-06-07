@@ -12,7 +12,7 @@
         $scope.title = "Assets Crtl";
         $scope.groupId = $stateParams.g;
         $scope.parentId = $stateParams.p;
-
+        $scope.breadcrumb = [];
         $scope.promices = {};
         $scope.assets = [];
         $scope.searchText ="";
@@ -135,7 +135,7 @@
 
         }
         var preInit = function(){
-
+            
             init();
         }
     

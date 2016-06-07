@@ -88,8 +88,7 @@ exports.v1 = function(){
 		var options = {
             parentId : q.parentId,
 		    groupId:g,
-			count:100,
-            from : q.from
+            levels : q.levels ? 10 : q.levels 
 		};
         
         if(options.from == null ){
@@ -129,8 +128,8 @@ exports.v1 = function(){
                 
                 db.collection("assets").find(filter).toArray(function(err, data){
                     db.close();
-                    var hierarchy = buildTree(data);
-                    return cb(new models.success(data));
+                    var hierarchy = buildTree(data, parentId, options.levels);
+                    return cb(new models.success(hierarchy));
                 });
             });
         });
@@ -429,7 +428,18 @@ exports.v1 = function(){
                             
                         });
                     },
-                    
+                    // pathInfo : function (cb) {
+                    //     var allParents = [];
+                    //     result._paths.forEach(function(element) {
+                    //         var elements = element.split('/');
+                    //         allParents = _.union(allParents,elements);
+                    //     }, this);
+                        
+                    //     db.collection("assets").find({"_id": {$in : allParents } }).toArray(function(err, parents){
+                    //         //TODO
+                    //     });
+                        
+                    // }
                 },
                 function(err, results) {
                     retAsset.AssetType = results.assetType;
@@ -484,28 +494,56 @@ exports.v1 = function(){
         });
     }
     
-    function buildTree(data, rootId) {
+    function buildTree(data, rootId, levels) {
         //find the root
         //find the record with root id
+        if (levels == undefined || levels <1){
+            levels = 10;    
+        }
+        this.level = 0;
         
         var root = _.findWhere(data, {"_id": rootId});
-        if(root == null){
+        if(root == undefined){
             root = {
-                _id:rootId
+                Name : "root",
+                _id : rootId,
+                Description : "The autocreated root node"
             }
-        }    
+        }
+        root._childrenCount  = 0;
+        root.Children        = []
+        root._level          = this.level
         
-        
-        
-        
-        function findChildren (data, parentId){
+        function findChildren (data, node, level){
             var children = _(data).chain()
                         .pluck('ParentIds')
                         .flatten()
-                        .findWhere(parentId);
-            return children;
-        }
-        
+                        .where(node._id);
+            var children = [];
+            
+            data.forEach(function(d) {
+                var chNode = _.indexOf(d.ParentIds, node._id);
+                if(chNode >= 0){
+                    d._childrenCount  = 0;
+                    d.Children        = [];
+                    d._level          = level;
+                    children.push(d);
+                }
+            }, this);
+            
+            node.Children = children;
+            level++;
+            if(level < levels){
+                
+                node.Children.forEach(function (c) {
+                    c = findChildren(data,c, level)
+                })
+            }
+            return node;
+        };
+       
+        var node = findChildren(data,root, ++this.level);
+        return node;
     }
     
 };

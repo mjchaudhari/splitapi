@@ -274,7 +274,14 @@ Show the image as background to display: block;
     /* Internet Explorer */
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
-
+.left-triangle {
+  width: 0; 
+  height: 0; 
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; 
+  
+  border-right:10px solid blue; 
+}
 .hover-on-select:hover{
   background-color:bisque;
 }

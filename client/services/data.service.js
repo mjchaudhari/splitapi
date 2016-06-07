@@ -131,6 +131,33 @@ function($http,$q, $log, config, $timeout, CacheFactory){
     /**
     * @param data : {groupId: 1, members:"1,2,3" }
     **/
+    getAssetTree : function(filter){
+      var qryString = "";
+
+      if(filter.parentId)
+      {
+        if(qryString.length > 0){
+          qryString+="&";
+        }
+        qryString+="parentId="+filter.parentId
+      }
+      if(filter.levels)
+      {
+        if(qryString.length > 0){
+          qryString+="&";
+        }
+        qryString+="levels="+filter.levels
+      }
+      
+      var url = config.apiBaseUrl + "/v1/"+ filter.groupId +"/assets";
+      if(qryString.length > 0){
+        url+="?"+qryString;
+      }
+      return $http.get(url);
+    },
+    /**
+    * @param data : {groupId: 1, members:"1,2,3" }
+    **/
     getAsset : function(id){
       var url = config.apiBaseUrl + "/v1/asset?id="+id;
       

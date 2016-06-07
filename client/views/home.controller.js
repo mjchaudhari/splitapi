@@ -161,7 +161,7 @@
                     break;
                 }
                 case "Assets":{
-                    $state.go("home.group.assets", {"g":node.parentId});
+                    $state.go("home.group.assets", {"g":node.parentId, "p":node.parentId});
                     break;
                 }
                 case "Analytics":{

@@ -360,7 +360,7 @@ exports.v1 = function(){
                     return cb("Not found");
                 }
 
-                db.collection("users").findOne({"ProfileId":p._id}, function(err,a){
+                db.collection("users").findOne({"ProfileId":u._id}, function(err,a){
                     db.close();
                     a.User = u;
                     return cb(null, a);                 
