@@ -5,13 +5,12 @@
             <strong>Empower everybody</strong>
         </p>
         <p><img src="./content/images/cp.png" alt=""></p>
-        <p><small>Communication platform</small></p>
-        <div  layout="row">
+        <p><small>Communication platform v1</small></p>
+        <div ng-show="user!=null"  layout="row">
             <ez-thumb text="user.FirstName + ' ' + user.lastName" img="user.Picture"  thumbnail-class="'avatar'"> </ez-thumb>
             <span>{{user.FirstName + ' ' + user.lastName}}<span>
-        </div>
-        
+        </div>        
 
-        <md-button ng-click="startApp()" >Start!</md-button>
+        <md-button layout="column" layout-align="center" ng-click="startApp()" >Start!</md-button>
     </div>
 </div>

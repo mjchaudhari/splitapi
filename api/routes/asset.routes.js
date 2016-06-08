@@ -31,19 +31,20 @@ module.exports = function(dbConfig, auth,app) {
 		});
 	});
     /**
-     * @api {get} /v1/groupId/assets/hierarchy?parentId?levels? check if current user is member of this group
+     * @api {get} /v1/groupId/assets/hierarchy?p?levels?struture_only? check if current user is member of this group
      * @apiName Get assets
      * @apiGroup Asset
      * @apiParam {string} groupId - the group in which asset is created
      * @apiParam {string} parentId - the parant container Id in which the asset lies. OPTIONAL
      * @apiParam {int} levels - count of the levels to be etched OPTIONAL defaults to 0 for all levels
+     * @apiParam {bool} structure_only - gets only collection hierarchy. Default to false.
      * 
 	 * @apiHeaderExample {json} Header-Example:
 	 *     {
 	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
 	 *     }      
      *
-     * @apiSuccess {boolean} true if user is member of given group 
+     * @apiSuccess {object} asset tree node 
     */
     app.get('/v1/:groupId/assets/hierarchy', auth.isBearerAuth, function(req, res) {
         

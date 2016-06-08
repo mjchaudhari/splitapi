@@ -80,7 +80,7 @@ exports.v1 = function(){
     /** Gets the assets of given group if the current user is member of this group
      * 
     */     
-    this.getAssetHierarchy =function(req, cb)
+    this.getAssetTree =function(req, cb)
     {
         var u = req.user.User;         
         var q = req.query;
@@ -88,7 +88,8 @@ exports.v1 = function(){
 		var options = {
             parentId : q.parentId,
 		    groupId:g,
-            levels : q.levels ? 10 : q.levels 
+            levels : q.levels ? 10 : q.levels,
+            structure_only: q.level ? true : false 
 		};
         
         if(options.from == null ){
@@ -118,6 +119,9 @@ exports.v1 = function(){
                 var filter = {
                     "GroupId": options.groupId,
                     "AuditTrail.UpdatedOn" : {"$gte": options.from},
+                }
+                if(structure_only){
+                    filter.AssetTypeId = "type_collection"
                 }
                 
                 //return assetsas per criteria
