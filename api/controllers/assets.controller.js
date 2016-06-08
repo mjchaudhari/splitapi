@@ -89,7 +89,7 @@ exports.v1 = function(){
             parentId : q.parentId,
 		    groupId:g,
             levels : q.levels ? 10 : q.levels,
-            structure_only: q.level ? true : false 
+            structure_only: q.structure_only = "true" ? true : false 
 		};
         
         if(options.from == null ){
@@ -120,7 +120,7 @@ exports.v1 = function(){
                     "GroupId": options.groupId,
                     "AuditTrail.UpdatedOn" : {"$gte": options.from},
                 }
-                if(structure_only){
+                if(options.structure_only){
                     filter.AssetTypeId = "type_collection"
                 }
                 

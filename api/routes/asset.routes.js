@@ -48,7 +48,7 @@ module.exports = function(dbConfig, auth,app) {
     */
     app.get('/v1/:groupId/assets/hierarchy', auth.isBearerAuth, function(req, res) {
         
-		v1.getAssetHierarchy(req, function (d){
+		v1.getAssetTree(req, function (d){
 			if(d.isError){
 				res.status(400).send(d);
 				return;
