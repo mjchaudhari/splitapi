@@ -2,11 +2,8 @@
     <md-toolbar class=""  >
 		  <div class="md-toolbar-tools">
             <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
-            <span>{{group.Name}}</span>
+            <span>{{group.Name}} < {{parent.Name}}</span>
             
-            <a ng-click="goBack()">
-                <div class="left-triangle"></div>
-            </a>
             <div flex></div>
 		  </div>
     </md-toolbar>

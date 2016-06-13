@@ -64,6 +64,7 @@ exports.v1 = function(){
                 var filter = {
                     "GroupId": options.groupId,
                     "AuditTrail.UpdatedOn" : {"$gte": options.from},
+                    "Accessibility": {$or : [ null, [{ $in: [u._id] }]]}
                 }
                 
                 //return assetsas per criteria
@@ -86,7 +87,7 @@ exports.v1 = function(){
         var q = req.query;
         var g = req.params.groupId;
 		var options = {
-            parentId : q.parentId,
+            parentId : q.p,
 		    groupId:g,
             levels : q.levels ? 10 : q.levels,
             structure_only: q.structure_only = "true" ? true : false 
@@ -128,10 +129,23 @@ exports.v1 = function(){
                 //var parentMatch = "/" + parentId + "/$";
                 //var filter = {'Path': {'$regex': '/' + parentMatch + '/'}};
                 //{Paths: {$in : [/V1WC-H7_e/,/V1WC-H7_e$/,]}}
-                filter._paths = {$in : [new RegExp('/' + parentId + '/'), new RegExp('/' + parentId + '$')]};
+                //filter.Accessibility = {$or : [{"CreateBy":u._id}, {"Accessibility" : {$or : [ null, [{ $in: [u._id] }]]}}]} ;
+                var AccessibilityExpr = {"$or": [
+                    {"CreateBy":u._id}, 
+                    {"Accessibility" : null}, {"Accessibility" : { $in: [u._id] }}]};
+                var pathsExpr = {"$or" : [
+                    {"_id" : parentId}, 
+                    { "_paths" : {$in : [new RegExp('/' + parentId + '/'), new RegExp('/' + parentId + '$')]}}
+                ]};
+                
+                filter["$and"] = [AccessibilityExpr, pathsExpr ];
                 
                 db.collection("assets").find(filter).toArray(function(err, data){
                     db.close();
+                    if(err){      
+                        return cb(err);
+                    }
+                    
                     var hierarchy = buildTree(data, parentId, options.levels);
                     return cb(new models.success(hierarchy));
                 });
@@ -286,7 +300,7 @@ exports.v1 = function(){
         a.AlloudTypes   = data.AllowedTypes;
         a.UpdatedOn     = new Date();
         a.UpdatedById   = currentUser._id; 
-        
+        a.Accessibility = data.accessibility;
         if (data.AssetType != null){
             a.AssetTypeId = data.AssetType._id;
         }
@@ -511,7 +525,8 @@ exports.v1 = function(){
             root = {
                 Name : "root",
                 _id : rootId,
-                Description : "The autocreated root node"
+                Description : "The autocreated root node",
+                
             }
         }
         root._childrenCount  = 0;
@@ -531,6 +546,9 @@ exports.v1 = function(){
                     d._childrenCount  = 0;
                     d.Children        = [];
                     d._level          = level;
+                    if(d._parents == undefined){
+                        d._parents = [];
+                    }            
                     children.push(d);
                 }
             }, this);

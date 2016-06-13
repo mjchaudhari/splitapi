@@ -139,7 +139,7 @@ function($http,$q, $log, config, $timeout, CacheFactory){
         if(qryString.length > 0){
           qryString+="&";
         }
-        qryString+="parentId="+filter.parentId
+        qryString+="p="+filter.parentId
       }
       if(filter.levels)
       {
@@ -149,7 +149,7 @@ function($http,$q, $log, config, $timeout, CacheFactory){
         qryString+="levels="+filter.levels
       }
       
-      var url = config.apiBaseUrl + "/v1/"+ filter.groupId +"/assets";
+      var url = config.apiBaseUrl + "/v1/"+ filter.groupId +"/asset/hierarchy";
       if(qryString.length > 0){
         url+="?"+qryString;
       }

@@ -14,6 +14,7 @@
         $scope.parentId = $stateParams.p;
         $scope.breadcrumb = [];
         $scope.promices = {};
+        $scope.parent = null;
         $scope.assets = [];
         $scope.searchText ="";
         $scope.searchResult = [];
@@ -151,9 +152,12 @@
         };
         function getAssets (){
             
-            $scope.promices.assetList = dataService.getAssets($scope.filter)
+            $scope.promices.assetList = dataService.getAssetTree($scope.filter)
             .then(function(d){
-                angular.copy(d.data.data, $scope.assets);
+                $scope.parent = d.data.data;
+                $scope.breadcrumb = [d.data.data];
+                
+                angular.copy(d.data.data.Children, $scope.assets);
                 
             },
             function(e){
