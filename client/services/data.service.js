@@ -141,12 +141,21 @@ function($http,$q, $log, config, $timeout, CacheFactory){
         }
         qryString+="p="+filter.parentId
       }
+      
       if(filter.levels)
       {
         if(qryString.length > 0){
           qryString+="&";
         }
         qryString+="levels="+filter.levels
+      }
+      
+      if(filter.structureOnly)
+      {
+        if(qryString.length > 0){
+          qryString+="&";
+        }
+        qryString+="structure_only=true"; 
       }
       
       var url = config.apiBaseUrl + "/v1/"+ filter.groupId +"/asset/hierarchy";

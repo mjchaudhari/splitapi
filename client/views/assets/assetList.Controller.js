@@ -16,6 +16,11 @@
         $scope.promices = {};
         $scope.parent = null;
         $scope.assets = [];
+        
+        $scope.hierarchy = null;
+        $scope.selectedNode = null;
+        $scope.nodeParentTrail = null;
+
         $scope.searchText ="";
         $scope.searchResult = [];
         
@@ -26,6 +31,12 @@
             parentId:$scope.parentId,
             count:null,
             from:null
+        };
+
+        $scope.hierarchyTreeOptions = {
+            idAttrib        : "_id",
+            nameAttrib      : "Name",
+            childrenAttrib  : "Children"
         };
 
         function showSimpleToast (message) {
@@ -97,12 +108,30 @@
                 })
                 .then(function(result) {
                     $mdToast.show(
-                            $mdToast.simple()
-                            .textContent("Done")
-                            .position('top right')
-                            .hideDelay(1500)
-                        );
-                    });
+                        $mdToast.simple()
+                        .textContent("Done")
+                        .position('top right')
+                        .hideDelay(1500)
+                    );
+                    //Update the folder in tree
+                    var asset = result.data.data;
+                    if(asset.AssetTypeId == "type_collection"){
+                        getAssetHierarchy();
+                    }
+                    init();
+                    $state.transitionTo("home.group.assets",{"g":$scope.groupId, "p" : $scope.parentId}, {"notify":false});
+                    
+                });
+        }
+
+        $scope.onAssetSelected = function(node){
+            
+            $scope.selectedAsset = node;
+            $scope.parentId = node._id;
+            $scope.filter.parentId = node._id;
+            init();
+
+            $state.transitionTo("home.group.assets",{"g":$scope.groupId, "p" : $scope.parentId}, {"notify":false});
         }
         
         $scope.onRowSelected = function (asset){
@@ -122,7 +151,36 @@
                 $log.debug('open in viewer');
             }
         }
-
+        $scope.createNewAsset = function(type,$event){
+            var params = {
+                    //assetId: a._id,
+                    groupId : $scope.groupId,
+                    parentId: $scope.ParentId,
+                    assetType: type
+            };
+            $mdBottomSheet.show({
+                templateUrl: './views/assets/asset.edit.html',
+                controller: 'assetEditController',
+                clickOutsideToClose: false,
+                locals: {params}
+            })
+            .then(function(clickedItem) {
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent('clicked!')
+                    .position('top right')
+                    .hideDelay(1500)
+                );
+                //Update the folder in tree
+                var asset = result.data.data;
+                if(asset.AssetTypeId == "type_collection"){
+                    getAssetHierarchy();
+                }
+                init();
+                $state.transitionTo("home.group.assets",{"g":$scope.groupId, "p" : $scope.parentId}, {"notify":false});
+                
+            });
+        }
         function determineSelectAll(){
             var selected = _.where($scope.assets,{"__isSelected":true});
             $scope.isAllChecked = selected.length === $scope.assets.length;
@@ -136,18 +194,28 @@
 
         }
         var preInit = function(){
-            
-            init();
-        }
-    
-        var init = function(){
-            var tasks = [];
-            tasks.push(getAssets());
+               var tasks = [];
+            tasks.push(getAssetHierarchy());
             $q.all([
                 tasks
             ])
             .then(function(){
+                init();      
                 
+            });
+            
+        }
+    
+        var init = function(){
+            var tasks = [];
+            tasks.push(getAssets());  
+            
+            $q.all([
+                tasks
+            ])
+            .then(function(){
+                  //set selectedNode
+                  
             });
         };
         function getAssets (){
@@ -156,14 +224,42 @@
             .then(function(d){
                 $scope.parent = d.data.data;
                 $scope.breadcrumb = [d.data.data];
+                setParent($scope.parentId);
+                angular.copy(d.data.data.Children, $scope.assets);                
+            },
+            function(e){
+            });
+            return $scope.promices.assetList;
+        }
+
+        function getAssetHierarchy(){
+            
+            var filter = {
+                parentId : $scope.filter.groupId,
+                groupId : $scope.filter.groupId,
+                structureOnly : true
+            }
+            $scope.promices.hierarchy = dataService.getAssetTree(filter)
+            .then(function(d){
+                $scope.parent = d.data.data;
+                $scope.breadcrumb = [d.data.data];
+                $scope.hierarchy = angular.copy(d.data.data);   
                 
-                angular.copy(d.data.data.Children, $scope.assets);
-                
+                //setTree($scope.parent._id);
             },
             function(e){
 
             });
-            return $scope.promices.assetList;
+            return $scope.promices.hierarchy;
+        }
+
+        function setParent(parentId){
+            //Select node from tree t highlight
+            _hlp.treeWalker($scope.hierarchy, function(n){
+                if(n && n ._id == parentId){
+                    $scope.selectedNode = n;
+                }
+            });
         }
 
         preInit();

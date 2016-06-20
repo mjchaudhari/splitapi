@@ -2,68 +2,147 @@
     <md-toolbar class=""  >
 		  <div class="md-toolbar-tools">
             <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
-            <span>{{group.Name}} < {{parent.Name}}</span>
-            
+            <span>{{group.Name}}</span>
+            <div>
+                <span ng-repeat="b in nodeParentTrail">    
+                    <span ng-if="$index > 0"><</span>
+                    <md-button ng-click="onAssetSelected(b)" class="md-accent">{{b.Name}}</md-button>
+                </span>
+            </div>
             <div flex></div>
 		  </div>
     </md-toolbar>
     <!--<md-button class="md-fab md-fab-top-right" aria-label="Add" ng-click="createAsset()">
         <ng-md-icon icon="add"></ng-md-icon>
     </md-button>-->
-    <div layout-padding>
-        <div class="table">
-            <div class="table-row" layout="row" >
-                <div class="table-cell" flex="5">
-                    <md-checkbox aria-label="Select All"
-                                    ng-model="isAllChecked"
-                                    ng-change="selectAllChecked()"
-                                    md-indeterminate>
-                    </md-checkbox>
-                </div>
-                <div class="table-cell" flex="5">
-                    <!--thumb-->
-                </div>
-                <div class="table-cell" flex="50"><h4>Name</h4></div>
-                <div class="table-cell" flex="15"><h4>Created By</h4></div>
-                <div class="table-cell" flex="10"><h4>Updated On</h4></div>
-                <div class="table-cell" flex="15"><h4>Actions</h4></div>
+    <div layout-padding layout="row">
+        
+        <div layout="column" flex="30">
+            <md-menu>
+                <md-button class="md-raised md-accent" ng-click="$mdOpenMenu($event)">Create...</md-button>
+                <md-menu-content>
+                            
+                            
+                    <md-button ng-click="createNewAsset('type_collection', $event)">
+                        <div layout="row" layout-align="left center">
+                            <i class="material-icons">collections_bookmark</i>
+                            Topic
+                        </div>
+                    </md-button>
+                    <md-menu-item>
+                        <md-button ng-click="createNewAsset('type_document',$event)">
+                            <div layout="row" layout-align="left center">
+                                <i class="material-icons">message</i>
+                                    Message/Document
+                            </div>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="createNewAsset('type_task', $event)">
+                            <div layout="row" layout-align="left center">
+                                <i class="material-icons">notifications_active</i>
+                                    Work Item
+                            </div>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="createNewAsset('type_form' ,$event)">
+                            <div layout="row" layout-align="left center">
+                                <i class="material-icons">assignment</i>
+                                    Form
+                            </div>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="createNewAsset('type_calendar', $event)">
+                            <div layout="row" layout-align="left center">
+                                <i class="material-icons">event</i>
+                                    Calendar Event
+                            </div>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="createNewAsset('type_demand', $event)">
+                            <div layout="row" layout-align="left center">
+                                <i class="material-icons">assignment_turned_in</i>
+                                    Deamad/Requst
+                            </div>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="createNewAsset('type_transaction', $event)">
+                            <div layout="row" layout-align="left center">
+                                <i class="material-icons">attach_money</i>
+                                    Transaction
+                            </div>
+                        </md-button>
+                    </md-menu-item>
+                            
+                </md-menu-content>
+            </md-menu>    
+            <div ez-tree selected-nodes="selectedNode" 
+                parent-trail="nodeParentTrail" options="hierarchyTreeOptions"
+                allow-multi-select="false" tree="hierarchy" on-select="onAssetSelected">
+                tree div
             </div>
+            <!--<ezTree tree="menu" options="options" selected-nodes="selectedMenu"
+                    on-select="onMenuSelect(n)"></ezTree>-->
         </div>
-
-        <md-content class="transperent-bg" flex layout layout-align="center" style="height:60vh;">
-            <div layout="column" class="table">
-                <div ng-dblclick="onRowSelected(asset)" class="table-row hover-on-select" layout="row" ng-repeat="asset in assets"  >
+        <div layout="column" flex="70">
+            <div class="table">
+                <div class="table-row" layout="row" >
                     <div class="table-cell" flex="5">
-                        <md-checkbox aria-label="Select" ng-checked="asset.__isSelected" ng-click="toggle(asset)">
+                        <md-checkbox aria-label="Select All"
+                                        ng-model="isAllChecked"
+                                        ng-change="selectAllChecked()"
+                                        md-indeterminate>
                         </md-checkbox>
-                        <span>{{$index + 1}}</span>
-                        
                     </div>
-                    <div class="table-cell" flex="5" layout="row" >
-                        <!--<ez-thumb img="asset.Thumbnail" text="asset.Name"></ez-thumb>-->
-                        <span ng-click="onRowSelected(asset)" class="material-icons-lg" data-ng-class="asset.AssetTypeId"></span>
+                    <div class="table-cell" flex="5">
+                        <!--thumb-->
                     </div>
-                    
-                    <div  class="table-cell" flex="50" layout="column" >
-                        <span>
-                        {{asset.Name}}</span>
-                    </div>
-                    <div class="table-cell" flex="15">{{asset.CreatedBy.Name}}</div>
-                    <div class="table-cell" flex="10">
-                        <time title="{{ asset.UpdatedOn | amDateFormat: 'dddd, Do MMM YYYY, h:mm a' }}">
-                            <span>{{ asset.UpdatedOn | amCalendar }}</span>
-                        </time>
-                    </div>
-                    <div class="table-cell" flex="15">
-                        <md-button class="md-icon-button" aria-label="view" ng-click="view(asset)">
-                                <i class="material-icons">view</i>
-                        </md-button>
-                        <md-button class="md-icon-button" aria-label="edit" ng-click="edit(asset)">
-                                <i class="material-icons">edit</i>
-                        </md-button>
-                    </div>
+                    <div class="table-cell" flex="50"><h4>Name</h4></div>
+                    <div class="table-cell" flex="15"><h4>Created By</h4></div>
+                    <div class="table-cell" flex="10"><h4>Updated On</h4></div>
+                    <div class="table-cell" flex="15"><h4>Actions</h4></div>
                 </div>
             </div>
-        </md-content>
+
+            <md-content class="transperent-bg" flex layout layout-align="center" style="height:60vh;">
+                <div layout="column" class="table">
+                    <div ng-dblclick="onRowSelected(asset)" class="table-row hover-on-select" layout="row" ng-repeat="asset in assets"  >
+                        <div class="table-cell" flex="5">
+                            <md-checkbox aria-label="Select" ng-checked="asset.__isSelected" ng-click="toggle(asset)">
+                            </md-checkbox>
+                            <span>{{$index + 1}}</span>
+
+                        </div>
+                        <div class="table-cell" flex="5" layout="row" >
+                            <!--<ez-thumb img="asset.Thumbnail" text="asset.Name"></ez-thumb>-->
+                            <span ng-click="onRowSelected(asset)" class="material-icons-lg" data-ng-class="asset.AssetTypeId"></span>
+                        </div>
+
+                        <div  class="table-cell" flex="50" layout="column" >
+                            <span>
+                            {{asset.Name}}</span>
+                        </div>
+                        <div class="table-cell" flex="15">{{asset.CreatedBy.Name}}</div>
+                        <div class="table-cell" flex="10">
+                            <time title="{{ asset.UpdatedOn | amDateFormat: 'dddd, Do MMM YYYY, h:mm a' }}">
+                                <span>{{ asset.UpdatedOn | amCalendar }}</span>
+                            </time>
+                        </div>
+                        <div class="table-cell" flex="15">
+                            <md-button class="md-icon-button" aria-label="view" ng-click="view(asset)">
+                                    <i class="material-icons">view</i>
+                            </md-button>
+                            <md-button class="md-icon-button" aria-label="edit" ng-click="edit(asset)">
+                                    <i class="material-icons">edit</i>
+                            </md-button>
+                        </div>
+                    </div>
+                </div>
+            </md-content>
+        </div>
     </div>            
 </div>

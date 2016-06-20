@@ -115,10 +115,11 @@ Show the image as background to display: block;
     animation: rotating 2s infinite linear;
 }
 
-.icon-blank::before{
-      width: .7em; content: " ";    
+.icon-spacer::before,
+.icon-blank::before {
+  width: 1em;
+  content: ' ';
 }
-
 .thumbnail-card{
   border: 1px solid silver;
   height: 110px;

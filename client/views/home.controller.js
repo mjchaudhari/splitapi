@@ -172,29 +172,7 @@
             
         }
         
-        $scope.createNewAsset = function(type,$event){
-            var params = {
-                    //assetId: a._id,
-                    groupId : $stateParams.g,
-                    parentId: $stateParams.p,
-                    assetType: type
-
-            };
-            $mdBottomSheet.show({
-                templateUrl: './views/assets/asset.edit.html',
-                controller: 'assetEditController',
-                clickOutsideToClose: false,
-                locals: {params}
-            })
-            .then(function(clickedItem) {
-                $mdToast.show(
-                        $mdToast.simple()
-                        .textContent(' clicked!')
-                        .position('top right')
-                        .hideDelay(1500)
-                    );
-                });
-        }
+        
         
         var preInit = function(){
             var tasks = [];

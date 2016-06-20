@@ -48,19 +48,18 @@
               '<div style="width:100%;"  layout="row" layout-align="left center ">',
                 '<span ng-style=\"{\'margin-left\':levelMargin * n.__level + \'px\'}\" >',
                   
-                  '<span ng-if="!n.__isLeaf && !n.__isExpanded"  >',
-                    
+                  '<span ng-if="!n.__isLeaf && !n.__isExpanded"  >',                    
                     '<span ng-if="n.__hasChildren" ng-click="toggleNodeVisibility(n,$event)" style="margine-right:2px;" class="handCursor tree-toggler  tree-toggler-right glyphicon glyphicon-chevron-right"> <i class="material-icons">play_arrow</i></span>',
-                    '<span ng-if="!n.__hasChildren" class="handCursor tree-toggler tree-toggler-right  icon-blank"></span>',
+                    '<span ng-if="!n.__hasChildren" class="icon-spacer" style="padding-right:{{levelMargin}}px"></span>',
                     '<span ng-click="toggleSelection(n,$event)" class="handCursor mdi-file-folder mdi-action-view-module glyphicon glyphicon-folder-close"><i class="material-icons">{{n.icon || "folder"}}</i> </span>',
                   '</span>',
                   '<span ng-if="!n.__isLeaf && n.__isExpanded"  >',
                     '<span  ng-if="n.__hasChildren" ng-click="toggleNodeVisibility(n,$event)" style="margine-right:2px;" class="handCursor tree-toggler tree-toggler-down glyphicon glyphicon-chevron-down"><i class="material-icons rotate-270">play_arrow</i></span>',
-                    '<span ng-if="!n.__hasChildren" style="margin-right:2px;" class="handCursor tree-toggler tree-toggler-right  icon-blank"></span>',
+                    '<span ng-if="!n.__hasChildren" style="margin-right:2px; padding-right:{{levelMargin}}px" class="handCursor tree-toggler tree-toggler-right  icon-spacer"></span>',
                     '<span ng-click="toggleSelection(n,$event)" class="handCursor mdi-file-folder-open mdi-action-view-module glyphicon glyphicon-folder-open"><i class="material-icons">{{n.icon || "folder"}}</i></span>',
                   '</span>',
                   '<span ng-if="n.__isLeaf"  >',
-                    '<span class="handCursor tree-toggler tree-toggler-right icon-blank " ng-style="{\'margin-left\': levelMargin}"></span>',
+                    '<span class="handCursor tree-toggler tree-toggler-right icon-spacer " ng-style="{\'margin-left\': levelMargin}"></span>',
                     '<span ng-click="toggleSelection(n,$event)" class="handCursor mdi-file mdi-action-view-module glyphicon glyphicon-file"><i class="material-icons">{{n.icon||"description"}}</i></span>',
                   '</span>',
                 '</span> ',
@@ -247,6 +246,8 @@
           var expandTo = function(node){
             var parents = getParentTrail(node);
             node.__isHidden = false;
+            $scope.parentTrail = parents.reverse();
+            $scope.parentTrail.push(node);
             parents.forEach(function(p){
                 expand(p);
             });
@@ -343,7 +344,7 @@
               {
                   init();
               }
-          });
+          }, true);
           $scope.$watch('parentTrail', function(newValue, oldValue){
               if(newValue == oldValue)
               {
@@ -358,20 +359,22 @@
               if(angular.isArray(newValue) ){
 
               
-                      for(var i=0;i<newValue.length;i++){
-                              if(newValue[i][options.idAttrib])
-                              {
-                                      var val = newValue[i][options.idAttrib];
-                                      if(val){
-                                        ids.push(val.toString());
-                                      }
+                    for(var i=0;i<newValue.length;i++){
+                        if(newValue[i][options.idAttrib])
+                        {
+                              var val = newValue[i][options.idAttrib];
+                              if(val){
+                                ids.push(val.toString());
                               }
-                      }
+                        }
+                    }
+                   
               }
               else {
                       var val = newValue[options.idAttrib];
                       if(val){
                         ids.push(val.toString());
+                         
                       }
               }
               
