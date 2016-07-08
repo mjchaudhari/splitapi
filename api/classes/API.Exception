@@ -1,0 +1,7 @@
+var API = API || {}
+
+API.ApiException = function(message, source) {
+   this.message = message;
+   this.source = source;
+   this.name = "APIException";
+}

@@ -1,7 +1,11 @@
 
 //User routes
+var mongodb = require('mongodb');
+var mongo = mongodb.MongoClient;
+
 var userCtrl = require("./../controllers/account.controller.js");
 var models = require("./../response.models.js").models;
+var user = require("./../classes/API.User.js");
 var _dir = process.cwd();
 
 module.exports = function(dbConfig, auth, app) {
@@ -188,5 +192,14 @@ module.exports = function(dbConfig, auth, app) {
 			return next();
 		res.redirect('/');
 	};
-	
+
+	app.get("/v1/user/:username?", function(req, res){
+		var u = new user(mongo, dbConfig);
+		u.init(req.params.username, function(err, data){
+			if(err){
+				res.json(new models.error(err));
+			}
+			res.json(new models.success());
+		});
+	})
 }

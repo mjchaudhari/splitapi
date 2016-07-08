@@ -4,9 +4,9 @@
     angular.module("app")
     .controller("assetLstController",assetLstController);
     
-    assetLstController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state", "$stateParams" ,"dataService", "config","authService","$mdConstant","$mdToast", "$mdBottomSheet"];
+    assetLstController.$inject = ["$scope", "$rootScope", "$log", "$q", "$localStorage", "$state", "$stateParams" ,"dataService", "config","authService","$mdConstant","$mdToast", "$mdDialog", "$mdBottomSheet"];
     
-    function assetLstController($scope, $rootScope,  $log, $q, $localStorage, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast, $mdBottomSheet ){
+    function assetLstController($scope, $rootScope,  $log, $q, $localStorage, $state, $stateParams, dataService, config, authService, $mdConstant, $mdToast, $mdDialog, $mdBottomSheet ){
         
         //bindable mumbers
         $scope.title = "Assets Crtl";
@@ -71,57 +71,49 @@
             });        
         };
         
-        $scope.createAsset = function($event){
-            // var parentEl = angular.element(document.body);
-            // var params = {
-            //         id: 0,
-            //         groupId : $scope.groupId,
-            //         parentId:$scope.parentId
-            //     };
-            // $mdDialog.show({
-            //     parent: parentEl,
-            //     targetEvent: $event,
-            //     templateUrl:"./views/groups/asset.edit.html",
-            //     fullscreen:true,
-            //     locals: {params},
-            //     controller: 'assetEditController'
-            // })
-            
-        }
-        
-        $scope.view = function(a){
-            $mdBottomSheet.hide();    
-        }
         
         $scope.edit = function(a,assetType){
+            var assetId = a == null ? undefined : a._id;
+            var assetType = a == null ? assetType : a.AssetTypeId;
+            var groupId = a == null ? $scope.groupId : a.GroupId;
+            var parentId = a == null ? $scope.parentId :a.ParentId;
+ 
+            $state.transitionTo("home.group.asset",{"g":$scope.groupId,"p" : $scope.parentId,"type":assetType,"a":assetId, });
+            
+        }
+        $scope.qedit = function(a,assetType){
+                var assetId = a == null ? undefined : a._id;
             var params = {
-                    assetId: a._id,
+                    assetId: assetId,
                     groupId : a.GroupId,
                     parentId:a.ParentId,
                     assetType : assetType
                 };
-            $mdBottomSheet.show({
+            $mdDialog.show({
                 templateUrl: './views/assets/asset.edit.html',
                 controller: 'assetEditController',
-                clickOutsideToClose: false,
-                locals  : {params}
-                })
-                .then(function(result) {
-                    $mdToast.show(
-                        $mdToast.simple()
-                        .textContent("Done")
-                        .position('top right')
-                        .hideDelay(1500)
-                    );
-                    //Update the folder in tree
-                    var asset = result.data.data;
-                    if(asset.AssetTypeId == "type_collection"){
-                        getAssetHierarchy();
-                    }
-                    init();
-                    $state.transitionTo("home.group.assets",{"g":$scope.groupId, "p" : $scope.parentId}, {"notify":false});
-                    
-                });
+                locals: {params},
+                clickOutsideToClose:true,
+                fullscreen : true
+            })
+            .then(function(result) {
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent('Saved!')
+                    .position('top right')
+                    .hideDelay(1500)
+                );
+                //Update the folder in tree
+                var asset = result; //result.data.data;
+                if(asset.AssetTypeId == "type_collection"){
+                    getAssetHierarchy();
+                }
+                init();
+                $state.transitionTo("home.group.assets",{"g":$scope.groupId, "p" : $scope.parentId}, {"notify":false});
+                
+            }, function() {
+                $scope.status = 'You cancelled the dialog.';
+            });
         }
 
         $scope.onAssetSelected = function(node){
@@ -151,36 +143,8 @@
                 $log.debug('open in viewer');
             }
         }
-        $scope.createNewAsset = function(type,$event){
-            var params = {
-                    //assetId: a._id,
-                    groupId : $scope.groupId,
-                    parentId: $scope.ParentId,
-                    assetType: type
-            };
-            $mdBottomSheet.show({
-                templateUrl: './views/assets/asset.edit.html',
-                controller: 'assetEditController',
-                clickOutsideToClose: false,
-                locals: {params}
-            })
-            .then(function(clickedItem) {
-                $mdToast.show(
-                    $mdToast.simple()
-                    .textContent('clicked!')
-                    .position('top right')
-                    .hideDelay(1500)
-                );
-                //Update the folder in tree
-                var asset = result.data.data;
-                if(asset.AssetTypeId == "type_collection"){
-                    getAssetHierarchy();
-                }
-                init();
-                $state.transitionTo("home.group.assets",{"g":$scope.groupId, "p" : $scope.parentId}, {"notify":false});
-                
-            });
-        }
+
+        
         function determineSelectAll(){
             var selected = _.where($scope.assets,{"__isSelected":true});
             $scope.isAllChecked = selected.length === $scope.assets.length;
@@ -219,7 +183,7 @@
             });
         };
         function getAssets (){
-            
+            $scope.filter.structureOnly = false;
             $scope.promices.assetList = dataService.getAssetTree($scope.filter)
             .then(function(d){
                 $scope.parent = d.data.data;

@@ -1,20 +1,19 @@
 <div cg-busy="promices.assetList" ng-controller="assetLstController" cg-busy="promices.groupDetail" >
-    <md-toolbar class=""  >
-		  <div class="md-toolbar-tools">
-            <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
-            <span>{{group.Name}}</span>
-            <div>
-                <span ng-repeat="b in nodeParentTrail">    
-                    <span ng-if="$index > 0"><</span>
-                    <md-button ng-click="onAssetSelected(b)" class="md-accent">{{b.Name}}</md-button>
-                </span>
-            </div>
-            <div flex></div>
-		  </div>
-    </md-toolbar>
+  
     <!--<md-button class="md-fab md-fab-top-right" aria-label="Add" ng-click="createAsset()">
         <ng-md-icon icon="add"></ng-md-icon>
     </md-button>-->
+    <div layout ="row">
+        <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
+        <span>{{group.Name}}</span>
+        <div>
+            <span ng-repeat="b in nodeParentTrail">    
+                <span ng-if="$index > 0"><</span>
+                <md-button ng-click="onAssetSelected(b)" class="md-accent">{{b.Name}}</md-button>
+            </span>
+        </div>
+        <div flex></div>
+      </div>
     <div layout-padding layout="row">
         
         <div layout="column" flex="30">
@@ -23,14 +22,14 @@
                 <md-menu-content>
                             
                             
-                    <md-button ng-click="createNewAsset('type_collection', $event)">
+                    <md-button ng-click="edit(null,'type_collection', $event)">
                         <div layout="row" layout-align="left center">
                             <i class="material-icons">collections_bookmark</i>
                             Topic
                         </div>
                     </md-button>
                     <md-menu-item>
-                        <md-button ng-click="createNewAsset('type_document',$event)">
+                        <md-button ng-click="edit(null, 'type_document',$event)">
                             <div layout="row" layout-align="left center">
                                 <i class="material-icons">message</i>
                                     Message/Document
@@ -38,7 +37,7 @@
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="createNewAsset('type_task', $event)">
+                        <md-button ng-click="edit(null, 'type_task', $event)">
                             <div layout="row" layout-align="left center">
                                 <i class="material-icons">notifications_active</i>
                                     Work Item
@@ -46,7 +45,7 @@
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="createNewAsset('type_form' ,$event)">
+                        <md-button ng-click="edit(null, 'type_form' ,$event)">
                             <div layout="row" layout-align="left center">
                                 <i class="material-icons">assignment</i>
                                     Form
@@ -54,7 +53,7 @@
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="createNewAsset('type_calendar', $event)">
+                        <md-button ng-click="edit(null, 'type_calendar', $event)">
                             <div layout="row" layout-align="left center">
                                 <i class="material-icons">event</i>
                                     Calendar Event
@@ -62,7 +61,7 @@
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="createNewAsset('type_demand', $event)">
+                        <md-button ng-click="edit(null, 'type_demand', $event)">
                             <div layout="row" layout-align="left center">
                                 <i class="material-icons">assignment_turned_in</i>
                                     Deamad/Requst
@@ -70,7 +69,7 @@
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="createNewAsset('type_transaction', $event)">
+                        <md-button ng-click="edit(null, 'type_transaction', $event)">
                             <div layout="row" layout-align="left center">
                                 <i class="material-icons">attach_money</i>
                                     Transaction

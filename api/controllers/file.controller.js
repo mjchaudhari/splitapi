@@ -1,6 +1,7 @@
 var path = require("path");
 var fs = require('fs-extra'); 
 var azureStorage = require("../azureStorageHelper.js")();
+var gDrive = require("../googleDriveHelper.js")();
 var shortid	= require("shortid");
 
 var tmpUploadFolder = path.normalize(__dirname + "/../../tmpStore");
@@ -64,4 +65,18 @@ exports.uploadToAzureStorage = function(container, filePath, callback){
         }
         callback(err,result);
     });
+}
+
+exports.uploadToGoogleDrive = function(container,filePath, callback){
+    var fileName = path.basename(filePath);
+    var file;
+    var options = {
+        resource:file,
+        media:{
+            mimeType:"",
+            body:null,
+        }
+        
+    }
+    gDrive.upload()
 }

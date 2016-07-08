@@ -1,4 +1,47 @@
 
+.layout-padding,
+.layout-padding-gt-sm,
+.layout-padding-md,
+.layout-padding > *,
+.layout-padding-gt-sm > *,
+.layout-padding-md > *,
+.layout-padding > .flex,
+.layout-padding > .flex-gt-sm,
+.layout-padding > .flex-md {
+  padding: 4px; }
+
+.layout-padding-gt-md > *,
+.layout-padding-lg > *,
+.layout-padding-gt-lg > *,
+.layout-padding > .flex-gt-md,
+.layout-padding > .flex-lg,
+.layout-padding > .flex-lg,
+.layout-padding > .flex-gt-lg {
+  padding: 8px; }
+
+.layout-margin-sm > *,
+.layout-margin > .flex-sm {
+  margin: 4px; }
+
+.layout-margin,
+.layout-margin-gt-sm,
+.layout-margin-md,
+.layout-margin > *,
+.layout-margin-gt-sm > *,
+.layout-margin-md > *,
+.layout-margin > .flex,
+.layout-margin > .flex-gt-sm,
+.layout-margin > .flex-md {
+  margin: 4px; }
+
+.layout-margin-gt-md > *,
+.layout-margin-lg > *,
+.layout-margin-gt-lg > *,
+.layout-margin > .flex-gt-md,
+.layout-margin > .flex-lg,
+.layout-margin > .flex-gt-lg {
+  margin: 8px; }
+
 
 .body-bg-landing{
     background-image: url(images/bg-3-min.jpg);
@@ -72,7 +115,7 @@ Show the image as background to display: block;
 }
  
 .transperent-bg{
-  /*background-color: transparent !important;*/
+  background-color: transparent !important;
 }
 
 .height-100{
@@ -212,7 +255,16 @@ Show the image as background to display: block;
   height: 250px;
   overflow: hidden; }
 
-
+.md-datepicker-input {
+    font-size: 14px;
+    box-sizing: border-box;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    background: transparent !important;
+    min-width: 120px;
+    max-width: 328px;
+  }
 .bold {
   font-weight: 700;
 }
@@ -333,3 +385,8 @@ Show the image as background to display: block;
  {
   content: '\e7f7';
 }
+
+md-input-container {
+  margin: 2px 0;
+}
+

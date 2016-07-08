@@ -35,6 +35,10 @@
             var returnUrl = ""
         })
         
+        $scope.$back = function(){
+            window.history.back();
+        }
+        
         init();
     }//conroller ends
 })();

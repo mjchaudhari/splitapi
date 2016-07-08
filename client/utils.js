@@ -53,7 +53,7 @@
         if (findNodeHandler) {
             findNodeHandler(node);
         }
-        if (node[childrenAttribute]) {
+        if (node && node[childrenAttribute]) {
             for (var i = 0; i < node[childrenAttribute].length; i++) {
                 this.treeWalker(node[childrenAttribute][i],findNodeHandler, opt);
             }

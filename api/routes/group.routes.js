@@ -1,8 +1,10 @@
 
 //User routes
 var groupCtrl = require("./../controllers/group.controller.js");
-//var authCtrl        = require('./../controllers/auth.controller.js');
-
+var mongodb = require('mongodb');
+var mongo = mongodb.MongoClient;
+var Group = require("./../classes/API.Group.js");
+var models = require("./../response.models.js").models;
 module.exports = function(dbConfig, auth,app) {
 	var v1=new groupCtrl.v1(dbConfig);
 	/**
@@ -83,6 +85,32 @@ module.exports = function(dbConfig, auth,app) {
 		});
 	});
 	
+	// show the home page (will also have our login links)
+	/**
+     * @api {post} /v1/group/members Add memember in group
+     * @apiName Add member 
+     * @apiGroup Group
+     * @apiParam {number} groupId 
+     * @apiParam {number} members comma separated string of user Ids e.g. "5" OR "5,6,7,8"  
+     *
+	 * @apiHeader {String} Authorization the security token
+	 * @apiHeaderExample {json} Header-Example:
+	 *     {
+	 *       "Authorization": "Bearer xajksdhfkalsduwerb7879fasdf--"
+	 *     }      
+     *
+     * @apiSuccess {group} group object.
+    */
+	app.get('/v1/group/members/:groupId', auth.isBearerAuth,function(req, res) {
+		var groupId = req.params.groupId; 
+		v1.getMembers(groupId, function (d){
+			if(d.isError){
+				res.status(400).send(d);
+				return;
+			}
+			res.json(d);
+		});
+	});
 	
 	// show the home page (will also have our login links)
 	/**
@@ -161,5 +189,24 @@ module.exports = function(dbConfig, auth,app) {
 		});
 	});
     
+	app.get('/v1/group/:groupId/files', auth.isBearerAuth, function(req, res) {
+        var groupId = req.params.groupId; 
+		var g = new Group(mongo, dbConfig);
+		g.init(groupId,req.user.User._id, function(err, data){
+			if(err){
+				res.json(new models.error(err));
+			}
+			
+			g.getFilesFromStorage.call(this,function(e, d){
+				if(e){
+					res.json(new models.error(err));
+				}
+
+				res.json(new models.success(d));
+			});
+			
+			
+		});
+	});
     
 }

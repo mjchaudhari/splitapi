@@ -8,7 +8,7 @@ var async = require ("async");
 var path = require("path");
 var mongodb = require('mongodb');
 var mongo = mongodb.MongoClient;
-
+var drive = require("./../googleDriveHelper.js")();
 var fileCtrl =  require("./file.controller.js");
 
 /*
@@ -35,6 +35,32 @@ exports.v1 = function(){
                 return cb(null, result);
             });
         });     
+    }
+    
+    this.getMembers = function(groupId, cb){
+        mongo.connect(dbConfig.mongoURI,function(err, db){
+            db.collection("groups")
+            .findOne({"_id":groupId}, function (e, g) {
+                if(e){
+                    return cb(e,g);
+                }
+                else if(g == null){
+                    return cb("Group is not found", null);
+                }
+                var filter = {"_id" : {$in : g.Members}};
+                db.collection("profiles").find(filter).toArray(function(e, data){
+                    if(e){
+                        db.close();
+                        return cb(new models.error(e));
+                    }
+                    if(data){
+                        db.close();
+                        return cb(new models.success(data));
+                    };
+                });
+            });
+        });
+    
     }
     
     this.getGroups =function(req, cb)
@@ -135,7 +161,10 @@ exports.v1 = function(){
             data.Url= param.Url;
         if(param.GroupType)
             data.GroupType = param.GroupType;
-        
+        if(param.Members){
+            data.Members = [];
+            data.Members = _.pluck(param.Members, "_id");
+        }
         data.UpdatedBy = currentUser._id;
         data.UpdatedOn  = new Date();
         if(param.ClientId)
@@ -158,7 +187,7 @@ exports.v1 = function(){
                 if(e){
                         return cb(new models.error("internal error", "Error while saving group"));
                     }
-                    return cb(d.value);
+                    return cb(d);
             });
         }
     };
@@ -289,8 +318,29 @@ exports.v1 = function(){
         mongodb.connect(dbConfig.mongoURI,function(err, db){
             
             db.collection("groups").findOneAndUpdate({"_id":data._id},{$set: data}, {"upsert":true, "forceServerObjectId":false, "returnOriginal":false}, function (err, data) {
-                db.close();
-                return cb(err,data.value); 
+                
+                if(err){
+                    return cb(err)
+                }
+
+                var gdata  = data.value;
+
+                if(gdata._fileStorage == null){
+                    drive.createFolder(gdata._id, gdata.Name, null, function(err, resp){
+                        if(err){
+                            console.error(err);
+                            return cb(null,gdata);
+                        }
+                        
+                        db.collection("groups").findOneAndUpdate({"_id":gdata._id},{$set: {"fileStorage" : resp.id}}, null, function (err, data) {
+                            //gdata._fileStorage = resp.id;
+                            return cb(null,gdata);
+                        });
+                    });
+                }
+                else{
+                    return cb(err,data.value);
+                }
             });
         });
     }

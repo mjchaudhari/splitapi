@@ -90,7 +90,7 @@ exports.v1 = function(){
             parentId : q.p,
 		    groupId:g,
             levels : q.levels ? 10 : q.levels,
-            structure_only: q.structure_only = "true" ? true : false 
+            structure_only: q.structure_only == "true" ? true : false 
 		};
         
         if(options.from == null ){
@@ -181,6 +181,7 @@ exports.v1 = function(){
                         return cb(new models.error("Unauthorize access","User is not authorized to access group."));
                     }   
                     db.close();
+                    
                     return cb(new models.success(asset));
                 });
             
@@ -205,8 +206,9 @@ exports.v1 = function(){
         var data = buildAssetModel(req.body, currentUser);
         determinePath(data.ParentIds, function (paths) {
             data._paths = paths;
+            
             mongo.connect( mongoURI,function(err, db){
-                db.collection('assets').update({"_id" : data._id},data,{"forceServerObjectId":false, "upsert":true,  "fullResult":true},function(e, r){
+                db.collection('assets').update({"_id" : data._id},{$set:data},{"forceServerObjectId":false, "upsert":true,  "fullResult":true},function(e, r){
                     if(e){return models.error(e);}
                     
                     if(r == null){
@@ -300,7 +302,10 @@ exports.v1 = function(){
         a.AlloudTypes   = data.AllowedTypes;
         a.UpdatedOn     = new Date();
         a.UpdatedById   = currentUser._id; 
-        a.Accessibility = data.accessibility;
+        if(data.Accessibility){
+            a.Accessibility = _.pluck(data.Accessibility, "_id");
+        }
+
         if (data.AssetType != null){
             a.AssetTypeId = data.AssetType._id;
         }
@@ -317,6 +322,7 @@ exports.v1 = function(){
         
         if(isNew){
             a.CreatedOn = new Date();
+            a.CreateBy = currentUser._id;
         }
         //Audit trail
         a.AuditTrail = data.AuditTrail;
@@ -422,6 +428,12 @@ exports.v1 = function(){
                             cb(null, updatedBy);
                         });
                     },
+                    accessibility: function(cb){
+                        var profileIds = result.Accessibility == null ? [] : result.Accessibility;
+                        db.collection("profiles").find({"_id":{$in: profileIds}}).toArray(function(err, accessibility){
+                            cb(null, accessibility);
+                        });
+                    },
                     parents: function(cb){
                         db.collection("assets").find({"_id": {$in : result.ParentIds } }).toArray(function(err, parents){
                             if(parents != null){
@@ -464,6 +476,7 @@ exports.v1 = function(){
                     retAsset.Group = results.group;
                     retAsset.UpdatedBy = results.updatedBy;
                     retAsset.Parents = results.parents;
+                    retAsset.Accessibility =results.accessibility;
                     return callback(err, retAsset);
                 });
             });

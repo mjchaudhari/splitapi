@@ -3,26 +3,24 @@
     angular.module("app")
     .controller("assetEditController",assetEditController);
     
-    assetEditController.$inject = ["$scope", "$rootScope", "$log", "$q", "$timeout",  "$state", "$stateParams", "dataService", "config","authService","$mdConstant","$mdToast", "Upload","$mdBottomSheet","params"];
+    assetEditController.$inject = ["$scope", "$rootScope", "$log", "$q", "$timeout",  "$state", "$stateParams", "dataService", "config","authService","$mdConstant","$mdToast", "Upload"];
     
     function assetEditController($scope, $rootScope,  $log, $q,$timeout, $state, $stateParams, dataService, 
-            config, authService, $mdConstant, $mdToast, Upload,$mdBottomSheet,params ){
+            config, authService, $mdConstant, $mdToast, Upload){
         
         //bindable mumbers
         $scope.title    = "Edit Assets";
-        if(params == null){
-            params = {};
-        }
-        $scope.assetId  = params.assetId;
-        $scope.groupId  = params.groupId;
-        $scope.parentId = params.parentId == undefined ? params.groupId : params.parentId;
-        $scope.assetType = params.assetType;
-        
+        $scope.assetId  = $stateParams.a;
+        $scope.groupId  = $stateParams.g;
+        $scope.parentId = $stateParams.p == undefined ? $stateParams.g : $stateParams.p;
+        $scope.assetType = $stateParams.type;
+        $scope.groupMembers = [];
         $scope.types = [];
         
         $scope.errorMessage=[];
         $scope.file=null;
         $scope.promises = {};
+
         $scope.asset = {
             "_id":$scope.assetId,
             "AssetType" : $scope.assetType,
@@ -38,7 +36,7 @@
             "Publish":true,
             "ActivateOn":new Date(),
             "AssetCategory":null,
-            "AssetType" : null
+            "Accessibility" : []
         };
         
         $scope.uploadedFiles=null;
@@ -58,9 +56,10 @@
             var tasks = [];
             var assetPromise = getAsset($scope.assetId);
             var typePromise = getTypes();
+            var membersPromise = _getUsers();
             
             $q.all([
-                assetPromise,typePromise
+                assetPromise,typePromise,membersPromise
             ])
             .then(function(){
                 init();
@@ -70,7 +69,7 @@
         var init = function(){
             $log.debug("Init executed")
             
-                var assetType = _.find($scope.types,{ "_id": params.assetType});
+                var assetType = _.find($scope.types,{ "_id": $scope.assetType});
                 $scope.asset.AssetType = assetType;
             
             
@@ -97,7 +96,14 @@
                     else{
                         $scope.asset.neverExpire = true;
                     }
-                    defer.resolve(d.data.data);    
+                    if($scope.asset.Accessibility == null){
+                        $scope.asset.Accessibility= []
+                    }
+                    $scope.asset.Accessibility.forEach(function(m){
+                        m._name = m.FirstName + ' ' + m.LastName;
+                    })
+                
+                    defer.resolve($scope.asset);    
                 },
                 function(e){
                     defer.reject();
@@ -119,8 +125,72 @@
             return defer.promise;
         }
         
+        function _getUsers(){
+            var defer = $q.defer();
+            dataService.getGroupMembers($scope.groupId)
+            .then(function(d){   
+                var users = [];
+                d.data.data.forEach(function(m){
+                    m._name = m.FirstName + ' ' + m.LastName;
+                })
+
+                angular.copy(d.data.data, $scope.groupMembers);
+                defer.resolve($scope.groupMembers);
+            });
+            return defer.promise;
+        }
+        $scope.querySearchWorking = function (term){
+            $scope.searchResult=[];
+            if(term && term.length > 0){
+
+            }
+            var defer = $q.defer();
+            dataService.getUsers(term)
+            .then(function(d){
+                var result = [];
+                angular.copy(d.data.data, result);
+                result.forEach(function(u){
+                    u._name = u.FirstName + ' ' + u.LastName;
+                    //check if this user is alredy added
+                    var exist = _.findWhere($scope.asset.Accessibility,{"_id":u._id});
+                    if(exist){
+                        u.__added = true;
+                    }
+                })
+                var sorted = _.sortBy(result,"_name");
+                //angular.copy(sorted,$scope.searchResult)
+                defer.resolve(sorted)
+            }, function(){
+              defer.reject()  ;
+            });
+            return defer.promise;
+        }
+        $scope.querySearch = function(term){
+            $scope.searchResult=[];
+            if(term && term.length > 0){
+
+            }
+            var defer = $q.defer();
+            $timeout(function(){
+                var regex = new RegExp(term,"i");
+                var members = _.filter($scope.groupMembers,function(m){
+                    return m._name.match(regex);
+                });
+                members.forEach(function(u){
+                    u._name = u.FirstName + ' ' + u.LastName;
+                    //check if this user is alredy added
+                    var exist = _.findWhere($scope.asset.Accessibility,{"_id":u._id});
+                    if(exist){
+                        u.__added = true;
+                    }
+                });
+                defer.resolve(members)
+            },100)
+                
+            return defer.promise;
+        }
         $scope.cancel = function() {
-            $mdBottomSheet.hide();
+            $scope.$back();
         };
         $scope.toggleComentSetting = function(){
             $scope.asset.AllowComment = !$scope.asset.AllowComment; 
@@ -153,7 +223,14 @@
 
             return dataService.saveAsset($scope.asset).then(
                 function(d){
-                    $mdBottomSheet.hide(d);
+                    $scope.asset = d.data.data;
+                    if($scope.asset.Accessibility == null){
+                        $scope.asset.Accessibility =[];
+                    }
+                    $scope.asset.Accessibility.forEach(function(m){
+                        m._name = m.FirstName + ' ' + m.LastName;
+                    })
+                    showToast("Saved!");
                 },
                 function(e){
                     showToast(e.message);

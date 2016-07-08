@@ -80,9 +80,9 @@
    .state("home.group.detail", {url:"/detail", templateUrl : "/views/groups/group.detail.html"})
    .state("home.group.analytics", {url:"/analytics", templateUrl : "./views/groups/group.analytics.html"})
    .state("home.group.assets", {url:"/assets?p", templateUrl : "./views/assets/assetlist.html"})
-   //.state("home.group.asset", {url:"/asset?assetid&action&parentId", templateUrl : "./views/groups/asset.edit.html"})
+   .state("home.group.asset", {url:"/asset?p?type?a", templateUrl : "views/assets/asset.edit.html"})
    
-   .state("home.asset", {url:"/:groupId/asset?assetId&action", templateUrl : "./views/groups/asset.edit.html"})
+   .state("home.asset", {url:"/:groupId/asset?p&type&a", templateUrl : "./views/groups/asset.edit.html"})
       
       
       
