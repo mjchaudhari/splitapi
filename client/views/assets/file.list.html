@@ -1,0 +1,49 @@
+<div cg-busy="promices.fileList" ng-controller="fileLstController" cg-busy="promices.tree" >
+
+    <div layout-padding layout="row">
+        <div>
+            <div ez-tree selected-nodes="selectedNode" 
+                parent-trail="nodeParentTrail" options="hierarchyTreeOptions"
+                allow-multi-select="false" tree="hierarchy" on-select="onAssetSelected">
+                tree div
+            </div>
+            <!--<ezTree tree="menu" options="options" selected-nodes="selectedMenu"
+                    on-select="onMenuSelect(n)"></ezTree>-->
+        </div>    
+        <div layout="column" flex="70">
+            <div class="table">
+                <div class="table-row" layout="row" >
+                    <div class="table-cell" flex="5">
+                        
+                    </div>
+                    <div class="table-cell" flex="50"><h4>Name</h4></div>
+                    <div class="table-cell" flex="15"><h4>Created By</h4></div>
+                    <div class="table-cell" flex="15"><h4>Actions</h4></div>
+                </div>
+            </div>
+
+            <md-content class="transperent-bg" flex layout="row" layout-align="center" style="height:60vh;">
+                
+                <div layout="column" class="table">
+                    <div ng-dblclick="onAssetSelected(file)" class="table-row hover-on-select" layout="row" ng-repeat="file in selectedNode.children"  >
+                        <div class="table-cell" flex="5">
+                            <span>{{$index + 1}}</span>
+                            <span ng-click="onAssetSelected(file)" class="material-icons-lg" data-ng-class="file.fileTypeId"></span>
+                        </div>
+                    
+                        <div  class="table-cell" flex="50" layout="column" >
+                            <span>
+                            {{file.name}}</span>
+                        </div>
+                        <div class="table-cell" flex="15"></div>
+                        <div class="table-cell" flex="15">
+                            <md-button class="md-icon-button" aria-label="view" ng-click="view(file)">
+                                    <i class="material-icons">view</i>
+                            </md-button>
+                        </div>
+                    </div>
+                </div>
+            </md-content>
+        </div>
+    </div>            
+</div>

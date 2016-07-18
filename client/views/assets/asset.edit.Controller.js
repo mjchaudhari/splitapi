@@ -200,17 +200,17 @@
         }
         $scope.saveAsset = function(){
 
-            if($scope.file){
-                _uploadAssetFile().then(function (f) {
-                    //get file names and add to the asset
-                    $scope.asset.Urls = f.fileName;
-                    return _saveAssetData()
-                });
-            }
-            else{
-                return _saveAssetData()
-            }
-            
+            // if($scope.file){
+            //     _uploadAssetFile().then(function (f) {
+            //         //get file names and add to the asset
+            //         $scope.asset.Urls = f.fileName;
+            //         return _saveAssetData()
+            //     });
+            // }
+            // else{
+            //     return _saveAssetData()
+            // }
+            return _saveAssetData();
         }
         
         function _saveAssetData(){
@@ -220,28 +220,48 @@
             else if($scope.asset.ParentIds.length == 0){
                 $scope.asset.ParentIds = [$scope.parentId];
             }
-
-            return dataService.saveAsset($scope.asset).then(
-                function(d){
-                    $scope.asset = d.data.data;
+            
+            if($scope.asset.ExpireOn && isNaN($scope.asset.ExpireOn.getDate())){
+                $scope.asset.ExpireOn = new Date(9999,12,31)
+            }
+            
+            var defer = $q.defer();
+            // upload on file select or drop
+            Upload.upload({
+                url: config.apiBaseUrl + "/v1/asset",
+                data: $scope.asset
+            }).then(function (d) {
+                $scope.asset = d.data.data;
                     if($scope.asset.Accessibility == null){
                         $scope.asset.Accessibility =[];
+                    }
+                    if(d.data.data.ExpireOn){
+                        $scope.asset.ExpireOn = new Date(d.data.data.ExpireOn);
+                        $scope.asset.neverExpire = false;
+                    }
+                    else{
+                        $scope.asset.neverExpire = true;
                     }
                     $scope.asset.Accessibility.forEach(function(m){
                         m._name = m.FirstName + ' ' + m.LastName;
                     })
-                    showToast("Saved!");
-                },
-                function(e){
-                    showToast(e.message);
-                }
-            )
+                defer.resolve(d.data.data);
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+                defer.resolve(resp);
+            }, function (evt) {
+
+                $scope.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + $scope.progressPercentage + '% ' );
+                console.log(evt);
+            });
+            return defer.promise;
         }
         function _uploadAssetFile (){
             var defer = $q.defer();
             // upload on file select or drop
             Upload.upload({
-                url: 'v1/file',
+                url: config.apiBaseUrl + "/v1/asset",
                 data: {file: $scope.file}
             }).then(function (resp) {
                 console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);

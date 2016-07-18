@@ -21,6 +21,7 @@
     "mongodb": "^2.1.19",
     "mongoose": "^4.4.17",
     "mongoose-schema-extend": "^0.2.2",
+    "multer": "^1.1.0",
     "oauth2orize": "^1.2.2",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",

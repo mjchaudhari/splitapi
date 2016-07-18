@@ -331,15 +331,31 @@ exports.v1 = function(){
                             console.error(err);
                             return cb(null,gdata);
                         }
+                        drive.makePublic(gdata._fileStorage, function(err, resp){
+                            if(err){
+                                console.error(err);
+                                return cb(null,gdata);
+                            }
+                            
+                            db.collection("groups").findOneAndUpdate({"_id":gdata._id},{$set: {"fileStorage" : resp.id}}, null, function (err, data) {
+                                //gdata._fileStorage = resp.id;
+                                return cb(null,gdata);
+                            });
                         
-                        db.collection("groups").findOneAndUpdate({"_id":gdata._id},{$set: {"fileStorage" : resp.id}}, null, function (err, data) {
-                            //gdata._fileStorage = resp.id;
-                            return cb(null,gdata);
                         });
+                            
                     });
                 }
                 else{
-                    return cb(err,data.value);
+                    drive.makePublic(gdata._fileStorage, function(err, resp){
+                        if(err){
+                            console.error(err);
+                            return cb(null,gdata);
+                        }
+                        
+                        //gdata._fileStorage = resp.id;
+                        return cb(null,gdata);
+                    });
                 }
             });
         });

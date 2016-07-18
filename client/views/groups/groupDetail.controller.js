@@ -115,7 +115,6 @@
 
             dataService.saveGroup($scope.group)
             .then(function(g){
-                $scope.showToast("Group saved.");
                 //if this group is created by current user then allow user to manage users
                 $scope.group._id = g.data._id;
                 $scope.group.Members = g.data.Members;

@@ -1,7 +1,12 @@
 
 //User routes
 var groupCtrl = require("./../controllers/assets.controller.js");
-//var authCtrl        = require('./../controllers/auth.controller.js');
+var path            = require("path");
+var tempUploadFolder = path.normalize(__dirname + "/../../tmpStore");
+var multer  = require('multer')
+var upload = multer({ dest: tempUploadFolder })
+var drive = require("./../googleDriveHelper.js")();
+var models = require("./../response.models.js").models;
 
 module.exports = function(dbConfig, auth,app) {
 	var v1=new groupCtrl.v1(dbConfig);
@@ -145,14 +150,12 @@ module.exports = function(dbConfig, auth,app) {
      *
      * @apiSuccess {boolean} true if user is member of given group 
     */
-    app.post('/v1/asset', auth.isBearerAuth, function(req, res) {
-        
-		v1.createOrUpdate (req, function (d){
-			if(d.isError){
-				res.status(400).send(d);
-				return;
+    app.post('/v1/asset', auth.isBearerAuth, upload.any(), function(req, res) {
+		v1.createOrUpdate (req, function (e,d){
+			if(e){
+				res.json(new models.success(e));
 			}
-			res.json(d);
+			res.json(new models.success(d));
 		});
 	});
     /**

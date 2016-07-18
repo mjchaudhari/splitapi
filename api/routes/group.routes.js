@@ -208,5 +208,44 @@ module.exports = function(dbConfig, auth,app) {
 			
 		});
 	});
+    app.get('/v1/group/:groupId/fileTree', auth.isBearerAuth, function(req, res) {
+        var groupId = req.params.groupId; 
+		var g = new Group(mongo, dbConfig);
+		g.init(groupId,req.user.User._id, function(err, data){
+			if(err){
+				res.json(new models.error(err));
+			}
+			
+			g.getFileTreeFromStorage.call(this,function(e, d){
+				if(e){
+					res.json(new models.error(err));
+				}
+
+				res.json(new models.success(d));
+			});
+			
+			
+		});
+	});
+    app.get('/v1/group/:groupId/file/:fileId', auth.isBearerAuth, function(req, res) {
+        var groupId = req.params.groupId; 
+		var fileId  = req.params.fileId;
+		var g = new Group(mongo, dbConfig);
+		g.init(groupId,req.user.User._id, function(err, data){
+			if(err){
+				res.json(new models.error(err));
+			}
+			var params = {id : fileId};
+			g.getFileFromStorage.call(this,params,function(e, d){
+				if(e){
+					res.json(new models.error(err));
+				}
+
+				res.json(new models.success(d));
+			});
+			
+			
+		});
+	});
     
 }

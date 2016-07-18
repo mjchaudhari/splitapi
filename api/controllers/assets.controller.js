@@ -8,7 +8,9 @@ var path = require("path");
 var mongodb = require('mongodb');
 var mongo = mongodb.MongoClient;
 var fileCtrl = require("./file.controller.js");
+var drive = require("./../googleDriveHelper.js")();
 
+var fs = require('fs-extra'); 
 var mongoURI = dbConfig.mongoURI;
 /*
 group module
@@ -203,31 +205,99 @@ exports.v1 = function(){
             return cb(new models.error("Name required"));
         }
         
-        var data = buildAssetModel(req.body, currentUser);
-        determinePath(data.ParentIds, function (paths) {
-            data._paths = paths;
-            
-            mongo.connect( mongoURI,function(err, db){
-                db.collection('assets').update({"_id" : data._id},{$set:data},{"forceServerObjectId":false, "upsert":true,  "fullResult":true},function(e, r){
-                    if(e){return models.error(e);}
-                    
-                    if(r == null){
-                        return cb(new models.error("Record not saved"));
-                    }
-                    if(r.result.ok == 0){
-                        return cb(new models.error("Record not saved"));
-                    }
-                    getFullAsset(data._id, function(e, result){
-                        if(e){
-                            return cb(new models.error(e));
+        //find group folder
+        mongo.connect( mongoURI,function(err, db){
+            db.collection("groups").findOne({"_id":req.body.GroupId}, function(err, group){
+    
+                var f = req.files ;
+                if(f){
+                    var urls = []
+                    f.forEach(function(file){
+                        var newPath = path.join(file.destination,file.originalname);
+                        var fn = fs.renameSync(file.path, newPath)
+                        file.path = newPath;
+                        urls.push( '//' + req.headers.host + '/file/'+f.originalname);
+
+                    });
+                    //set the local url of the uploaded file
+                    req.body.Urls = urls
+                }
+
+                var data = buildAssetModel(req.body, currentUser);
+                determinePath(data.ParentIds, function (paths) {
+                    data._paths = paths;
+                    db.collection('assets').update({"_id" : data._id},{$set:data},{"forceServerObjectId":false, "upsert":true,  "fullResult":true},function(e, r){
+                        if(e){return models.error(e);}
+                        
+                        if(r == null){
+                            return cb(new models.error("Record not saved"));
                         }
-                        return cb(new models.success(result));    
+                        if(r.result.ok == 0){
+                            return cb(new models.error("Record not saved"));
+                        }
+                        if(f instanceof Array && f.length >=0){
+                            console.info("savng file(s) to drive");
+                            uploadAssetFileToDrive(data._id,group._fileStorage,f,function(err, result){
+                                if(e){
+                                    return cb(e);    
+                                }
+                                getFullAsset(data._id, function(e, result){
+                                    return cb(e,result);    
+                                });
+                            });
+                        }
+                        else{
+                            getFullAsset(data._id, function(e, result){
+                                return cb(e, result);    
+                            });
+                        }
                     });
                 });
             });
         });
     }
     
+    var uploadAssetFileToDrive = function(assetId,folderId, files, callback){
+        var fileInfo = [];
+        var urls = [];
+        async.each(files,
+            function(f, callback){
+                //upload this file
+                drive.createFile(f.path,'Asset file',folderId,function(err, data){
+                    //update url to asset
+                    if(err){
+                        console.log("Create file failed")
+                        return callback(err);
+                    }
+                    fileInfo.push({
+                            fileId:data.id, 
+                            iconLink : data.iconLink, 
+                            thumbnailLink: data.thumbnailLink, 
+                            webViewLink:data.webViewLink, 
+                            parents : data.parents,
+                            webContentLink:data.webContentLink}); 
+                     
+                    urls.push(data.webViewLink);
+                    return callback(null, "file created");
+                });
+            }, 
+            function(err, res){
+                if(err){
+                    console.error(err)
+                    return callback(err);
+                }
+                mongo.connect( mongoURI,function(err, db){
+                    var dataToSave = {
+                        "Files":fileInfo, 
+                        "Urls":urls
+                    }; 
+                    db.collection('assets').update({"_id" : assetId},{$set:dataToSave},{"forceServerObjectId":false, "upsert":true,  "fullResult":true},function(e, r){
+                            return callback(err, r);                            
+                    });
+                });
+        });
+    }
+
     /***
      * save the thumbnail
      */

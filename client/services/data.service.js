@@ -93,7 +93,11 @@ function($http,$q, $log, config, $timeout, CacheFactory){
       var url = config.apiBaseUrl + "/v1/group/members/remove";
       return $http.post(url, data);
     },
-
+    getFileTree : function(groupId){
+      
+      var url = config.apiBaseUrl + "/v1/group/" + groupId + "/fileTree";
+      return $http.get(url, requestOpts);
+    },
     /**
     * @param data : {groupId: 1, members:"1,2,3" }
     **/
@@ -188,6 +192,7 @@ function($http,$q, $log, config, $timeout, CacheFactory){
         var url = config.apiBaseUrl + "/v1/thumbnail/binary";
         var data = {"fileName" : fileName, "imgUrl": base64Image};
         return $http.post(url,data)
-    },
+    }
+    
   };
 });

@@ -2,7 +2,11 @@ var mime = require('mime');
 var key = require('./ezCollaboration-d97a5741c83d.json');
 var google = require('googleapis');
 var drive = google.drive('v3');
-var fs = require("fs");
+var path = require("path");
+var fs = require("fs-extra");
+var _ = require("underscore-node");
+var driveFileFields = "files(description,fileExtension,iconLink,id,mimeType,name,parents,size,thumbnailLink,webContentLink,webViewLink)"
+
 var authClient = new google.auth.JWT(
     key.client_email,
     null,
@@ -13,16 +17,67 @@ var authClient = new google.auth.JWT(
     ['https://www.googleapis.com/auth/drive'],
     // User to impersonate (leave empty if no impersonation needed)
     '');
-
-
-  
   module.exports = function(){
-    authClient.authorize(function(err, tokens) {
-        if (err) {
-            console.log(err);
-            return;
-        }
-    });
+    
+    var _getFileTree = function(params, callback){
+        authClient.authorize(function(err, tokens) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            var options = { 
+                auth : authClient,
+                fields : driveFileFields
+             };
+            var queryParams = [];
+            
+            // Make an authorized request to list Drive files.
+            drive.files.list(options, function(err, resp) {
+                // handle err and response
+
+                var rootFolder = {
+                    id:params.parentId,
+                    mimeType : "application/vnd.google-apps.folder",
+                    name : "Root",
+                    children : []
+                };
+
+                //find children 
+                var children = _buildChildrenTree(resp.files, rootFolder);
+                rootFolder.children = children;
+                return callback(err,rootFolder);
+            });
+        });
+    }
+    var _buildChildrenTree = function(allFiles, parent){
+        
+        var children = _.filter(allFiles, function(f){
+            return f.parents.indexOf(parent.id) > -1;
+        }); 
+        parent.children = children;
+        parent.children.forEach(function(c){
+            if(c.mimeType == "application/vnd.google-apps.folder"){
+                _buildChildrenTree(allFiles, c);
+            }
+        });
+        return children;
+    } 
+    var _getFile = function(params, callback){
+        authClient.authorize(function(err, tokens) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            var options = { auth: authClient, fileId:params.id,  fields : "description,iconLink,id,kind,mimeType,name,parents,size,thumbnailLink,webContentLink,webViewLink"  };
+            var queryParams = [];
+            
+            // Make an authorized request to list Drive files.
+            drive.files.get(options, function(err, resp) {
+                // handle err and response
+                return callback(err,resp);
+            });
+        });
+    }
 
     var _getFiles = function(params, callback){
         authClient.authorize(function(err, tokens) {
@@ -30,10 +85,12 @@ var authClient = new google.auth.JWT(
                 console.log(err);
                 return;
             }
-            var options = { auth: authClient };
+            var options = { auth: authClient,  fields : driveFileFields  };
+            var queryParams = [];
             if(params !=null && params.parentId ){
-                options.folderId = params.parentId
+                queryParams.push[ "'" + params.parentId + "' in parents"]
             }
+            options.q = queryParams;
             // Make an authorized request to list Drive files.
             drive.files.list(options, function(err, resp) {
                 // handle err and response
@@ -50,10 +107,10 @@ var authClient = new google.auth.JWT(
                 'mimeType' : 'application/vnd.google-apps.folder',
                 "description" : description
             },
-            'fields':"id"
+            'fields':"id, description,parents, iconLink,thumbnailLink,webContentLink,webViewLink"
         };
         if(parentFolderId){
-            folderMetadata.parents = [ parentFolderId ];
+            folderMetadata.resource.parents = [ {"id":parentFolderId} ];
         }
         authClient.authorize(function(err, tokens) {
             if (err) {
@@ -67,7 +124,7 @@ var authClient = new google.auth.JWT(
         });
     }
     var _createFile = function(filePath, description, parentFolderId, callback){
-        var baseName = fs.basename(filePath);
+        var baseName = path.basename(filePath);
         var driveMime = _getGoogleMimeType(filePath);
         
         var folderMetadata = {
@@ -75,18 +132,17 @@ var authClient = new google.auth.JWT(
             'resource':{
                 "name" : baseName,
                 "mimeType" : driveMime,
-                "description" : description
+                "description" : description,
+                "parents" : [ parentFolderId ]
             },
             "media": {
                 "mimeType": driveMime,
                 "body": fs.createReadStream(filePath) // read streams are awesome! 
             },
-            'fields':"id"
+            'fields':"id, description,parents,iconLink,thumbnailLink,webContentLink,webViewLink"
         };
 
-        if(parentFolderId){
-            folderMetadata.parents = [ parentFolderId ];
-        }
+        
         
         authClient.authorize(function(err, tokens) {
             if (err) {
@@ -98,7 +154,27 @@ var authClient = new google.auth.JWT(
             });
         });
     }
-
+    var _makePublic = function(googleFileId, callback){
+        var folderMetadata = {
+            'auth': authClient ,
+            'fileId':googleFileId,
+            'resource':{
+                "role": "reader",
+                "type": "anyone"
+            },
+        };
+        
+        authClient.authorize(function(err, tokens) {
+            if (err) {
+                console.log(err);
+                return callback(err);
+            }
+            drive.permissions.create(folderMetadata, function(err, resp) {
+                console.log("drive permission complete");
+                return callback(err,resp);
+            });
+        });
+    }
     var _about  = function(options, cb){
    
         request({
@@ -112,10 +188,10 @@ var authClient = new google.auth.JWT(
     
     
     var _getGoogleMimeType  = function(filePath){
-        var mime = mime.lookup(filePath);
-        var ext = mime.extension(mime);
+        var m = mime.lookup(filePath);
+        var ext = mime.extension(filePath);
         var retType = "";
-        switch (mime) {
+        switch (m) {
             case "xls": {
                 retType = 'application/vnd.ms-excel'
                 break;
@@ -230,9 +306,12 @@ var authClient = new google.auth.JWT(
     }
 
     return {
+        getFile : _getFile,
         getFiles : _getFiles,
+        getFileTree : _getFileTree,
         createFolder : _createFolder, 
         createFile : _createFile,
+        makePublic : _makePublic
     }
     
   };

@@ -80,4 +80,26 @@ API.Group.prototype.getFilesFromStorage = function(callback){
     
 }
 
+API.Group.prototype.getFileTreeFromStorage = function(callback){
+    if(!this._isReady){
+        //throw new API.ApiException("Group is not instanciated.", "Group.getFileStarage()");
+        return callback("Group is not instanciated.");
+    }
+    drive.getFileTree({parentId : this._fileStorage}, function(e,d){
+        return callback(e,d);
+    });
+    
+}
+
+API.Group.prototype.getFileFromStorage = function(params,callback){
+    if(!this._isReady){
+        //throw new API.ApiException("Group is not instanciated.", "Group.getFileStarage()");
+        return callback("Group is not instanciated.");
+    }
+    drive.getFile({id : params.id}, function(e,d){
+        return callback(e,d);
+    });
+    
+}
+
 module.exports = API.Group;

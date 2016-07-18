@@ -11,12 +11,17 @@ var bodyParser      = require('body-parser');
 var dbConfig        = require("./api/db.connection.js");
 var auth            = require("./api/auth.js");
 var busboy          = require('connect-busboy');
+
+var tempUploadFolder = path.normalize(__dirname + "/../../tmpStore");
+var multer  = require('multer')
+var upload = multer({ dest: tempUploadFolder })
+
 var utilsCtrl = require("./api/controllers/utils.controller.js");
 //app.use(bodyParser.urlencoded());
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, "/client")));
-app.use(busboy());
+//app.use(busboy());
 // required for passport
 app.use(session({ 	secret: 'splitit', 
 					saveUninitialized: true,
