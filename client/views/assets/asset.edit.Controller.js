@@ -21,6 +21,14 @@
         $scope.file=null;
         $scope.promises = {};
 
+        $scope.taskStatuses = [
+            "Pending",
+            "In Progress",
+            "Completed",
+            "Closed"
+        ]
+        $scope.taskUpdateMessage = "";
+
         $scope.asset = {
             "_id":$scope.assetId,
             "AssetType" : $scope.assetType,
@@ -62,6 +70,11 @@
                 assetPromise,typePromise,membersPromise
             ])
             .then(function(){
+                if($scope.asset.AssetTypeId == "type_task"){
+                    if($scope.asset.Owners == null){
+                            $scope.asset.Owners = [];
+                    }
+                }
                 init();
             });
         }
@@ -102,6 +115,12 @@
                     $scope.asset.Accessibility.forEach(function(m){
                         m._name = m.FirstName + ' ' + m.LastName;
                     })
+                    if($scope.asset.Files != null && $scope.asset.Files.length >= 0){
+                            var thumbnails = _.pluck($scope.asset.Files, "thumbnailLink")
+                            $scope.asset._thumbnails = thumbnails;
+                    }else{
+                            //$scope.asset._thumbnials = [$scope.asset.Thumbnail];
+                    }
                 
                     defer.resolve($scope.asset);    
                 },
@@ -314,7 +333,19 @@
             }
             
         };
-        
+        $scope.addUpdate = function(){
+            if($scope.taskUpdateMessage != null && $scope.taskUpdateMessage != ""){
+                if($scope.asset.TaskUpdates == null){
+                    $scope.asset.TaskUpdates = []
+                }
+                $scope.asset.TaskUpdates.push({
+                    Update : $scope.taskUpdateMessage,
+                    UpdatedOn : new Date(),
+                    UpdatedBy : "Me"
+
+                });
+            }
+        }
         preInit();
     }//conroller ends
 })();

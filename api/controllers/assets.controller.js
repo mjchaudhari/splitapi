@@ -423,22 +423,22 @@ exports.v1 = function(){
             }
             case "type_calendar":
             {
-                a.startDate = data.startDate;
-                a.endDate       = data.endDate;
-                a.venue         = data.venue;
-                a.venueAddress  =  data.venueAddress;
-                a.venueMapLocation=data.venueMapLocation;
-                a.contact       = data.contact;
+                a.StartDate         = data.startDate;
+                a.EndDate           = data.endDate;
+                a.Venue             = data.venue;
+                a.VenueAddress      = data.venueAddress;
+                a.VenueMapLocation  = data.venueMapLocation;
+                a.Contact           = data.contact;
                 break;
             }
             case "type_task":
             {
-                a.taskType = data.taskType;
-                a.status    = data.status;
-                a.isClosed  = data.isClosed;
-                a.closedOn  = data.closedOn;
-                a.owners    = data.owners;
-                a.updates   = data.updates; 
+                a.TaskType = data.TaskType;
+                a.Status    = data.Status;
+                a.IsClosed  = data.IsClosed;
+                a.ClosedOn  = data.ClosedOn;
+                a.Owners    = data.Owners;
+                a.Updates   = data.Updates; 
                 
                 break;
             }

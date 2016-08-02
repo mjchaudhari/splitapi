@@ -7,7 +7,7 @@
         module = angular.module('ezDirectives', []);
     }
     
-  this.template = [
+  this.extemplate = [
     '<md-card>',
       '<md-card-title class="">',
         '<div layout="row" layout-align="left center">',
@@ -29,7 +29,7 @@
     '$timeout', function($timeout) {
       return {
         restrict: 'AE',
-        template: this.template,
+        template: this.extemplate,
         replace: true,
         transclude: true,
         scope: {

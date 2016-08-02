@@ -6,7 +6,6 @@
                 <md-card-title>
                     <div layout="row" flex layout-align="center center">
                         <md-card-title-text>
-                            <!--<input class="md-headline" ng-model="asset.Name" flex="80">-->
                             <md-input-container class="">
                                 <label>Name</label>
                                 <input class="md-headline" ng-model="asset.Name" flex="80"
@@ -46,7 +45,7 @@
                                         </md-button>
                                     </div>
                                     <span>{{file.name}}</span>
-                                    <ez-image-upload img="asset.Thumbnail" thumbnail-class="'square'"></ez-image-upload>
+                                    <ez-image-upload img="asset._thumbnails[0] || asset.Thumbnail" thumbnail-class="'square'"></ez-image-upload>
                                 </div>
                                 <div layout="column" flex layout-padding>
                                     <md-input-container class="">
@@ -80,9 +79,7 @@
                             
                             <div ez-expando expando-title="Accessible to Members : {{asset.Accessibility.length || 'All'}}">
                                 <div  class=" md-card chipsContactChips">
-                                
                                     <md-content class="md-padding autocomplete" layout="column">
-
                                         <md-contact-chips
                                             ng-model="asset.Accessibility"
                                             md-contacts="querySearch($query)"
@@ -92,14 +89,12 @@
                                             placeholder="Add members"
                                             filter-selected="true"
                                             md-separator-keys="separatorKeys">
-                                            
                                         </md-contact-chips>
                                     </md-content>
                                 </div>
                             </div>
                     
                             <md-divider></md-divider>
-                            {{asset.AssetTypeId}}
                             <div ng-switch="asset.AssetTypeId">
                                 <div ng-switch-when="type_collection">
                                     <h2>Collection</h2>    
@@ -109,6 +104,54 @@
                                 </div>
                                 <div ng-switch-when="type_task">
                                     <h2>Task</h2>    
+                                    <div ez-expando expando-title="Assigned to : {{asset.Owners.length || 'Not set'}}">
+                                        <div  class=" md-card chipsContactChips">
+                                            <md-content class="md-padding autocomplete" layout="column">
+                                                <md-contact-chips
+                                                    ng-model="asset.Owners"
+                                                    md-contacts="querySearch($query)"
+                                                    md-contact-name="_name"
+                                                    md-contact-image="Picture"
+                                                    md-contact-email="UserName"
+                                                    placeholder="Add Assignee"
+                                                    filter-selected="true"
+                                                    md-separator-keys="separatorKeys">
+                                                </md-contact-chips>
+                                            </md-content>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <md-input-container class="md-block" flex-gt-sm flex="35">
+                                            <label>Status</label>
+                                            <md-select ng-model="asset.TaskStatus">
+                                                <md-option ng-repeat="s in taskStatuses">
+                                                    {{s}}
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                        <div layout="column"  >
+                                            <h3>Updates</h3>
+                                            <div ng-repeat="u in asset.TaskUpdates">
+                                                <span>{{u.Update}}</span>
+                                                <span ng-show=" u.UpdatedBy != null">{{" Updated by :" + u.UpdatedBy }}</span>
+                                                <span ng-show=" u.UpdatedOn != null"> On : {{  u.UpdatedOn | amCalendar }}</span>
+                                            </div>
+                                            <div ng-show="asset.TaskUpdates == null || asset.TaskUpdates.length <= 0">
+                                                <span>No updates available</span>
+                                            </div>
+                                        </div>
+                                        <div layout="row">
+                                            <md-input-container class=""  flex="75">
+                                                <label>Enter update</label>
+                                                <textarea ng-model="taskUpdateMessage" md-maxlength="2000" rows="3"  ></textarea>
+                                            </md-input-container>
+                                              
+                                            <md-button class="md-raised  md-primary md-icon-button" ng-click="addUpdate()"> 
+                                                <i class="material-icons">add</i>
+                                            </md-button>  
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                                 <div ng-switch-when="type_demand">
                                     <h2>demand</h2>    
@@ -122,11 +165,14 @@
                             </div>
                         </div>
                     </form>
+                    
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
+                    <ez-json-viewer jsonobj="asset"></ez-json-viewer>
                     <md-button ng-click="saveAsset()" >Save</md-button>
                     <md-button ng-click="cancel()">Cancel</md-button>
                 </md-card-actions>
+
             </md-card>
         <md-container>
     </div>
