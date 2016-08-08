@@ -220,10 +220,17 @@
             });
 
             //angular.copy(selected, $scope.selectedNodes);
-            $scope.selectedNodes = selected;
+            
             var trail = getParentTrail(selected[0]);
             $scope.parentTrail = trail.reverse();
             $scope.parentTrail.push(selected[0]);
+            if ($scope.allowMultiSelect == true)
+            {
+                $scope.selectedNodes = selected;
+            }
+            else{
+                $scope.selectedNodes = selected[0];
+            }
             if($scope.onSelect)
             {
                 $scope.onSelect(node);
