@@ -373,7 +373,7 @@ exports.v1 = function(){
         a.UpdatedOn     = new Date();
         a.UpdatedById   = currentUser._id; 
         if(data.Accessibility){
-            a.Accessibility = _.pluck(data.Accessibility, "_id");
+            a.Accessibility = data.Accessibility;
         }
 
         if (data.AssetType != null){
@@ -434,7 +434,7 @@ exports.v1 = function(){
             case "type_task":
             {
                 a.TaskType = data.TaskType;
-                a.Status    = data.Status;
+                a.TaskStatus    = data.Status;
                 a.IsClosed  = data.IsClosed;
                 a.ClosedOn  = data.ClosedOn;
                 a.Owners    = data.Owners;

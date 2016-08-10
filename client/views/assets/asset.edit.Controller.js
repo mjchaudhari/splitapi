@@ -16,7 +16,10 @@
         $scope.assetType = $stateParams.type;
         $scope.groupMembers = [];
         $scope.types = [];
-        
+        $scope.tempData = {
+                "Owners":[],
+                "Accessibility":[]
+        };
         $scope.errorMessage=[];
         $scope.file=null;
         $scope.promises = {};
@@ -112,9 +115,11 @@
                     if($scope.asset.Accessibility == null){
                         $scope.asset.Accessibility= []
                     }
+
                     $scope.asset.Accessibility.forEach(function(m){
                         m._name = m.FirstName + ' ' + m.LastName;
                     })
+                    
                     if($scope.asset.Files != null && $scope.asset.Files.length >= 0){
                             var thumbnails = _.pluck($scope.asset.Files, "thumbnailLink")
                             $scope.asset._thumbnails = thumbnails;
@@ -122,6 +127,9 @@
                             //$scope.asset._thumbnials = [$scope.asset.Thumbnail];
                     }
                 
+                    angular.copy($scope.asset.Accessibility, $scope.tempData.Accessibility); 
+                    angular.copy($scope.asset.Owners, $scope.tempData.Owners); 
+                    
                     defer.resolve($scope.asset);    
                 },
                 function(e){
@@ -244,6 +252,16 @@
                 $scope.asset.ExpireOn = new Date(9999,12,31)
             }
             
+            //get owners and Accessibility data
+            if($scope.tempData.Accessibility){
+                $scope.asset.Accessibility = _.pluck($scope.tempData.Accessibility, "_id");        
+            }
+
+            if($scope.tempData.Owners){
+                $scope.asset.Owners = _.pluck($scope.tempData.Owners, "_id");        
+            }
+            
+
             var defer = $q.defer();
             // upload on file select or drop
             Upload.upload({
