@@ -76,7 +76,7 @@
     '$timeout', function($timeout) {
       return {
         restrict: 'AE',
-        template: this.template,
+        template: this.materialTemplate,
         replace: true,
         scope: {
           tree: '=',
