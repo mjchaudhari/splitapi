@@ -63,8 +63,6 @@
         };
         
         var preInit = function(){
-            
-            var tasks = [];
             var assetPromise = getAsset($scope.assetId);
             var typePromise = getTypes();
             var membersPromise = _getUsers();
@@ -73,10 +71,26 @@
                 assetPromise,typePromise,membersPromise
             ])
             .then(function(){
-                if($scope.asset.AssetTypeId == "type_task"){
-                    if($scope.asset.Owners == null){
-                            $scope.asset.Owners = [];
-                    }
+                switch ($scope.asset.AssetTypeId) {
+                        case "type_task":
+                            if($scope.asset.Task == null){
+                                $scope.asset.Task = {}
+                            }
+                            if($scope.asset.Task.Updates == null){
+                                $scope.asset.Task.Updates = [];
+                            }
+
+                            if($scope.asset.Task.Owners == null){
+                                $scope.asset.Task.Owners = [];
+                            }        
+                            break;
+                        case "type_calendar":
+                            if($scope.asset.Calendar == null){
+                                $scope.asset.Calendar = {}
+                            }
+                            break;
+                        default:
+                            break;
                 }
                 init();
             });
@@ -84,10 +98,8 @@
     
         var init = function(){
             $log.debug("Init executed")
-            
-                var assetType = _.find($scope.types,{ "_id": $scope.assetType});
-                $scope.asset.AssetType = assetType;
-            
+            var assetType = _.find($scope.types,{ "_id": $scope.assetType});
+            $scope.asset.AssetType = assetType;
             
         };
         
@@ -124,12 +136,39 @@
                             var thumbnails = _.pluck($scope.asset.Files, "thumbnailLink")
                             $scope.asset._thumbnails = thumbnails;
                     }else{
-                            //$scope.asset._thumbnials = [$scope.asset.Thumbnail];
+                            //$scope.asset._thumbnails = [$scope.asset.Thumbnail];
                     }
                 
                     angular.copy($scope.asset.Accessibility, $scope.tempData.Accessibility); 
-                    angular.copy($scope.asset.Owners, $scope.tempData.Owners); 
                     
+                    switch ($scope.asset.AssetTypeId) {
+                        case "type_task":
+                            if($scope.asset.Task == null){
+                                $scope.asset.Task = {}
+                            }
+                            if($scope.asset.Task.Updates == null){
+                                $scope.asset.Task.Updates = [];
+                            }
+                            if($scope.asset.Task.Owners == null){
+                                $scope.asset.Task.Owners = [];
+                            }
+                            
+                            $scope.asset.Task.Owners.forEach(function(m){
+                                m._name = m.FirstName + ' ' + m.LastName;
+                            })
+                            angular.copy($scope.asset.Task.Owners, $scope.tempData.Owners);
+                            
+                            break;
+                        case "type_calendar":
+                            if($scope.asset.Calendar == null){
+                                $scope.asset.Calendar = {}
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+                     
                     defer.resolve($scope.asset);    
                 },
                 function(e){
@@ -257,8 +296,8 @@
                 $scope.asset.Accessibility = _.pluck($scope.tempData.Accessibility, "_id");        
             }
 
-            if($scope.tempData.Owners){
-                $scope.asset.Owners = _.pluck($scope.tempData.Owners, "_id");        
+            if($scope.asset.Task && $scope.tempData.Owners){
+                $scope.asset.Task.Owners = _.pluck($scope.tempData.Owners, "_id");        
             }
             
 
@@ -269,19 +308,19 @@
                 data: $scope.asset
             }).then(function (d) {
                 $scope.asset = d.data.data;
-                    if($scope.asset.Accessibility == null){
-                        $scope.asset.Accessibility =[];
-                    }
-                    if(d.data.data.ExpireOn){
-                        $scope.asset.ExpireOn = new Date(d.data.data.ExpireOn);
-                        $scope.asset.neverExpire = false;
-                    }
-                    else{
-                        $scope.asset.neverExpire = true;
-                    }
-                    $scope.asset.Accessibility.forEach(function(m){
-                        m._name = m.FirstName + ' ' + m.LastName;
-                    })
+                if($scope.asset.Accessibility == null){
+                    $scope.asset.Accessibility =[];
+                }
+                if(d.data.data.ExpireOn){
+                    $scope.asset.ExpireOn = new Date(d.data.data.ExpireOn);
+                    $scope.asset.neverExpire = false;
+                }
+                else{
+                    $scope.asset.neverExpire = true;
+                }
+                $scope.asset.Accessibility.forEach(function(m){
+                    m._name = m.FirstName + ' ' + m.LastName;
+                })
                 defer.resolve(d.data.data);
             }, function (resp) {
                 console.log('Error status: ' + resp.status);
@@ -353,13 +392,13 @@
         };
         $scope.addUpdate = function(){
             if($scope.taskUpdateMessage != null && $scope.taskUpdateMessage != ""){
-                if($scope.asset.TaskUpdates == null){
-                    $scope.asset.TaskUpdates = []
+                if($scope.asset.Task.Updates == null){
+                    $scope.asset.Task.Updates = []
                 }
-                $scope.asset.TaskUpdates.push({
+                $scope.asset.Task.Updates.push({
                     Update : $scope.taskUpdateMessage,
                     UpdatedOn : new Date(),
-                    UpdatedBy : "Me"
+                    UpdatedBy : authService.userDetail._id
 
                 });
             }

@@ -423,22 +423,23 @@ exports.v1 = function(){
             }
             case "type_calendar":
             {
-                a.StartDate         = data.startDate;
-                a.EndDate           = data.endDate;
-                a.Venue             = data.venue;
-                a.VenueAddress      = data.venueAddress;
-                a.VenueMapLocation  = data.venueMapLocation;
-                a.Contact           = data.contact;
+                a.Calendar.StartDate         = data.Calendar.startDate;
+                a.Calendar.EndDate           = data.Calendar.endDate;
+                a.Calendar.Venue             = data.Calendar.venue;
+                a.Calendar.VenueAddress      = data.Calendar.venueAddress;
+                a.Calendar.VenueMapLocation  = data.Calendar.venueMapLocation;
+                a.Calendar.Contact           = data.Calendar.contact;
                 break;
             }
             case "type_task":
             {
-                a.TaskType = data.TaskType;
-                a.TaskStatus    = data.Status;
-                a.IsClosed  = data.IsClosed;
-                a.ClosedOn  = data.ClosedOn;
-                a.Owners    = data.Owners;
-                a.Updates   = data.Updates; 
+                a.Task = {};
+                a.Task.TaskType = data.Task.TaskType;
+                a.Task.TaskStatus    = data.Task.TaskStatus;
+                a.Task.IsClosed  = data.Task.IsClosed;
+                a.Task.ClosedOn  = data.Task.ClosedOn;
+                a.Task.Owners    = data.Task.Owners;
+                a.Task.Updates   = data.Task.Updates; 
                 
                 break;
             }
@@ -547,7 +548,16 @@ exports.v1 = function(){
                     retAsset.UpdatedBy = results.updatedBy;
                     retAsset.Parents = results.parents;
                     retAsset.Accessibility =results.accessibility;
-                    return callback(err, retAsset);
+                    switch (retAsset.AssetTypeId) {
+                        case "type_task":
+                            populateTask(retAsset, function(err, ast){
+                                return callback(err, ast);    
+                            })
+                            break;
+                        default:
+                            return callback(err, retAsset);
+                    }
+                    
                 });
             });
         });
@@ -651,4 +661,28 @@ exports.v1 = function(){
         return node;
     }
     
+    /**
+     * Populate Task related data
+     */
+    function populateTask (asset, callback){
+        //populate owners and updated by
+        //populate other referenced documents parallelly
+        async.parallel({
+            
+            owners: function(cb){
+                var profileIds = asset.Task != null && asset.Task.Owners != null ?  asset.Task.Owners : [] ;
+                mongo.connect( mongoURI,function(err, db){
+                    db.collection("profiles").find({"_id":{$in: profileIds}}).toArray(function(err, owners){
+                        db.close();
+                        cb(null, owners);
+                    });
+                });
+            },
+        },
+        function(err, results) {
+            asset.Task.Owners = results.owners;
+            return callback(err, asset);
+        });
+    }
+
 };

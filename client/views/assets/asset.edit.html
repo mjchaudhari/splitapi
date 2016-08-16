@@ -104,7 +104,7 @@
                                 </div>
                                 <div ng-switch-when="type_task">
                                     <h2>Task</h2>    
-                                    <div ez-expando expando-title="Assigned to : {{asset.Owners.length || 'Not set'}}">
+                                    <div ez-expando expando-title="Assigned to : {{asset.Task.Owners.length || 'Not set'}}">
                                         <div  class=" md-card chipsContactChips">
                                             <md-content class="md-padding autocomplete" layout="column">
                                                 <md-contact-chips
@@ -123,7 +123,7 @@
                                     <div>
                                         <md-input-container class="md-block" flex-gt-sm flex="35">
                                             <label>Status</label>
-                                            <md-select ng-model="asset.TaskStatus">
+                                            <md-select ng-model="asset.Task.TaskStatus">
                                                 <md-option ng-repeat="s in taskStatuses">
                                                     {{s}}
                                                 </md-option>
@@ -131,12 +131,12 @@
                                         </md-input-container>
                                         <div layout="column"  >
                                             <h3>Updates</h3>
-                                            <div ng-repeat="u in asset.TaskUpdates">
+                                            <div ng-repeat="u in asset.Task.Updates">
                                                 <span>{{u.Update}}</span>
                                                 <span ng-show=" u.UpdatedBy != null">{{" Updated by :" + u.UpdatedBy }}</span>
                                                 <span ng-show=" u.UpdatedOn != null"> On : {{  u.UpdatedOn | amCalendar }}</span>
                                             </div>
-                                            <div ng-show="asset.TaskUpdates == null || asset.TaskUpdates.length <= 0">
+                                            <div ng-show="asset.Task.Updates == null || asset.Task.Updates.length <= 0">
                                                 <span>No updates available</span>
                                             </div>
                                         </div>
@@ -149,6 +149,7 @@
                                             <md-button class="md-raised  md-primary md-icon-button" ng-click="addUpdate()"> 
                                                 <i class="material-icons">add</i>
                                             </md-button>  
+                                            <pre>{{taskUpdateMessage}}</pre>
                                         </div>
                                     </div>
                                     
