@@ -62,7 +62,7 @@
                                                 <span ng-if="asset.neverExpire"> Never Expire</span>
                                                 <span ng-if="!asset.neverExpire"> Expire On</span>
                                             </md-switch>
-                                            <md-datepicker ng-if="!asset.neverExpire" class="transperent-bg"  name="expireOn" ng-model="asset.ExireOn" md-placeholder="Expire on" flex="40"></md-datepicker>
+                                            <md-datepicker ng-if="!asset.neverExpire" class="transperent-bg"  name="expireOn" ng-model="asset.ExpireOn" md-placeholder="Expire on" flex="40"></md-datepicker>
                                         </div>
                                     </div>
                                     <div layout="row" layout-align="left center">                
@@ -131,10 +131,13 @@
                                         </md-input-container>
                                         <div layout="column"  >
                                             <h3>Updates</h3>
-                                            <div ng-repeat="u in asset.Task.Updates">
+                                            <div ng-repeat="u in asset.Task.Updates track by $index">
                                                 <span>{{u.Update}}</span>
-                                                <span ng-show=" u.UpdatedBy != null">{{" Updated by :" + u.UpdatedBy }}</span>
+                         `                       <span ng-show=" u.UpdatedBy != null">{{" Updated by :" + u.UpdatedBy }}</span>
                                                 <span ng-show=" u.UpdatedOn != null"> On : {{  u.UpdatedOn | amCalendar }}</span>
+                                                <md-button class="md-raised  md-primary md-icon-button" ng-click="editUpdate(u)"> 
+                                                    <i class="material-icons">add</i>
+                                                </md-button>  
                                             </div>
                                             <div ng-show="asset.Task.Updates == null || asset.Task.Updates.length <= 0">
                                                 <span>No updates available</span>
@@ -143,13 +146,13 @@
                                         <div layout="row">
                                             <md-input-container class=""  flex="75">
                                                 <label>Enter update</label>
-                                                <textarea ng-model="taskUpdateMessage" md-maxlength="2000" rows="3"  ></textarea>
+                                                <textarea ng-model="tempData.taskUpdate" md-maxlength="2000" rows="3"  ></textarea>
                                             </md-input-container>
                                               
                                             <md-button class="md-raised  md-primary md-icon-button" ng-click="addUpdate()"> 
                                                 <i class="material-icons">add</i>
                                             </md-button>  
-                                            <pre>{{taskUpdateMessage}}</pre>
+                                            <pre>{{tempData.taskUpdate}}</pre>
                                         </div>
                                     </div>
                                     
@@ -178,4 +181,7 @@
         <md-container>
     </div>
 </div>
+<!-- comment dialog template-->
+<script type="ng-template">
+</script>
 <!-- </md-bottom-sheet> -->

@@ -18,7 +18,8 @@
         $scope.types = [];
         $scope.tempData = {
                 "Owners":[],
-                "Accessibility":[]
+                "Accessibility":[],
+                "taskUpdate" : ""
         };
         $scope.errorMessage=[];
         $scope.file=null;
@@ -30,7 +31,7 @@
             "Completed",
             "Closed"
         ]
-        $scope.taskUpdateMessage = "";
+        
 
         $scope.asset = {
             "_id":$scope.assetId,
@@ -311,6 +312,10 @@
                 if($scope.asset.Accessibility == null){
                     $scope.asset.Accessibility =[];
                 }
+                if(d.data.data.ActivateOn){
+                    $scope.asset.ActivateOn = new Date(d.data.data.ActivateOn);
+                }
+                
                 if(d.data.data.ExpireOn){
                     $scope.asset.ExpireOn = new Date(d.data.data.ExpireOn);
                     $scope.asset.neverExpire = false;
@@ -390,18 +395,14 @@
             }
             
         };
-        $scope.addUpdate = function(){
-            if($scope.taskUpdateMessage != null && $scope.taskUpdateMessage != ""){
-                if($scope.asset.Task.Updates == null){
-                    $scope.asset.Task.Updates = []
-                }
+        $scope.addUpdate = function(u){
                 $scope.asset.Task.Updates.push({
-                    Update : $scope.taskUpdateMessage,
+                    Update : $scope.tempData.taskUpdate,
                     UpdatedOn : new Date(),
                     UpdatedBy : authService.userDetail._id
-
                 });
-            }
+
+                $scope.tempData.taskUpdate = "";
         }
         preInit();
     }//conroller ends
