@@ -21,7 +21,7 @@ exports.v1 = function(){
         }
         
         var re = new RegExp( param , 'gi');
-        mongo.connect( dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
             var filter = {$or: [
                 { 'FirstName': { $regex: re }}, 
                 { 'LastName': { $regex: re }},
@@ -46,7 +46,7 @@ exports.v1 = function(){
     this.createUser = function (req, callback) {
         console.log("controller : post user");
         var r = req.body;
-        mongo.connect( dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
             var filter = {"UserName":r.UserName};
         
             db.collection("profiles").find(filter).toArray(function(e, data){
@@ -124,7 +124,7 @@ exports.v1 = function(){
         if(r.Country){ p.Country = r.Country}
         if(r.ZipCode){ p.ZipCode = r.ZipCode}
         
-        mongo.connect( dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
             db.collection("profiles").findOneAndUpdate({"_id":p._id},{$set: p}, {"upsert":true, "forceServerObjectId":false, "returnOriginal":false}, function (err, profile) {
                 if(err){
                     console.error(err);
@@ -170,7 +170,7 @@ exports.v1 = function(){
         //TODO
         //search.Members = {$in : [new mongoose.Types.ObjectId(u._id)]};
         //search.Members = {$in : [ u._id]};
-        mongo.connect(dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect(dbConfig.mongoURI,function(err, db){
             db.collection("accounts")
             .find(search).toArray(function (e, a) {
                 if(e)
@@ -182,7 +182,7 @@ exports.v1 = function(){
                 async.eachSeries(a, function(a, callback){
                     //{"_id":  {$in: ["VJvggm7ug","VJ0esDQ_e","41yeBrY_l","NJ6PJdKFe","EyfRUZB5x"]} }
                     var users = a.User;
-                    mongo.connect(dbConfig.mongoURI, function(e, conn){
+                    dbConfig.mongodbclient.connect(dbConfig.mongoURI, function(e, conn){
                         conn.collection("profiles")
                         .find({"_id" : {$in: users}}).toArray(function (e, profiles) {
                             if(e){
@@ -223,7 +223,7 @@ exports.v1 = function(){
         if(r.Description){ p.Description = r.Description}
         if(r.ProfileIds){ p.Profiles = r.ProfileIds}
         
-        mongo.connect( dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
             db.collection("accounts").findOneAndUpdate({"_id":p._id},{$set: p}, {"upsert":true, "forceServerObjectId":false, "returnOriginal":false}, function (err, acct) {
                 if(err){
                     console.error(err);
@@ -336,7 +336,7 @@ exports.v1 = function(){
         
         var token =  getRandomPin();
         token = userId;
-        mongo.connect( dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
             db.collection("users").update({"_id":userId},{$set:{"AccessToken":token}},function(e,d){
                 if(e){
                     return callback(e, d);    
@@ -348,7 +348,7 @@ exports.v1 = function(){
     //GEt user user from user name
     var getUser = function(userName, cb){
         console.log("controller : verifySecret");
-        mongo.connect( dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
             db.collection("profiles").findOne({"UserName":userName}, function(err,u){
                 if(err){
                     db.close();

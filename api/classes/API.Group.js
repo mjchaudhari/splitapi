@@ -1,12 +1,9 @@
 
 var drive = require("./../googleDriveHelper.js")();
-
+var _dbConfig        = require("./../db.connection.js")
 
 var API = API || {} // Namespace
-API.Group = function(mongodbClient, dbConfig){
-    
-    _mongo = mongodbClient;
-    _dbConfig = dbConfig;
+API.Group = function(){
     _isReady = false;
 
     //Properties
@@ -28,7 +25,7 @@ API.Group = function(mongodbClient, dbConfig){
 
 API.Group.prototype.init = function(id, userId, cb){
     console.log("API.Group : init");
-    _mongo.connect( _dbConfig.mongoURI,function(err, db){
+    _dbConfig.mongodbClient.connect( _dbConfig.mongoURI,function(err, db){
         db.collection("groups")
         .findOne({"_id":id, "Members" : {$in: [userId]}}, function (e, g) {
             if(e){

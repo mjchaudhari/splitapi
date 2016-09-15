@@ -194,12 +194,12 @@ module.exports = function(dbConfig, auth, app) {
 	};
 
 	app.get("/v1/user/:username?", function(req, res){
-		var u = new user(mongo, dbConfig);
+		var u = new user();
 		u.init(req.params.username, function(err, data){
 			if(err){
 				res.json(new models.error(err));
 			}
-			res.json(new models.success());
+			res.json(new models.success(u));
 		});
 	})
 }

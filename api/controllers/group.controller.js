@@ -6,8 +6,6 @@ var _hlp =  require("../utils.js");
 var _ = require("underscore-node");
 var async = require ("async");
 var path = require("path");
-var mongodb = require('mongodb');
-var mongo = mongodb.MongoClient;
 var drive = require("./../googleDriveHelper.js")();
 var fileCtrl =  require("./file.controller.js");
 
@@ -18,7 +16,7 @@ exports.v1 = function(){
     
     //get single user based on username
     var checkGroupMembership = function(groupId, userId, cb){
-        mongo.connect(dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect(dbConfig.mongoURI,function(err, db){
             db.collection("groups")
             .findOne({"_id":groupId, "Members" : {$in: [userId]}}, function (e, g) {
                 if(e){
@@ -38,7 +36,7 @@ exports.v1 = function(){
     }
     
     this.getMembers = function(groupId, cb){
-        mongo.connect(dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect(dbConfig.mongoURI,function(err, db){
             db.collection("groups")
             .findOne({"_id":groupId}, function (e, g) {
                 if(e){
@@ -91,7 +89,7 @@ exports.v1 = function(){
         //TODO
         //search.Members = {$in : [new mongoose.Types.ObjectId(u._id)]};
         //search.Members = {$in : [ u._id]};
-        mongo.connect(dbConfig.mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect(dbConfig.mongoURI,function(err, db){
             db.collection("groups")
             .find({"Members" : {$in: [u._id]}}).toArray(function (e, g) {
                 if(e)
@@ -103,7 +101,7 @@ exports.v1 = function(){
                 async.eachSeries(g, function(g, callback){
                     //{"_id":  {$in: ["VJvggm7ug","VJ0esDQ_e","41yeBrY_l","NJ6PJdKFe","EyfRUZB5x"]} }
                     var members = g.Members;
-                    mongo.connect(dbConfig.mongoURI, function(e, conn){
+                    dbConfig.mongodbclient.connect(dbConfig.mongoURI, function(e, conn){
                         conn.collection("profiles")
                         .find({"_id" : {$in: members}}).toArray(function (e, members) {
                             if(e){

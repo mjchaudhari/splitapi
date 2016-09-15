@@ -12,7 +12,7 @@ var dbConfig        = require("./api/db.connection.js");
 var auth            = require("./api/auth.js");
 var busboy          = require('connect-busboy');
 
-var tempUploadFolder = path.normalize(__dirname + "/../../tmpStore");
+var tempUploadFolder = path.normalize(__dirname + "/tmpStore");
 var multer  = require('multer')
 var upload = multer({ dest: tempUploadFolder })
 

@@ -6,7 +6,7 @@ var mongo = mongodb.MongoClient;
 var Group = require("./../classes/API.Group.js");
 var models = require("./../response.models.js").models;
 module.exports = function(dbConfig, auth,app) {
-	var v1=new groupCtrl.v1(dbConfig);
+	var v1=new groupCtrl.v1();
 	/**
      * @api {get} /v1/groups get groups
      * @apiDescription Get the groups of the logged in user has created and the groups he is member of.
@@ -191,7 +191,7 @@ module.exports = function(dbConfig, auth,app) {
     
 	app.get('/v1/group/:groupId/files', auth.isBearerAuth, function(req, res) {
         var groupId = req.params.groupId; 
-		var g = new Group(mongo, dbConfig);
+		var g = new Group();
 		g.init(groupId,req.user.User._id, function(err, data){
 			if(err){
 				res.json(new models.error(err));
@@ -210,7 +210,7 @@ module.exports = function(dbConfig, auth,app) {
 	});
     app.get('/v1/group/:groupId/fileTree', auth.isBearerAuth, function(req, res) {
         var groupId = req.params.groupId; 
-		var g = new Group(mongo, dbConfig);
+		var g = new Group();
 		g.init(groupId,req.user.User._id, function(err, data){
 			if(err){
 				res.json(new models.error(err));
@@ -230,7 +230,7 @@ module.exports = function(dbConfig, auth,app) {
     app.get('/v1/group/:groupId/file/:fileId', auth.isBearerAuth, function(req, res) {
         var groupId = req.params.groupId; 
 		var fileId  = req.params.fileId;
-		var g = new Group(mongo, dbConfig);
+		var g = new Group();
 		g.init(groupId,req.user.User._id, function(err, data){
 			if(err){
 				res.json(new models.error(err));

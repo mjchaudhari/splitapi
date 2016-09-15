@@ -29,5 +29,8 @@
     "shortid": "^2.2.6",
     "underscore-node": "^0.1.2",
     "winston": "^2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.2"
   }
 }

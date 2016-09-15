@@ -5,8 +5,6 @@ var _hlp =  require("../utils.js");
 var _ = require("underscore-node");
 var async = require ("async");
 var path = require("path");
-var mongodb = require('mongodb');
-var mongo = mongodb.MongoClient;
 var fileCtrl = require("./file.controller.js");
 var drive = require("./../googleDriveHelper.js")();
 
@@ -43,7 +41,7 @@ exports.v1 = function(){
             options.from = new Date("01-01-01");
         }
         
-        mongo.connect( mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
             
             //find the groups of this user
             var filter = { "_id": options.groupId,  "Members": { $in: [u._id] } }
@@ -99,7 +97,7 @@ exports.v1 = function(){
             options.from = new Date("01-01-01");
         }
         
-        mongo.connect( mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
             
             //find the groups of this user
             var filter = { "_id": options.groupId,  "Members": { $in: [u._id] } }
@@ -167,7 +165,7 @@ exports.v1 = function(){
                 return cb(new models.error(e));
             }
         
-            mongo.connect( mongoURI,function(err, db){
+            dbConfig.mongodbclient.connect( mongoURI,function(err, db){
                 if(asset.GroupId == null){ 
                     return cb(models.error("Unauthorized access"));
                 }
@@ -206,7 +204,7 @@ exports.v1 = function(){
         }
         
         //find group folder
-        mongo.connect( mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
             db.collection("groups").findOne({"_id":req.body.GroupId}, function(err, group){
     
                 var f = req.files ;
@@ -286,7 +284,7 @@ exports.v1 = function(){
                     console.error(err)
                     return callback(err);
                 }
-                mongo.connect( mongoURI,function(err, db){
+                dbConfig.mongodbclient.connect( mongoURI,function(err, db){
                     var dataToSave = {
                         "Files":fileInfo, 
                         "Urls":urls
@@ -470,7 +468,7 @@ exports.v1 = function(){
      * get fully populated assets of given id
      */
     var getFullAsset = function (id, callback){
-        mongo.connect( mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
             db.collection("assets").findOne({"_id":id}, function(err, result){
                 if(err){
                     return callback(err,result);
@@ -567,7 +565,7 @@ exports.v1 = function(){
      */
     function determinePath(parentIds, callback){
         var parentIds = parentIds;
-        mongo.connect( mongoURI,function(err, db){
+        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
             db.collection("assets").find({"_id":{$in: parentIds }}).toArray(function(err, data){
                 var result = data;
                 if(err){
@@ -575,7 +573,7 @@ exports.v1 = function(){
                 }
                 
                 var paths = [];
-                if(result == null){
+                if(result == null || (_.isArray(result) && result.length == 0)){
                     //if the result is null, it means the parent is root element itself.
                     //consider parentId itself as result.
                     parentIds.forEach(function (parentId) {
@@ -671,7 +669,7 @@ exports.v1 = function(){
             
             owners: function(cb){
                 var profileIds = asset.Task != null && asset.Task.Owners != null ?  asset.Task.Owners : [] ;
-                mongo.connect( mongoURI,function(err, db){
+                dbConfig.mongodbclient.connect( mongoURI,function(err, db){
                     db.collection("profiles").find({"_id":{$in: profileIds}}).toArray(function(err, owners){
                         db.close();
                         cb(null, owners);
