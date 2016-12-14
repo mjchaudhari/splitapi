@@ -34,9 +34,6 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
-    "mocha": "^3.0.2"
-=======
     "gulp": "^3.9.1",
     "gulp-watch": "^4.3.11",
     "jasmine-node": "^1.14.5",
@@ -50,6 +47,5 @@
     "karma-phantomjs-launcher": "^1.0.2",
     "mocha": "^3.2.0",
     "phantomjs-prebuilt": "^2.1.14"
->>>>>>> Added test setup
   }
 }
