@@ -336,7 +336,7 @@ exports.v1 = function(){
                             }
                             
                             db.collection("groups").findOneAndUpdate({"_id":gdata._id},{$set: {"fileStorage" : resp.id}}, null, function (err, data) {
-                                //gdata._fileStorage = resp.id;
+                                //gdata._fileStorage = 
                                 return cb(null,gdata);
                             });
                         

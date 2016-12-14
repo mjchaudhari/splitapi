@@ -39,7 +39,7 @@
        
         
         $scope.onAssetSelected = function (asset){
-            $log.debuf(asset.Name);
+            $log.debugf(asset.Name);
             
         }
         var preInit = function(){
