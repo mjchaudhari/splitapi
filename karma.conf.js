@@ -20,27 +20,18 @@ module.exports = function(config) {
     singleRun: false,
     autoWatch: true,
     basePath: '',
-    frameworks: ['jasmine'],
+    frameworks : ['jasmine'],
     plugins: [
         'karma-phantomjs-launcher',
-        //'karma-chrome-launcher',
-        'karma-junit-reporter',
-        'karma-html-reporter',
-        'karma-jasmine',
-        'karma-coverage',
-        'karma-ng-html2js-preprocessor'
+        
     ],
+    browserify: {
+      debug: false,
+      transform: [ 'brfs' ]
+    },
     exclude: [
     ],
     browsers : ['PhantomJS'],
-    reporters: ['progress', 'html', 'coverage'],
-
-    htmlReporter: {
-        outputDir: 'test-reports/result-html/',
-    },
-    coverageReporter: {
-        type: 'html',
-        dir: 'test-reports/coverage/'
-    },
+    
   });
 };

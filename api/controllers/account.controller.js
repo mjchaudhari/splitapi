@@ -3,15 +3,12 @@ Manage user user
 */
 var _dir = process.cwd();
 var models = require("./../response.models.js").models;
-var shortId     =require("shortid");
-var dbConfig =  require("../db.connection.js");
 var _hlp =  require("../utils.js");
 var _ = require("underscore-node");
 var async = require ("async");
 var path = require("path");
-var mongodb = require('mongodb');
-var mongo = mongodb.MongoClient;
-
+var apiCore = require("./../classes/API.Core.js");
+var Core = new apiCore();
 exports.v1 = function(){
     
     this.searchUsers = function(req,callback){
@@ -19,90 +16,26 @@ exports.v1 = function(){
         if(!param){
             param = req.query.term;
         }
-        
-        var re = new RegExp( param , 'gi');
-        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
-            var filter = {$or: [
-                { 'FirstName': { $regex: re }}, 
-                { 'LastName': { $regex: re }},
-                { 'UserName': { $regex: re }},
-                { 'EmailId': { $regex: re }}]
+        Core.searchUsers(param, function(e, data){
+            if(e){
+                return callback(new models.error(e));
+            }
+            if(data){
+                return callback(new models.success(data));
             };
-            
-            db.collection("profiles").find(filter).toArray(function(e, data){
-                if(e){
-                    db.close();
-                    return callback(new models.error(e));
-                }
-                if(data){
-                    db.close();
-                    return callback(new models.success(data));
-                };
-            });
-        });//Mongo connect end
+        });
+
     };
     
     //Register User
     this.createUser = function (req, callback) {
-        console.log("controller : post user");
-        var r = req.body;
-        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
-            var filter = {"UserName":r.UserName};
-        
-            db.collection("profiles").find(filter).toArray(function(e, data){
-                if(e){
-                    db.close();
-                    return callback(new models.error(e));
-                }
-                if(data.length > 0){
-                    db.close();
-                    var e = new models.error(e, r.UserName + " already registered.");
-                    return callback(e);
-                };
-                
-                var p = {
-                    _id : shortId.generate(),
-                    UserName: r.UserName,
-                    FirstName: r.FirstName,
-                    LastName: r.LastName,
-                    
-                    Status:"REQUESTED",
-                    AlternateEmail : r.AlternateEmail,
-                    EmailId : r.EmailId,
-                    Picture : r.Picture,
-                    CreatedOn : new Date(),
-                    Address : r.Address,
-                    City : r.City,
-                    Country : r.Country,
-                    ZipCode : r.ZipCode
-                };
-                
-                db.collection("profiles").insert(p, {"forceServerObjectId":false, "upsert":true,  "fullResult":true}, function(e, data){
-                    if(e){
-                        db.close();
-                        return callback(new models.error(e));
-                    }   
-                
-                    var randomPin = getRandomPin();
-                    var user = {
-                        _id : shortId.generate(),
-                        ProfileId : p._id,
-                        Secret :randomPin,
-                        ForceReset: false,
-                        SecretsUsed : [randomPin]        
-                    };
-                    
-                    db.collection("users").insert(user, {"forceServerObjectId":false},  function(e, data){
-                        if(e){
-                            db.close();
-                            return callback(new models.error(e));
-                        }
-                        db.close();
-                        return callback(new models.success(u));
-                    });
-                }); //PRofile save end               
-            });
-        });//Mongo connect end
+        var data = req.body
+        Core.createUser(data, function(e, p) {
+            if(e){
+                return callback(new models.error(e));
+            }
+            return callback(new models.success(p));
+        });
     };
     
     //save User
@@ -112,19 +45,17 @@ exports.v1 = function(){
         var id = r._id;
         var p = {};
             //UserName: r.UserName,
-        if(r.FirstName){ p.FirstName = r.FirstName;}
-        if(r.LastName){ p.LastName = r.LastName}
-            
-            
-        if(r.AlternateEmail) {p.AlternateEmail = r.AlternateEmail;}
-        if(r.EmailId){ p.EmailId = r.EmailId;}
-        if(r.Picture){ p.Picture = r.Picture;}
-        if(r.Address){ p.Address = r.Address;}
-        if(r.City) { p.City = r.City;}
-        if(r.Country){ p.Country = r.Country}
-        if(r.ZipCode){ p.ZipCode = r.ZipCode}
+        if(r.firstName){ p.firstName = r.firstName;}
+        if(r.lastName){ p.lastName = r.lastName}
+        if(r.alternateEmail) {p.alternateEmail = r.alternateEmail;}
+        if(r.emailId){ p.emailId = r.emailId;}
+        if(r.picture){ p.picture = r.picture;}
+        if(r.address){ p.address = r.address;}
+        if(r.city) { p.city = r.city;}
+        if(r.country){ p.country = r.country}
+        if(r.zipCode){ p.zipCode = r.zipCode}
         
-        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
+        mongo.client.connect( mongo.URI,function(err, db){
             db.collection("profiles").findOneAndUpdate({"_id":p._id},{$set: p}, {"upsert":true, "forceServerObjectId":false, "returnOriginal":false}, function (err, profile) {
                 if(err){
                     console.error(err);
@@ -239,43 +170,18 @@ exports.v1 = function(){
     this.authenticate = function(req, cb){
         console.log("controller : verifySecret");
         var r = req.body;
-        var secret = r.Secret;    
-        getUser(r.UserName, function(e,u){
+        var c = {
+            userName: r.userName,
+            secret: r.secret
+        };   
+        Core.authenticate(c, function(e,p){
             if(e){
-                
-                return cb(new models.error("invalid credentials")); 
+                return cb(new models.error(e)); 
             }
-            if(u == null){
-                return cb(new models.error("invalid credentials"));
-            }
-            if(u.Secret != secret){
-                return cb(new models.error("invalid credentials"));
-            }
-            generateToken(u._id, function(e, t){
-                if(e){
-                    console.error(e);
-                    db.close();
-                    return cb(new models.error("Internal error"));
-                }
-                var p = u.User;
-                var ret = {
-                        _id : p._id,
-                        AccessToken:t.AccessToken,
-                        UserName: p.UserName,
-                        FirstName: p.FirstName,
-                        LastName: p.LastName,
-                        Picture : p.Picture,
-                        EmailId: p.EmailId,
-                        Address : p.Address,
-                        City : p.City,
-                        Country : p.Country,
-                        ZipCode : p.ZipCode
-                }
-                var m =  new models.success(ret);
-                return cb(m); 
-            })
+            var m =  new models.success(p);
+            return cb(m); 
         });
-    }
+    };
     
     this.resetPasword = function(req, callback){
         console.log("controller : verifySecret");
@@ -325,26 +231,7 @@ exports.v1 = function(){
         });
         
     }
-    //Get random pin
-    var getRandomPin = function()
-    {
-        var randomPin = Math.floor(Math.random() * (999999- 111111) + 111111);
-        randomPin = 654321;
-        return randomPin;
-    };
-    var generateToken = function(userId, callback){
-        
-        var token =  getRandomPin();
-        token = userId;
-        dbConfig.mongodbclient.connect( dbConfig.mongoURI,function(err, db){
-            db.collection("users").update({"_id":userId},{$set:{"AccessToken":token}},function(e,d){
-                if(e){
-                    return callback(e, d);    
-                }                
-                return callback(null, {"AccessToken":token});
-            });
-        });
-    }
+    
     //GEt user user from user name
     var getUser = function(userName, cb){
         console.log("controller : verifySecret");

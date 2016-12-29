@@ -1,54 +1,12 @@
 var oauth2orize = require('oauth2orize');
 var passport = require('passport');
-var BasicStrategy = require('passport-http').BasicStrategy;
-//var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
+var Core = require("./classes/API.Core.js");
 
-
-var dbConfig = require("./db.connection.js")
-var mongodb = require('mongodb');
-var mongo = mongodb.MongoClient;
-
-    
-    passport.use(new BasicStrategy(
-      function(username, password, callback) {
-        userModel.findOne({ UserName: username, Secret:password }, function (err, user) {
-          if (err) { return callback(err); }
-    
-          // No user found with that username
-          if (!user) { return callback(null, false); }
-            // Success
-            return callback(null, user);
-        });
-      }
-    ));
-    passport.use(new BearerStrategy( function(accessToken, done) {
-        
-            //get user basid on acess token
-        mongo.connect(dbConfig.mongoURI,function(err, db){  
-            db.collection("users")
-            .findOne({"AccessToken": accessToken}, function (err, user) {
-                if (err) { 
-	            	return done(err); 
-	            }
-	            if (!user) { 
-	            	return done(null, false); 
-	            }
-                
-                db.collection("profiles").findOne({"_id":user.ProfileId},function(e,p){
-                    var info = { scope: '*' };
-                    user.User = p;
-                    return done(null, user, info);                    
-                });
-                
-
-            });
-	    });    
-    }));
-    
-
-exports.isAuthenticated = function(){
-    console.log("authenticating");
-    passport.authenticate('basic', { session : false });}
-
+passport.use(new BearerStrategy( function(accessToken, done) {    
+    Core.getUserFromAccessToken(accessToken, function(e,u){
+        var info = { scope: '*' };
+        return done(e, u, info);                        
+    })
+}));
 exports.isBearerAuth = passport.authenticate('bearer', { session : false });;

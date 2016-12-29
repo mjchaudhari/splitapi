@@ -32,15 +32,15 @@ angular.module('app').factory('authService', ['$http', '$log','$q','config' ,'$l
     var _login = function (userName, password) {
         var deferred = $q.defer();
         var model = {
-            UserName: userName
-            , Secret: password
+            userName: userName
+            , secret: password
         };
         var url = config.apiBaseUrl + "/v1/authenticate";
         $http.post(url, model).then(
         function(d){
         	dataService.clearCache();
             $localStorage.__splituser = d.data.data;
-            $localStorage.__splituserat = d.data.data.AccessToken;
+            $localStorage.__splituserat = d.data.data.accessToken;
             _userDetail = d.data.data;
             _isLoggedIn = true;
             deferred.resolve(d.data.data);

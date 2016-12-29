@@ -94,15 +94,12 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 </head>
 
 <body id="HTMLReporter" class="html-reporter">
-<h1>Tested in PhantomJS 2.1.1 (Mac OS X 0.0.0) on Tue Dec 13 2016</h1>
+<h1>Tested in PhantomJS 2.1.1 (Mac OS X 0.0.0) on Sun Dec 18 2016</h1>
 
 <div class="alert">
 
 
 
-  
-  <span class="passingAlert bar"><span class="fold-buttons"><a href="#" onclick="fold();">Fold</a> | 
-  <a href="#" onclick="unfold();">Unfold</a></span>4 specs, 0 failed, 0 pending</span>
   
 
 
@@ -115,7 +112,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
   
   
     <div class="suite passed">
-      <span class="description">Firs test add two numbers</span>
+      <span class="description">0</span>
     
       <div class="specSummary passed">
       <span class="description">should retun 2</span>
@@ -125,7 +122,12 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
       <span class="description">should retun 3</span>
       </div>
     
-      <div class="specSummary passed">
+    </div>
+  
+    <div class="suite failed">
+      <span class="description">1</span>
+    
+      <div class="specSummary failed">
       <span class="description">should retun 2</span>
       </div>
     
@@ -140,6 +142,17 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 
 <div id="details">
   
+  
+  <div class="specDetail failed">
+    <span class="description">1 should retun 2</span>
+    <div class="stackTrace">
+      <div class="resultMessage">ReferenceError: Can't find variable: API in http://localhost:9876/base/api/classes/API.Core.test.js?a4a04bd1fe21903b2f241628e245ee6069b778bb (line 6)
+http://localhost:9876/base/api/classes/API.Core.test.js?a4a04bd1fe21903b2f241628e245ee6069b778bb:6:23
+loaded@http://localhost:9876/context.js:151:17</div>
+    </div>
+  </div>
+  
+  
 </div>
 
 <script>
@@ -151,7 +164,7 @@ document.body.onkeypress = function (e) {
   switch (e.keyCode) {
     case 102: toggleFold(); break;
     case 49: showSummary(); break;
-    
+    case 50: showFailures(); break;
   }
 };
 
