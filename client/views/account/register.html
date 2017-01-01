@@ -1,0 +1,40 @@
+<div ng-controller="registerController">
+	
+	<md-content  layout-padding class="transperent-bg">
+		<a href="" ui-sref="home" style="color:white;text-decoration:none;" ><b class="md-title">{{_appName}}</b></a>	
+	
+        <div layout="column">
+			
+	<!--           <ez-image-upload img="registerModel.Thumbnail" default-img=""></ez-image-upload> -->
+			
+			  <md-input-container class-"login-input">
+				<label>First Name</label>
+				<input ng-model="registerModel.fn">
+			  </md-input-container>
+			  <md-input-container  class-"login-input">
+				<label>Last Name</label>
+				<input ng-model="registerModel.ln" >
+			  </md-input-container>
+			  <md-input-container class-"login-input" >
+				<label>Mobile Number <sup>*</sup></label>
+				<input ng-model="registerModel.mobileNo" >
+			  </md-input-container>
+			 
+		</div>
+        
+        <div layout layout-sm="row">
+          <md-button class="md-raised md-primary" ng-click="saveRegistration()">Join</md-button>
+          
+          <md-button  ui-sref="home" class="md-raised md-primary" >Cancel</md-button>
+        </div>
+        <div class="form-group">
+            <md-button href="" ng-href="#resendpin" type="button" style="btn btn-danger"> Already registered?</md-button>
+        </div>
+        
+	</md-content>
+	<md-footer layout-padding class="">
+	</md-footer>			
+      
+      
+  
+</div>

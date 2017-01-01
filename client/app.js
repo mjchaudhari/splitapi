@@ -69,6 +69,7 @@
    .state("landing", {url:"/", templateUrl : "/landing.html"})
    .state("account", {url:"/account", templateUrl : "/views/account/accountContainer.html", abstract:"true"})
    .state("account.login", {url:"/login", templateUrl : "/views/account/login.html"})
+   .state("account.register", {url:"/register", templateUrl : "/views/account/register.html"})
    .state("account.forgotpassword", {url:"/forgotpassword", templateUrl : "/views/account/forgotpassword.html"})     
    
    //requires login

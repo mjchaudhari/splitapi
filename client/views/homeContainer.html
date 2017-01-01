@@ -9,7 +9,7 @@
                 <div layout="column" class="md-toolbar-tools-bottom inset">
                     <div layout="row">
                         <img src ng-src="{{user.Picture}}" class="md-avatar thumbnail-img"  md-click="editProfile()" /> 
-                        <div>{{user.FirstName}} {{user.LastName}}</div>
+                        <div>{{user.firstName}} {{user.lastName}}</div>
                     </div>
                     <h2 class="md-toolbar-tools md-toolbar-tools-bottom">
                         <div flex></div>
@@ -30,7 +30,9 @@
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleSideBar('left')"> 
                     <i class="material-icons">menu</i>
                 </md-button>
-                <span >: Collaboration : </span>
+                <span >
+                        <cp-logo></cp-logo>
+                </span>
 
                 <div layout="row">
                     

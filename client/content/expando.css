@@ -18,7 +18,7 @@
           justify-content: center;
 }
 
-img {
+expando__card.img {
   max-width: 100%;
   height: 100px;
 }

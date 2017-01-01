@@ -24,7 +24,6 @@
 
     
     this.ezImageUploadModalTemplate = [
-       
           '<md-dialog flex="100" style="height:100vh" aria-label="List dialog">',
              '<md-dialog-content>',
                 '<md-toolbar md-scroll-shrink="false">',
