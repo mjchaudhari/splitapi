@@ -7,7 +7,9 @@ var _ = require("underscore-node");
 var async = require ("async");
 var path = require("path");
 var drive = require("./../googleDriveHelper.js")();
-var fileCtrl =  require("./file.controller.js");
+var fileCtrl =  require("./../file.handler.js");
+
+var Profile = require("./../classes/API.Profile.js");
 
 /*
 group module
@@ -45,7 +47,7 @@ exports.v1 = function(){
                 else if(g == null){
                     return cb("Group is not found", null);
                 }
-                var filter = {"_id" : {$in : g.Members}};
+                var filter = {"_id" : {$in : g.members}};
                 db.collection("profiles").find(filter).toArray(function(e, data){
                     if(e){
                         db.close();
@@ -63,7 +65,7 @@ exports.v1 = function(){
     
     this.getGroups =function(req, cb)
     {
-        var u = req.user.User; //req.userIsAcount and user.User is actual user profile
+        var u = req.user; //req.userIsAcount and user.User is actual user profile
         
         var q = req.query;
 		var options = {
@@ -71,61 +73,28 @@ exports.v1 = function(){
 			name:q.name,
 			status:q.status
 		};
-
-        var search = {};
-        if(u == null){
-            var err = new models.error("Unauthenticated");
-            return cb(err)
-        }
-
-        if(options._id && options._id != 0)
-        {
-            search._id = options._id;
-        }
-        if(options.name && options.name.length > 0)
-        {
-            search.Name = options.name;
-        }
-        //TODO
-        //search.Members = {$in : [new mongoose.Types.ObjectId(u._id)]};
-        //search.Members = {$in : [ u._id]};
-        dbConfig.mongodbclient.connect(dbConfig.mongoURI,function(err, db){
-            db.collection("groups")
-            .find({"Members" : {$in: [u._id]}}).toArray(function (e, g) {
-                if(e)
-                {
-                    db.close();
-                    return cb(new models.error(e));
-                }
-                var result = [];
-                async.eachSeries(g, function(g, callback){
-                    //{"_id":  {$in: ["VJvggm7ug","VJ0esDQ_e","41yeBrY_l","NJ6PJdKFe","EyfRUZB5x"]} }
-                    var members = g.Members;
-                    dbConfig.mongodbclient.connect(dbConfig.mongoURI, function(e, conn){
-                        conn.collection("profiles")
-                        .find({"_id" : {$in: members}}).toArray(function (e, members) {
-                            if(e){
-                                conn.close();
-                                return callback();
-                            }
-                            else{
-                                g.Members=members;
-                                result.push(g);
-                                conn.close();
-                                return callback();
-                            }
-                        });
-                    });
-                        
-                }, function () {    
-                    db.close();
-                    return cb(new models.success(result));
-                });
-                
-            });
+        var p = new Profile(u);
+        p.getGroups(options, function(e, result){
+            if(e)
+            {
+                db.close();
+                return cb(new models.error(e));
+            }
+            return cb(new models.success(result));
         });
     };
     
+    this.createOrUpdateGroup = function(req, cb){
+        var p = new Profile(req.user);
+        p.createOrUpdateGroup(req.body, function(e, data){
+            if(e){
+                return cb(new models.error(e));
+            }
+            return cb(new models.success(data));
+        });
+    
+    }
+
     //Create or update the group
     this.save = function (req, cb) {
         console.log("controller : post artifact");
@@ -159,9 +128,9 @@ exports.v1 = function(){
             data.Url= param.Url;
         if(param.GroupType)
             data.GroupType = param.GroupType;
-        if(param.Members){
-            data.Members = [];
-            data.Members = _.pluck(param.Members, "_id");
+        if(param.members){
+            data.members = [];
+            data.members = _.pluck(param.members, "_id");
         }
         data.UpdatedBy = currentUser._id;
         data.UpdatedOn  = new Date();
@@ -227,7 +196,7 @@ exports.v1 = function(){
                     }
                     var membersToAdd=[];
                     usersArray.forEach(function (u) {
-                        var m = _.find(g.Members, function(item) {
+                        var m = _.find(g.members, function(item) {
                             return item == u;
                         }); 
                         if(!m){
@@ -236,10 +205,10 @@ exports.v1 = function(){
                     })
                         
                     for (var index = 0; index < membersToAdd.length; index++) {
-                        g.Members.push(membersToAdd[index]._id);
+                        g.members.push(membersToAdd[index]._id);
                     }
                     
-                    db.collection("groups").findOneAndUpdate({"_id":groupId}, {$set:{Members:g.Members}},
+                    db.collection("groups").findOneAndUpdate({"_id":groupId}, {$set:{Members:g.members}},
                     function (e,data) {
                         if(e){
                             db.close();
@@ -286,7 +255,7 @@ exports.v1 = function(){
                     }
                     var membersToRemove=[];
                     usersArray.forEach(function (u) {
-                        var m = _.find(g.Members, function(item) {
+                        var m = _.find(g.members, function(item) {
                             return item == u;
                         }); 
                         if(m){
@@ -295,11 +264,11 @@ exports.v1 = function(){
                     })
                     
                     for (var index = 0; index < membersToRemove.length; index++) {
-                        var index = _.indexOf(g.Members, membersToRemove[index]);
-                        g.Members.splice(index-1,1);
+                        var index = _.indexOf(g.members, membersToRemove[index]);
+                        g.members.splice(index-1,1);
                     }
                     
-                    db.collection("groups").findOneAndUpdate({"_id":groupId}, {$set:{Members:g.Members}},
+                    db.collection("groups").findOneAndUpdate({"_id":groupId}, {$set:{Members:g.members}},
                     function (e,data) {
                         if(e){
                             db.close();
@@ -367,7 +336,7 @@ exports.v1 = function(){
                 Locale : g.Locale,
                 Status : g.Status,
                 Thumbnail : g.Thumbnail,
-                Members : g.Members,
+                Members : g.members,
                 Url : g.Url,
                 GroupType : g.GroupType,
                 CreatedBy : g.CreatedBy,

@@ -3,7 +3,7 @@
 var groupCtrl = require("./../controllers/group.controller.js");
 var mongodb = require('mongodb');
 var mongo = mongodb.MongoClient;
-var Group = require("./../classes/API.Group.js");
+
 var models = require("./../response.models.js").models;
 module.exports = function(dbConfig, auth,app) {
 	var v1=new groupCtrl.v1();
@@ -76,7 +76,7 @@ module.exports = function(dbConfig, auth,app) {
     */
 	app.post('/v1/group', auth.isBearerAuth,function(req, res) {
 		//console.log(req.body);
-		v1.save(req, function (d){
+		v1.createOrUpdateGroup(req, function (d){
 			if(d.isError){
 				res.status(400).send(d);
 				return;

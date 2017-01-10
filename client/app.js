@@ -78,6 +78,7 @@
    .state("home.groups", {url:"/groups", templateUrl : "/views/groups/groups.html"})
    
    .state("home.group", {url:"/:g", templateUrl : "/views/groups/group.html"})
+   .state("home.group.board", {url:"/board", templateUrl : "/views/groups/group.board.html"})
    .state("home.group.detail", {url:"/detail", templateUrl : "/views/groups/group.detail.html"})
    .state("home.group.analytics", {url:"/analytics", templateUrl : "./views/groups/group.analytics.html"})
    .state("home.group.assets", {url:"/assets?p", templateUrl : "./views/assets/asset.list.html"})

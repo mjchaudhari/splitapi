@@ -1,10 +1,10 @@
 var path = require("path");
 var fs = require('fs-extra'); 
-var azureStorage = require("../azureStorageHelper.js")();
-var gDrive = require("../googleDriveHelper.js")();
+var azureStorage = require("./azureStorageHelper.js")();
+var gDrive = require("./googleDriveHelper.js")();
 var shortid	= require("shortid");
 
-var tmpUploadFolder = path.normalize(__dirname + "/../../tmpStore");
+var tmpUploadFolder = path.normalize(__dirname + "/../tmpStore");
 
 exports.saveFileFromBase64 = function(fileName, b64String, callback){
     var matches = b64String.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),

@@ -9,6 +9,8 @@ var async = require ("async");
 var path = require("path");
 var apiCore = require("./../classes/API.Core.js");
 var Core = new apiCore();
+var apiAccount = require("./../classes/API.Profile.js");
+
 exports.v1 = function(){
     
     this.searchUsers = function(req,callback){
@@ -257,4 +259,5 @@ exports.v1 = function(){
     
         });
     }
+
 }

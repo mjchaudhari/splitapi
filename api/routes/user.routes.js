@@ -189,5 +189,5 @@ module.exports = function (dbConfig, auth, app) {
 			}
 			res.json(new models.success(u));
 		});
-	})
+	});
 }

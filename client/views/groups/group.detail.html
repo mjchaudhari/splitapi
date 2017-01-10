@@ -1,8 +1,8 @@
 <div  ng-controller="groupDetailController"  cg-busy="promices.groupDetail" >
     <md-toolbar class=""  >
 		  <div class="md-toolbar-tools">
-            <ez-thumb img="group.Thumbnail" text="group.Name"></ez-thumb>
-            <span>{{group.Name}}</span>
+            <ez-thumb img="group.thumbnail" text="group.name"></ez-thumb>
+            <span>{{group.name}}</span>
             <div flex></div>
             <md-button class="md-icon-button" aria-label="save" ui-sref="home.group.detail">
 				<i class="material-icons">info</i>
@@ -25,31 +25,31 @@
     </md-toolbar>
     <div layout-padding>
         <div layout="row" flex  layout-align="start start">
-            <ez-image-upload img="group.Thumbnail" ></ez-image-upload>
+            <ez-image-upload img="group.thumbnail" ></ez-image-upload>
             <div layout="column" flex>
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>What's the group called!</label>
-                        <input ng-model="group.Name">
+                        <input ng-model="group.name">
                     </md-input-container>
                     <div class="hint" ></div>
                 </div>
                 <md-input-container class="md-block">
                     <label>More about this awesome group</label>
-                    <textarea ng-model="group.Description" columns="1" md-maxlength="150" rows="5"></textarea>
+                    <textarea ng-model="group.description" columns="1" md-maxlength="150" rows="5"></textarea>
                 </md-input-container>
             </div>
         </div>
         <div class="chipsContactChips">
-            <md-sub-header>Group Members : {{group.Members.length || '0'}}</md-sub-header>
+            <md-sub-header>Group Members : {{group.members.length || '0'}}</md-sub-header>
             <md-content class="md-padding autocomplete" layout="column">
                 
                 <md-contact-chips
-                    ng-model="group.Members"
+                    ng-model="group.members"
                     md-contacts="querySearch($query)"
                     md-contact-name="_name"
-                    md-contact-image="Picture"
-                    md-contact-email="UserName"
+                    md-contact-image="picture"
+                    md-contact-email="userName"
                     md-require-match="true"
                     md-highlight-flags="i"
                     filter-selected="true"

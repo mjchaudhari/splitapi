@@ -7,10 +7,10 @@
         <p><img src="./content/images/cp.png" alt=""></p>
         <p><small>Communication platform v1</small></p>
         <div ng-show="user!=null"  layout="row">
-            <ez-thumb text="user.FirstName + ' ' + user.lastName" img="user.Picture"  thumbnail-class="'avatar'"> </ez-thumb>
-            <span>{{user.FirstName + ' ' + user.lastName}}<span>
+            <ez-thumb text="user.firstName + ' ' + user.lastName" img="user.Picture"  thumbnail-class="'avatar'"> </ez-thumb>
+            <span>{{user.firstName + ' ' + user.lastName}}<span>
         </div>        
 
-        <md-button layout="column" layout-align="center" ng-click="startApp()" >Start!</md-button>
+        <md-button ng-click="startApp()" >Start!</md-button>
     </div>
 </div>

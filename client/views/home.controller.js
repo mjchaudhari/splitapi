@@ -9,7 +9,7 @@
         config, $mdSidenav, authService, $mdDialog,$mdBottomSheet){
         
         //bindable mumbers
-        $scope.title  = "index";
+        $scope.mainTitle  = "Collaborate";
         $scope.nextTheme = _nextTheme
         $scope.themes = config.themes,
         $scope.theme = $localStorage.theme;
@@ -110,8 +110,6 @@
                         icon:'group'
                 }
 
-                
-
                 //build menu sections
                 $scope.groupsList.forEach(function(g){
                    
@@ -120,25 +118,12 @@
                        Name: g.Name,
                        icon:'people_outline',
                        Children:[
-                           {
-                                Id:g._id+1,
-                                Name: 'Info',
-                                icon:'info',
-                                parentId:g._id
-                            },
                             {
-                                Id:g._id + 2,
-                                Name: 'Assets',
+                                id:g._id + 1,
+                                name: 'Assets',
                                 icon:'list',
                                 parentId:g._id
                             },
-                            {
-                                Id:g._id + 3,
-                                Name: 'Analytics',
-                                icon:'assessment',
-                                parentId:g._id
-                            }
-                            
                        ] 
                    };
                    sectionHeader.Children.push(section);
@@ -156,23 +141,20 @@
             $scope.selectedMenu = node;
 
             switch (node.Name) {
-                case "Info":{
-                    $state.go("home.group.detail", {"g":node.parentId});
+                case "Groups":{
+                    $state.go("home.groups", {"g":node.parentId});
                     break;
                 }
                 case "Assets":{
                     $state.go("home.group.assets", {"g":node.parentId, "p":node.parentId});
                     break;
                 }
-                case "Analytics":{
-                    $state.go("home.group.analytics",{"g":node.parentId});
-                    break;
-                }
-            }
-            
+            }            
         }
         
-        
+        $scope.createGroup = function(){
+            $state.go("home.group.detail");
+        }
         
         var preInit = function(){
             var tasks = [];

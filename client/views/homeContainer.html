@@ -30,17 +30,12 @@
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleSideBar('left')"> 
                     <i class="material-icons">menu</i>
                 </md-button>
-                <span >
-                        <cp-logo></cp-logo>
-                </span>
-
                 <div layout="row">
-                    
-                    <span ng-repeat="n in nodeParentTrail">{{n.Name}} <span ng-if="!$last"> > </span> </span>
+                    <span>{{mainTitle || 'Collaborate'}}</span>
                 </div>
                 <span flex></span>
                 
-                <md-fab-speed-dial md-direction="left" md-open="false" class="md-scale">
+<!--                 <md-fab-speed-dial md-direction="left" md-open="false" class="md-scale">
 
                     <md-fab-trigger>
                       <md-button aria-label="menu" class="md-icon-button " >
@@ -58,12 +53,10 @@
                         <i class="material-icons">settings</i> 
                       </md-button>
                     </md-fab-actions>
-                </md-fab-speed-dial>
+                </md-fab-speed-dial> -->
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="openNotification()">
                     <i class="material-icons">add_alert</i>
                 </md-button>
-                
-                <img src ng-src="{{user.Picture}}" class="md-avatar avatar-small"  md-click="editProfile()" />
             </div>
         </md-toolbar>
 
@@ -76,7 +69,7 @@
                             <md-button class="md-raised md-accent" ng-click="$mdOpenMenu($event)">Create...</md-button>
                             <md-menu-content>
                                 <md-menu-item>
-                                    <md-button ng-click="createGroup( $event)">
+                                    <md-button ng-click="createGroup($event)">
                                         <div layout="row" layout-align="left center">
                                             <i class="material-icons">collections_bookmark</i>
                                             Group
@@ -152,17 +145,10 @@
                 </md-toolbar>
                 <div>
                 <md-content  class="md-hue-1" layout="column" flex>
-                    <div layout="column" flex>
-                        <div ez-tree selected-nodes="selectedMenu" 
-                            parent-trail="nodeParentTrail"
-                            allow-multi-select="false" tree="menu" on-select="onSelect">
-                            tree div
-                        </div>
-                        <!--<ezTree tree="menu" options="options" selected-nodes="selectedMenu"
-                                on-select="onMenuSelect(n)"></ezTree>-->
-                    </div>
+                    
                     <div  layout="column" flex style="height:70vh;">
                         <md-list class="md-body-1">
+                            
                             <md-list-item  ui-sref="home.dashboard">
                                 <md-list-content    md-ink-ripple layout="row" >
                                     <div class="inset">
@@ -172,8 +158,16 @@
                                     </div>
                                 </md-list-content>
                             </md-list-item >
+                            <md-list-item  ui-sref="home.groups">
+                                <md-list-content    md-ink-ripple layout="row" >
+                                    <div class="inset">
+                                        <ng-md-icon icon="dashboard"></ng-md-icon>
+                                    </div>
+                                    <div class="">Groups
+                                    </div>
+                                </md-list-content>
+                            </md-list-item >
                             <md-divider></md-divider>
-                            
                             <md-list-item ui-sref="account.users"  aria-label="goups">
                                 <md-list-content  ng-click="toggleSideBar('left')"  ui-sref="home." md-ink-ripple layout="row" > 
                                     <div class="inset">

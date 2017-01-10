@@ -61,7 +61,7 @@ API.Core.prototype.getUserFromAccessToken = function(accessToken, done){
     mongo.connect()
     .then(function(db){  
         db.collection("users")
-        .findOne({"AccessToken": accessToken}, function (err, user) {
+        .findOne({"accessToken": accessToken}, function (err, user) {
             if (err) { 
                 return done(err); 
             }

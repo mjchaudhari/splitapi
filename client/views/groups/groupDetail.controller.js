@@ -53,9 +53,9 @@
             $scope.promices.groupDetail = dataService.getGroup($scope._id)
             .then(function(d){
                 $scope.group = angular.copy(d.data.data[0]);
-                if($scope.group.Members){
+                if($scope.group.members){
                     $scope.group.Members.forEach(function(m){
-                        m._name = m.FirstName + ' ' + m.LastName;
+                        m._name = m.firstName + ' ' + m.lastName;
                     })
                 }
                 $scope.groupCopy = angular.copy($scope.group);
@@ -77,9 +77,9 @@
                 var result = [];
                 angular.copy(d.data.data, result);
                 result.forEach(function(u){
-                    u._name = u.FirstName + ' ' + u.LastName;
+                    u._name = u.firstName + ' ' + u.lastName;
                     //check if this user is alredy added
-                    var exist = _.findWhere($scope.group.Members,{"_id":u._id});
+                    var exist = _.findWhere($scope.group.members,{"_id":u._id});
                     if(exist){
                         u.__added = true;
                     }
@@ -99,7 +99,7 @@
             .then(function(d){   
                 var users = [];
                 d.data.data.forEach(function(u){
-                    u.Name = u.FirstName + ' ' + u.LastName;
+                    u.name = u.firstName + ' ' + u.lastName;
                 });
                 defer.resolve(d.data.data);
             });
@@ -108,7 +108,7 @@
         
         function _saveGroupDetails(){
             //basic validation
-            if($scope.group.Name == ""){
+            if($scope.group.name == ""){
                 showSimpleToast("Group name requied");
                 return;
             }
@@ -116,9 +116,9 @@
             dataService.saveGroup($scope.group)
             .then(function(g){
                 //if this group is created by current user then allow user to manage users
-                $scope.group._id = g.data._id;
-                $scope.group.Members = g.data.Members;
-                $scope.group.CreatedBy = g.data.CreatedBy;
+                $scope.group._id = g.data.data._id;
+                $scope.group.members = g.data.data.members;
+                $scope.group.createdBy = g.data.data.createdBy;
                 showSimpleToast("Group saved");
             },
             function(e){

@@ -8,14 +8,14 @@
     function groupsController($scope, $rootScope,  $log, $q, $localStorage, $state, stateParams, dataService, config, authService){
         
         //bindable mumbers
-        $scope.title = "Groups";
-        $scope.groupsList = [];
+        $scope.mainTitle = "Groups";
+        $scope.groupList = [];
         $scope.promices = {};
         
         function getGroups (){
             $scope.promices.groupsPromice = dataService.getGroups()
             .then(function(d){
-                angular.copy(d.data.data, $scope.groupsList);
+                angular.copy(d.data.data, $scope.groupList);
             },
             function(e){
 
@@ -30,14 +30,17 @@
                 tasks
             ])
             .then(function(){
-                init()
+                init();
             });
         }
 
         var init = function(){
 
         };
-
+        $scope.openBoard = function(g){
+            $state.go("home.group.board",{"g": g._id});
+            $scope.mainTitle = g.name;
+        }
         preInit();
 
     }//conroller ends

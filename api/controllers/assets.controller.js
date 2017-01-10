@@ -1,15 +1,17 @@
 var models = require("./../response.models.js").models;
 var shortId     =require("shortid");
-var dbConfig =  require("../db.connection.js");
+var mongo =  require("../db.connection.js");
 var _hlp =  require("../utils.js");
 var _ = require("underscore-node");
 var async = require ("async");
 var path = require("path");
-var fileCtrl = require("./file.controller.js");
+var fileCtrl = require("./../file.handler.js");
 var drive = require("./../googleDriveHelper.js")();
 
+var Group = require("./../classes/API.Group.js");
+
 var fs = require('fs-extra'); 
-var mongoURI = dbConfig.mongoURI;
+;
 /*
 group module
 */
@@ -28,7 +30,7 @@ exports.v1 = function(){
     */     
     this.getAssets =function(req, cb)
     {
-        var u = req.user.User;         
+        var u = req.user;         
         var q = req.query;
         var g = req.params.groupId;
 		var options = {
@@ -41,40 +43,12 @@ exports.v1 = function(){
             options.from = new Date("01-01-01");
         }
         
-        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
-            
-            //find the groups of this user
-            var filter = { "_id": options.groupId,  "Members": { $in: [u._id] } }
-            db.collection("groups").find(filter).toArray(function(err, data){
-                if(err){
-                    db.close();  
-                    return cb(err);
-                }
-                if(data.length <= 0 ){
-                    db.close();
-                    //This user has no access to the assets of this group.
-                    return cb(new models.error("Unauthorize access","User is not authorized to access group."));
-                }
-                
-                var parentId = options.parentId;
-                if(options.parentId == null){
-                    parentId = options.groupId;
-                }
-                
-                var filter = {
-                    "GroupId": options.groupId,
-                    "AuditTrail.UpdatedOn" : {"$gte": options.from},
-                    "Accessibility": {$or : [ null, [{ $in: [u._id] }]]}
-                }
-                
-                //return assetsas per criteria
-                filter._paths = {$in : [new RegExp('/' + parentId + '$')]};
-                
-                db.collection("assets").find(filter).toArray(function(err, data){
-                    db.close();
-                        return cb(new models.success(data));
-                });
-            });
+        var group = new Group({_id : options.g});
+        group.getAssets( options, function(err, data){
+            if(err){
+                return cb(new models.error(err));
+            }
+            return cb(new models.success(data));
         });
     }
     
@@ -97,7 +71,7 @@ exports.v1 = function(){
             options.from = new Date("01-01-01");
         }
         
-        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
+        mongo.connect( ).then(function(db){
             
             //find the groups of this user
             var filter = { "_id": options.groupId,  "Members": { $in: [u._id] } }
@@ -118,11 +92,11 @@ exports.v1 = function(){
                 }
                 
                 var filter = {
-                    "GroupId": options.groupId,
-                    "AuditTrail.UpdatedOn" : {"$gte": options.from},
+                    "groupId": options.groupId,
+                    "auditTrail.updatedOn" : {"$gte": options.from},
                 }
                 if(options.structure_only){
-                    filter.AssetTypeId = "type_collection"
+                    filter.assetTypeId = "type_collection"
                 }
                 
                 //return assetsas per criteria
@@ -130,15 +104,15 @@ exports.v1 = function(){
                 //var filter = {'Path': {'$regex': '/' + parentMatch + '/'}};
                 //{Paths: {$in : [/V1WC-H7_e/,/V1WC-H7_e$/,]}}
                 //filter.Accessibility = {$or : [{"CreateBy":u._id}, {"Accessibility" : {$or : [ null, [{ $in: [u._id] }]]}}]} ;
-                var AccessibilityExpr = {"$or": [
-                    {"CreateBy":u._id}, 
-                    {"Accessibility" : null}, {"Accessibility" : { $in: [u._id] }}]};
+                var accessibilityExpr = {"$or": [
+                    {"createBy":u._id}, 
+                    {"accessibility" : null}, {"accessibility" : { $in: [u._id] }}]};
                 var pathsExpr = {"$or" : [
                     {"_id" : parentId}, 
                     { "_paths" : {$in : [new RegExp('/' + parentId + '/'), new RegExp('/' + parentId + '$')]}}
                 ]};
                 
-                filter["$and"] = [AccessibilityExpr, pathsExpr ];
+                filter["$and"] = [accessibilityExpr, pathsExpr ];
                 
                 db.collection("assets").find(filter).toArray(function(err, data){
                     db.close();
@@ -165,7 +139,7 @@ exports.v1 = function(){
                 return cb(new models.error(e));
             }
         
-            dbConfig.mongodbclient.connect( mongoURI,function(err, db){
+            mongo.connect( ).then(function(db){
                 if(asset.GroupId == null){ 
                     return cb(models.error("Unauthorized access"));
                 }
@@ -194,18 +168,30 @@ exports.v1 = function(){
      */
     this.createOrUpdate = function(req,cb){
         console.log("controller : create artifact");
-        var currentUser = req.user.User
+        var currentUser = req.user
         //mandatory checks
-        if(req.body.GroupId == null){
+        if(req.body.groupId == null){
             return cb(new models.error("group required"));
         }
-        if(req.body.Name == null){
+        if(req.body.name == null){
             return cb(new models.error("Name required"));
         }
-        
+        var f = req.files ;
+        if(f){
+            var urls = []
+            f.forEach(function(file){
+                var newPath = path.join(file.destination,file.originalname);
+                var fn = fs.renameSync(file.path, newPath)
+                file.path = newPath;
+                urls.push( '//' + req.headers.host + '/file/'+f.originalname);
+
+            });
+            //set the local url of the uploaded file
+            req.body.Urls = urls
+        }
         //find group folder
-        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
-            db.collection("groups").findOne({"_id":req.body.GroupId}, function(err, group){
+        mongo.connect( ).then(function(db){
+            db.collection("groups").findOne({"_id":req.body.groupId}, function(err, group){
     
                 var f = req.files ;
                 if(f){
@@ -284,7 +270,7 @@ exports.v1 = function(){
                     console.error(err)
                     return callback(err);
                 }
-                dbConfig.mongodbclient.connect( mongoURI,function(err, db){
+                mongo.connect( ).then(function(db){
                     var dataToSave = {
                         "Files":fileInfo, 
                         "Urls":urls
@@ -309,7 +295,7 @@ exports.v1 = function(){
                 return cb(new models.error(err));
             }
             var fileUrl = "//" + req.headers.host +'/file/'+  path.basename(data);
-            var ast = new assetModel({"_id":assetId, "Thumbnail":fileUrl});
+            var ast = new assetModel({"_id":assetId, "thumbnail":fileUrl});
             assetModel.findOneAndUpdate({"_id":ast._id},{$set: ast},{new:true}, function(err,g){
                 if(err){
                     console.error(err);
@@ -321,154 +307,154 @@ exports.v1 = function(){
         });
     };
     
-    function buildAssetModel(data, currentUser, createId) {
-        if(createId == undefined){
-            createId = true;
-        }
-        
-        var isNew = data._id == null; 
-        var a = {}
-        
-        //Check if this is new docuemnt
-        if(data._id){
-            a._id = data._id;
-        }
-        else if(data._id == null && createId){
-            a._id = shortId.generate();    
-        }
-        
-        a._uid = data._uid ? "" : a._id
-        
-        a.GroupId = data.GroupId;
-        if(data.TopicId ){
-            a.TopicId = data.TopicId
-        }
-        else{
-            a.TopicId = data.GroupId
-        }
-        
-        //We do not consider the paths those are sent with data as we want to determine it ourself.
-        if(data.ParentIds){
-            a.ParentIds = data.ParentIds;
-        }
-        else{
-            a.ParentIds = [data.GroupId];
-        }
-        
-        a.Name          = data.Name;
-        a.Description   = data.Description;
-        a.Locale        = data.Locale;
-        a.Publish       = data.Publish;
-        a.AllowComment  = data.AllowComment;
-        a.AllowLike     = data.AllowLike;
-        a.Status        = data.Status;
-        a.Thumbnail     = data.Thumbnail;
-        a.Urls          = data.Urls;
-        a.Moderators    = data.Moderators;
-        a.ActivateOn    = data.ActivateOn;
-        a.ExpireOn      = data.ExpireOn;
-        a.AlloudTypes   = data.AllowedTypes;
-        a.UpdatedOn     = new Date();
-        a.UpdatedById   = currentUser._id; 
-        if(data.Accessibility){
-            a.Accessibility = data.Accessibility;
-        }
-
-        if (data.AssetType != null){
-            a.AssetTypeId = data.AssetType._id;
-        }
-        else if (data.AssetTypeId != null){
-            a.AssetTypeId = data.AssetTypeId;
-        }
-        
-        if (data.AssetCategory != null){
-            a.AssetCategoryId = data.AssetCategory._id
-        }
-        else if (data.AssetCategoryId != null){
-            a.AssetCategoryId = data.AssetCategoryId
-        }
-        
-        if(isNew){
-            a.CreatedOn = new Date();
-            a.CreateBy = currentUser._id;
-        }
-        //Audit trail
-        a.AuditTrail = data.AuditTrail;
-         
-        if(a.auditTrail == null){
-            a.AuditTrail = [];    
-        } 
-        a.AuditTrail.push({
-            Action: data._id == null ? "Create" : "Update",
-            UpdatedById : currentUser._id,   
-            UpdatedOn : new Date(),
-            Description : "",
-            Notify : true,
-        });
-        
-        a.CustomData = data.CustomData;
-         
-        switch (data.AssetTypeId) {
-            case "type_collection":
-            {
-                a.AllowComment  = false;
-                a.AllowLike     = false;
-                break;
-            }
-            case "type_document":
-            {
-                break;
-            }
-            case "type_calendar":
-            {
-                a.Calendar.StartDate         = data.Calendar.startDate;
-                a.Calendar.EndDate           = data.Calendar.endDate;
-                a.Calendar.Venue             = data.Calendar.venue;
-                a.Calendar.VenueAddress      = data.Calendar.venueAddress;
-                a.Calendar.VenueMapLocation  = data.Calendar.venueMapLocation;
-                a.Calendar.Contact           = data.Calendar.contact;
-                break;
-            }
-            case "type_task":
-            {
-                a.Task = {};
-                a.Task.TaskType = data.Task.TaskType;
-                a.Task.TaskStatus    = data.Task.TaskStatus;
-                a.Task.IsClosed  = data.Task.IsClosed;
-                a.Task.ClosedOn  = data.Task.ClosedOn;
-                a.Task.Owners    = data.Task.Owners;
-                a.Task.Updates   = data.Task.Updates; 
-                
-                break;
-            }
-            case "type_demand":
-            {
-                break;
-            }
-            case "type_transaction":
-            {
-                break;
-            }
-            case "type_form":
-            {
-                break;
-            }
-            
-            default:{
-                
-                break;
-            }
-                
-        }
-        
-        return a;
+    
+function buildAssetModel(data, currentUser, createId) {
+    if(createId == undefined){
+        createId = true;
     }
     
+    var isNew = data._id == null; 
+    var a = {}
+    
+    //Check if this is new docuemnt
+    if(data._id){
+        a._id = data._id;
+    }
+    else if(data._id == null && createId){
+        a._id = shortId.generate();    
+    }
+    
+    a._uid = data._uid ? "" : a._id
+    
+    a.groupId = data.groupId;
+    if(data.TopicId ){
+        a.topicId = data.topicId
+    }
+    else{
+        a.topicId = data.groupId
+    }
+    
+    //We do not consider the paths those are sent with data as we want to determine it ourself.
+    if(data.parentIds){
+        a.parentIds = data.parentIds;
+    }
+    else{
+        a.parentIds = [data.groupId];
+    }
+    
+    a.name          = data.name;
+    a.description   = data.description;
+    a.locale        = data.locale;
+    a.publish       = data.publish;
+    a.allowComment  = data.allowComment;
+    a.allowLike     = data.allowLike;
+    a.status        = data.status;
+    a.thumbnail     = data.thumbnail;
+    a.urls          = data.urls;
+    a.moderators    = data.moderators;
+    a.activateOn    = data.activateOn;
+    a.expireOn      = data.expireOn;
+    a.alloudTypes   = data.allowedTypes;
+    a.updatedOn     = new Date();
+    a.updatedById   = currentUser._id; 
+    if(data.accessibility){
+        a.accessibility = data.accessibility;
+    }
+
+    if (data.assetType != null){
+        a.assetTypeId = data.assetType._id;
+    }
+    else if (data.assetTypeId != null){
+        a.assetTypeId = data.assetTypeId;
+    }
+    
+    if (data.assetCategory != null){
+        a.assetCategoryId = data.assetCategory._id
+    }
+    else if (data.assetCategoryId != null){
+        a.assetCategoryId = data.assetCategoryId
+    }
+    
+    if(isNew){
+        a.areatedOn = new Date();
+        a.areateBy = currentUser._id;
+    }
+    //Audit trail
+    a.auditTrail = data.auditTrail;
+        
+    if(a.auditTrail == null){
+        a.auditTrail = [];    
+    } 
+    a.auditTrail.push({
+        action: data._id == null ? "Create" : "Update",
+        updatedById : currentUser._id,   
+        updatedOn : new Date(),
+        description : "",
+        notify : true,
+    });
+    
+    a.customData = data.customData;
+        
+    switch (data.assetTypeId) {
+        case "type_collection":
+        {
+            a.allowComment  = false;
+            a.allowLike     = false;
+            break;
+        }
+        case "type_document":
+        {
+            break;
+        }
+        case "type_calendar":
+        {
+            a.calendar.startDate         = data.calendar.startDate;
+            a.calendar.endDate           = data.calendar.endDate;
+            a.calendar.venue             = data.calendar.venue;
+            a.calendar.venueAddress      = data.calendar.venueAddress;
+            a.calendar.venueMapLocation  = data.calendar.venueMapLocation;
+            a.calendar.contact           = data.calendar.contact;
+            break;
+        }
+        case "type_task":
+        {
+            a.task = {};
+            a.task.taskType = data.task.taskType;
+            a.task.taskStatus    = data.task.taskStatus;
+            a.task.isClosed  = data.task.isClosed;
+            a.task.closedOn  = data.task.closedOn;
+            a.task.owners    = data.task.owners;
+            a.task.updates   = data.task.updates; 
+            
+            break;
+        }
+        case "type_demand":
+        {
+            break;
+        }
+        case "type_transaction":
+        {
+            break;
+        }
+        case "type_form":
+        {
+            break;
+        }
+        
+        default:{
+            
+            break;
+        }
+            
+    }
+    
+    return a;
+}
     /**
      * get fully populated assets of given id
      */
     var getFullAsset = function (id, callback){
-        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
+        mongo.connect( ).then(function(db){
             db.collection("assets").findOne({"_id":id}, function(err, result){
                 if(err){
                     return callback(err,result);
@@ -483,22 +469,22 @@ exports.v1 = function(){
                 async.parallel({
                     
                     assetType: function(cb){
-                        db.collection("configs").findOne({"_id":result.AssetTypeId}, function(err, group){
+                        db.collection("configs").findOne({"_id":result.assetTypeId}, function(err, group){
                             cb(null, group);
                         });
                     },
                     group: function(cb){
-                        db.collection("groups").findOne({"_id":result.GroupId}, function(err, group){
+                        db.collection("groups").findOne({"_id":result.groupId}, function(err, group){
                             cb(null, group);
                         });
                     },
                     updatedBy: function(cb){
-                        db.collection("profiles").findOne({"_id":result.UpdatedById}, function(err, updatedBy){
+                        db.collection("profiles").findOne({"_id":result.updatedById}, function(err, updatedBy){
                             cb(null, updatedBy);
                         });
                     },
                     accessibility: function(cb){
-                        var profileIds = result.Accessibility == null ? [] : result.Accessibility;
+                        var profileIds = result.accessibility == null ? [] : result.accessibility;
                         db.collection("profiles").find({"_id":{$in: profileIds}}).toArray(function(err, accessibility){
                             cb(null, accessibility);
                         });
@@ -511,9 +497,9 @@ exports.v1 = function(){
                                     var prnt = {
                                         "_id" : p._id,
                                         "_uid" : p._uid,
-                                        "AssetTypeId" : p.AssetTypeId,
-                                        "Name" : p.Name,
-                                        "ParentIds" : p.ParentIds,
+                                        "assetTypeId" : p.pssetTypeId,
+                                        "name" : p.name,
+                                        "parentIds" : p.parentIds,
                                         "_paths" : p._paths
                                     }
                                     pArray.push(prnt);
@@ -541,12 +527,12 @@ exports.v1 = function(){
                     // }
                 },
                 function(err, results) {
-                    retAsset.AssetType = results.assetType;
-                    retAsset.Group = results.group;
-                    retAsset.UpdatedBy = results.updatedBy;
-                    retAsset.Parents = results.parents;
-                    retAsset.Accessibility =results.accessibility;
-                    switch (retAsset.AssetTypeId) {
+                    retAsset.assetType = results.assetType;
+                    retAsset.group = results.group;
+                    retAsset.updatedBy = results.updatedBy;
+                    retAsset.parents = results.parents;
+                    retAsset.accessibility =results.accessibility;
+                    switch (retAsset.assetTypeId) {
                         case "type_task":
                             populateTask(retAsset, function(err, ast){
                                 return callback(err, ast);    
@@ -565,7 +551,7 @@ exports.v1 = function(){
      */
     function determinePath(parentIds, callback){
         var parentIds = parentIds;
-        dbConfig.mongodbclient.connect( mongoURI,function(err, db){
+        mongo.connect( ).then(function(db){
             db.collection("assets").find({"_id":{$in: parentIds }}).toArray(function(err, data){
                 var result = data;
                 if(err){
@@ -668,8 +654,8 @@ exports.v1 = function(){
         async.parallel({
             
             owners: function(cb){
-                var profileIds = asset.Task != null && asset.Task.Owners != null ?  asset.Task.Owners : [] ;
-                dbConfig.mongodbclient.connect( mongoURI,function(err, db){
+                var profileIds = asset.task != null && asset.task.owners != null ?  asset.task.owners : [] ;
+                mongo.connect( ).then(function(db){
                     db.collection("profiles").find({"_id":{$in: profileIds}}).toArray(function(err, owners){
                         db.close();
                         cb(null, owners);
@@ -678,7 +664,7 @@ exports.v1 = function(){
             },
         },
         function(err, results) {
-            asset.Task.Owners = results.owners;
+            asset.task.owners = results.owners;
             return callback(err, asset);
         });
     }
