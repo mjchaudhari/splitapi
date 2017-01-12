@@ -3,6 +3,7 @@
 var mongo = require("./../db.connection.js");
 var shortId = require("shortid");
 var apiException = require("./API.Exception.js");
+var Profile = require("./API.Profile.js");
 
 var API = API || {}; // Namespace
 
@@ -39,21 +40,22 @@ API.Core.prototype.authenticate = function(credential, cb){
                 db.close();
                 return cb(e);
             }
-            var p = u.profile;
-            var ret = {
-                _id : p._id,
-                accessToken:t.accessToken,
-                userName: p.userName,
-                firstName: p.firstName,
-                lastName: p.lastName,
-                picture : p.picture,
-                emailId: p.emailId,
-                address : p.address,
-                city : p.city,
-                country : p.country,
-                zipCode : p.zipCode
-            };
-            return cb(null,ret); 
+            var p = new Profile(u);
+            p.accessToken = t.accessToken;
+            // var ret = {
+            //     _id : p._id,
+            //     accessToken:t.accessToken,
+            //     userName: p.userName,
+            //     firstName: p.firstName,
+            //     lastName: p.lastName,
+            //     picture : p.picture,
+            //     emailId: p.emailId,
+            //     address : p.address,
+            //     city : p.city,
+            //     country : p.country,
+            //     zipCode : p.zipCode
+            // };
+            return cb(null,p); 
         });
     });
 };
@@ -70,18 +72,9 @@ API.Core.prototype.getUserFromAccessToken = function(accessToken, done){
             }
             db.collection("profiles").findOne({"_id":user.profileId}, function(e,p){
                 db.close();
-                var u = {};
-                u._id = p._id;
-                u.userName = p.userName;
-                u.firstName = p.FirstName;
-                u.lastName = p.lastName;
-                u.picture = p.picture;
-                u.emailId = p.emailId;
-                u.address = p.address;
-                u.city = p.city;
-                u.country = p.country;
-                u.zipCode = p.zipCode;
-                return done(null,u);                    
+                var p = new Profile(p);
+                
+                return done(null,p);                    
             });
         });
     });    
@@ -131,19 +124,7 @@ API.Core.prototype.getUser = function(userName, cb){
 
             db.collection("users").findOne({"profileId":p._id}, function(err,a){
                 db.close();
-                a.User = p;
-                var u = {};
-                u._isReady = true;
-                u._id = p._id;
-                u.userName = p.userName;
-                u.firstName = p.FirstName;
-                u.lastName = p.lastName;
-                u.picture = p.picture;
-                u.emailId = p.emailId;
-                u.address = p.address;
-                u.city = p.city;
-                u.country = p.country;
-                u.zipCode = p.zipCode;
+                var u = new Profile(p);
                 return cb(null, u);                 
             });  
         });

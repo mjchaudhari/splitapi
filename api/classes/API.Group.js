@@ -7,20 +7,19 @@ var API = API || {} // Namespace
 API.Group = function(data){
     
     //Properties
-    _id = data.__id;
-    name = data.name;
-    description = data.description;
-    locale = data.locale;
-    status = data.status;
-    thumbnail = data.thumbnail;
-    members = data.members;
-    url = data.url;
-    groupType = data.groupType;
-    createdBy = data.createdBy;
-    updatedBy = data.updatedBy;
-    updatedOn  = data.updatedOn;
-    _fileStorage = data._fileStorage;
-    
+    this._id = data.__id;
+    this.name = data.name;
+    this.description = data.description;
+    this.locale = data.locale;
+    this.status = data.status;
+    this.thumbnail = data.thumbnail;
+    this.members = data.members;
+    this.url = data.url;
+    this.groupType = data.groupType;
+    this.createdBy = data.createdBy;
+    this.updatedBy = data.updatedBy;
+    this.updatedOn  = data.updatedOn;
+    this._fileStorage = data._fileStorage;
 }
 
 API.Group.prototype.init = function(id, userId, cb){
@@ -115,7 +114,7 @@ API.Group.prototype.getAssets = function(params, callback){
                 if(data.length <= 0 ){
                     db.close();
                     //This user has no access to the assets of this group.
-                    return cb(new apiException().unauthenticated('unauthorized', 'Group'));
+                    return callback(new apiException().unauthenticated('unauthorized', 'Group'));
                 }
                 
                 var parentId = options.parentId;

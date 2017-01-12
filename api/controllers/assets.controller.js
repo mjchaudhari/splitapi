@@ -17,14 +17,6 @@ group module
 */
 exports.v1 = function(){
     
-    this.getAssetConfig = function(){
-        //return assetConfigModel.find();
-    }
-
-    this.getAllAssets = function(cb){
-       
-        
-    }
     /** Gets the assets of given group if the current user is member of this group
      * 
     */     

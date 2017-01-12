@@ -39,4 +39,4 @@ API.Exception.prototype.notFound = function(message, source, ex){
     return this;
 }
 
-module.exports = new API.Exception();
+module.exports = API.Exception;

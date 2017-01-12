@@ -6,7 +6,7 @@ var shortId = require("shortid");
 var apiException = require("./API.Exception.js");
 var async = require('async');
 var _ = require("underscore-node");
-
+var Group = require("./API.Group.js");
 var API = API || {}; // Namespace
 API.Profile = function (profileData) {
 
@@ -107,14 +107,15 @@ API.Profile.prototype.getGroups = function (options, cb) {
     .then(function (db) {
         db.collection("groups")
         .find({ "members": { $in: [profileId]}})
-        .toArray(function (e, g) {
+        .toArray(function (e, resultGroups) {
             if (e) {
                 db.close();
                 return cb(new apiException(null, 'Profile', err));
             }
             var result = [];
-            async.eachSeries(g, function (g, callback) {
+            async.eachSeries(resultGroups, function (grp, callback) {
                 //{"_id":  {$in: ["VJvggm7ug","VJ0esDQ_e","41yeBrY_l","NJ6PJdKFe","EyfRUZB5x"]} }
+                var g = new Group(grp);
                 var members = g.members;
                 db.collection("profiles")
                 .find({ "_id": { $in: members } }).toArray(function (e, members) {
